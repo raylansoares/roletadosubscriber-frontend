@@ -16,7 +16,7 @@ import {
   MdList
 } from 'vue-material/dist/components'
 
-import VueSocketIO from 'vue-socket.io';
+import VueSocketIO from 'vue-socket.io'
 
 import 'vue-material/dist/vue-material.min.css'
 import './assets/theme/custom.css'
@@ -32,10 +32,10 @@ Vue.use(MdSnackbar)
 Vue.use(MdToolbar)
 Vue.use(MdDrawer)
 Vue.use(MdList)
-console.log(process.env.SERVER_HOST)
+
 Vue.use(new VueSocketIO({
   debug: false,
-  connection: 'http://localhost:8000'
+  connection: `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}`
 }))
 
 Vue.config.productionTip = false
