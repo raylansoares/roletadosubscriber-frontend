@@ -20,7 +20,7 @@ export default {
   },
   data () {
     return {
-      namedRoute: 'Main'
+      namedRoute: 'Dashboard'
     }
   }
 }

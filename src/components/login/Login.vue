@@ -65,7 +65,6 @@ export default {
     }
   },
   data: () => ({
-    main: true,
     loading: false,
     user: {
       username: '',

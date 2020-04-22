@@ -1,7 +1,7 @@
 import DefaultContainer from '@/containers/DefaultContainer'
 import LoginView from '../views/Login.vue'
-import MainView from '../views/Main'
-import NotFoundView from '../views/NotFound'
+import DashboardView from '../views/Dashboard'
+import WheelView from '../views/Wheel'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { isAuthenticated } from '../utils/utils'
@@ -14,25 +14,30 @@ const routes = [
     name: 'Login',
     component: LoginView,
     beforeEnter: (to, from, next) => {
-      if (isAuthenticated()) next('/main')
+      if (isAuthenticated()) next('/dashboard')
       else next()
     }
   },
   {
+    path: '/wheel',
+    name: 'Wheel',
+    component: WheelView
+  },
+  {
     path: '/',
     name: 'DefaultContainer',
-    redirect: '/main',
+    redirect: '/dashboard',
     component: DefaultContainer,
     children: [
       {
-        path: '/main',
-        name: 'Main',
-        component: MainView
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: DashboardView
       },
       {
         path: '*',
         name: 'NotFound',
-        component: NotFoundView
+        redirect: '/dashboard',
       }
     ]
   }
@@ -44,7 +49,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (isAuthenticated() || to.name === 'Login') next()
+  if (isAuthenticated() || to.name === 'Login' || to.name === 'Wheel') next()
   else {
     next('/login')
   }

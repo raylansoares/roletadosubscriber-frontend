@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="wheel-container">
     <Wheel />
   </div>
 </template>
@@ -8,7 +8,7 @@
 import Wheel from '@/components/wheel/Wheel'
 
 export default {
-  name: 'MainView',
+  name: 'WheelView',
   components: {
     Wheel
   }
@@ -16,7 +16,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .main-container {
+  .wheel-container {
     display: flex;
     justify-content: center;
     flex-direction: column;

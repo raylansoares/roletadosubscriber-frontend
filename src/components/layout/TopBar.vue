@@ -3,6 +3,7 @@
     <md-toolbar class="md-primary">
       <span class="md-title">Rose Panel</span>
       <div class="md-toolbar-section-end">
+        <md-button to="dashboard"> Dashboard </md-button>
         <md-button @click="logout()">Sair</md-button>
       </div>
     </md-toolbar>
