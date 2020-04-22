@@ -17,7 +17,7 @@
 }
 
 html.md-theme-default {
-    background-color: #fafafa;
+    background-color: transparent;
     color: rgba(0, 0, 0, 0.87);
 }
 
@@ -547,7 +547,7 @@ html.md-theme-default {
 }
 
 .md-content.md-theme-default {
-    background-color: #f0f0f5;
+    background-color: transparent;
     color: rgba(0, 0, 0, 0.87);
 }
 

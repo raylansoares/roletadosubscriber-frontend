@@ -7,9 +7,14 @@
     box-sizing: border-box;
 }
 
+html.md-theme-default {
+    background-color: transparent;
+    color: rgba(0, 0, 0, 0.87);
+}
+
 body{
     font: 400 14px Roboto, sans-serif;
-    background: #f0f0f5;
+    background: none;
     -webkit-font-smoothing: antialiased;
 }
 
