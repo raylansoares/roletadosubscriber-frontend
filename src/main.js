@@ -13,7 +13,9 @@ import {
   MdSnackbar,
   MdToolbar,
   MdDrawer,
-  MdList
+  MdList,
+  MdTable,
+  MdRipple
 } from 'vue-material/dist/components'
 
 import VueSocketIO from 'vue-socket.io'
@@ -32,6 +34,8 @@ Vue.use(MdSnackbar)
 Vue.use(MdToolbar)
 Vue.use(MdDrawer)
 Vue.use(MdList)
+Vue.use(MdTable)
+Vue.use(MdRipple)
 
 Vue.use(new VueSocketIO({
   debug: false,
