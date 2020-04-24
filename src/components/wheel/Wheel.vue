@@ -39,22 +39,31 @@ export default {
         segments: [
             {fillStyle : '#323eff', text : 'Piada do saci'},
             {fillStyle : '#ffffff', text : 'De timeout em alguém'},
-            {fillStyle : '#ff371f', text : 'Imagem para o cromakey'},
-            {fillStyle : '#ffffff', text : 'Ganso'},
             {fillStyle : '#ffed01', text : 'Jogo Gratuito'},
-            {fillStyle : '#ffffff', text : 'Adicionar emote da BTTV'},
-            {fillStyle : '#323eff', text : 'Frase de encerramento'},
-            {fillStyle : '#ffffff', text : 'Desenho na cara'},
-            {fillStyle : '#ff371f', text : 'Roda 2x'},
-            {fillStyle : '#ffffff', text : 'Lendária ou ban'},
-            {fillStyle : '#ffed01', text : 'Duelo com Tesdey'},
-            {fillStyle : '#ffffff', text : 'Anúncio de graça'},
-            {fillStyle : '#323eff', text : '10 minutos de timeout'},
+            {fillStyle : '#ffffff', text : 'Imagem para o cromakey'},
+            {fillStyle : '#ff371f', text : 'Ganso'},
+            {fillStyle : '#ffffff', text : 'Jogar água na cabeça'},
+            {fillStyle : '#323eff', text : 'Adicionar emote da BTTV'},
             {fillStyle : '#ffffff', text : '500 rosecoins'},
-            {fillStyle : '#ff371f', text : 'BG temático'},
+            {fillStyle : '#ffed01', text : 'Frase de encerramento'},
             {fillStyle : '#ffffff', text : 'Pergunte ao Tesdey'},
-            {fillStyle : '#ffed01', text : 'Escolha 2 músicas'},
-            {fillStyle : '#ffffff', text : 'Anúncio de graça'},
+            {fillStyle : '#ff371f', text : '10 minutos de timeout'},
+            {fillStyle : '#ffffff', text : 'Desenho na cara'},
+            {fillStyle : '#323eff', text : 'Anúncio de graça'},
+            {fillStyle : '#ffffff', text : 'Roda 2x'},
+            {fillStyle : '#ffed01', text : 'Lendária ou ban'},
+            {fillStyle : '#ffffff', text : 'Duelo com Tesdey'},
+            {fillStyle : '#ff371f', text : '500 rosecoins'},
+            {fillStyle : '#ffffff', text : 'BG temático'},
+            {fillStyle : '#323eff', text : 'Escolha 2 músicas'},
+            {fillStyle : '#ffffff', text : 'De timeout em alguém'},
+            {fillStyle : '#ffed01', text : '10 minutos de timeout'},
+            {fillStyle : '#ffffff', text : 'Imagem para o cromakey'},
+            {fillStyle : '#ff371f', text : 'Pergunte ao Tesdey'},
+            {fillStyle : '#ffffff', text : 'Desenho na cara'},
+            {fillStyle : '#323eff', text : 'Anúncio de graça'},
+            {fillStyle : '#ffffff', text : 'Frase de encerramento'},
+            {fillStyle : '#ff371f', text : 'Duelo com Tesdey'},
         ]
   }),
 
@@ -137,7 +146,8 @@ export default {
     },
 
     selectPrize(data) {
-        this.subscribers.push(data + parseInt(Math.random()*100))
+        // this.subscribers.push(data + parseInt(Math.random()*100))
+        this.subscribers.push(data)
         if (!this.wheelSpinning) this.checkSubs();
     }
   },
