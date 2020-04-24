@@ -14,7 +14,7 @@
       <md-table-row slot="md-table-row" slot-scope="{ item }">
         <md-table-cell md-label="Usuário" md-sort-by="user">{{ item.user }}</md-table-cell>
         <md-table-cell md-label="Prêmio" md-sort-by="prize">{{ item.prize }}</md-table-cell>
-        <md-table-cell md-label="Data" md-sort-by="created_at">{{ item.created_at }}</md-table-cell>
+        <md-table-cell md-label="Data" md-sort-by="created_at">{{ item.created_at | formatDate }}</md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -24,6 +24,7 @@
 import dayjs from 'dayjs'
 import store from '@/store/index'
 import axios from 'axios'
+import moment from 'moment'
 
 export default {
   name: 'Dashboard',
@@ -36,6 +37,10 @@ export default {
 
   mounted () {
     this.getSubscribers()
+  },
+
+  filters: {
+      formatDate: value => (moment(value).format('DD/MM/YYYY - HH:mm:ss'))
   },
 
   methods: {
