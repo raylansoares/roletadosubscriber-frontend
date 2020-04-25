@@ -1,24 +1,40 @@
 <template>
   <div id="dashboard">
 
-    <md-card>
-      <md-card-header>
-        <div class="md-title">Roletar manualmente</div>
-      </md-card-header>
-
-      <md-card-content class="manual-wheel">
-        <div class="manual-field">
-          <md-field>
-            <label>Nome do usuário</label>
-            <md-input v-model="username" @keyup.enter="manualWheel" />
-          </md-field>
-        </div>
-        <div class="manual-button">
-          <md-button class="md-dense md-raised md-primary" :disabled="!username" @click="manualWheel">Roletar</md-button>
-        </div>
-      </md-card-content>
-
-    </md-card>
+    <div class="md-layout">
+      <div class="md-layout-item three-cards">
+        <md-card>
+          <md-card-content>
+            <p class="card-title">Roletar manualmente</p>
+            <md-field>
+              <label>Nome do usuário</label>
+              <md-input v-model="username" @keyup.enter="manualWheel" />
+            </md-field>
+            <md-button
+              class="md-dense md-raised md-primary roll-button"
+              :disabled="!username"
+              @click="manualWheel"
+            >
+              Roletar
+            </md-button>
+          </md-card-content>
+        </md-card>
+      </div>
+      <div class="md-layout-item three-cards">
+        <md-card>
+          <md-card-content>
+            <p class="card-title">Widget 2</p>
+          </md-card-content>
+        </md-card>
+      </div>
+      <div class="md-layout-item three-cards">
+        <md-card>
+          <md-card-content>
+            <p class="card-title">Widget 3</p>
+          </md-card-content>
+        </md-card>
+      </div>
+    </div>
 
     <md-table v-model="filteredUsers" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
       <md-table-toolbar>
@@ -129,6 +145,20 @@ export default {
   #dashboard {
     width: 100%;
     max-width: 1280px;
+    .three-cards {
+      &:nth-child(1) {
+        margin-right: 10px;
+      }
+      &:nth-child(2) {
+        margin: 0 10px;
+      }
+      &:nth-child(3) {
+        margin-left: 10px;
+      }
+      .md-card {
+        min-height: 170px;
+      }
+    }
     .md-table {
       display: block;
     }
@@ -141,21 +171,13 @@ export default {
     .md-card {
       margin-bottom: 20px;
     }
-    .md-title {
-      font-size: 20px;
+    .card-title {
+      font-size: 18px;
+      color: rgba(0, 0, 0, 0.87)
     }
-    .manual-wheel {
-      display: flex;
-      .manual-field {
-        width: 70%;
-      }
-      .manual-button {
-        width: 30%;
-        margin-top: 15px;
-        .md-button {
-          width: 100%;
-        }
-      }
+    .roll-button {
+      width: 100%;
+      margin: 0;
     }
   }
 </style>
