@@ -1,5 +1,25 @@
 <template>
   <div id="dashboard">
+
+    <md-card>
+      <md-card-header>
+        <div class="md-title">Roletar manualmente</div>
+      </md-card-header>
+
+      <md-card-content class="manual-wheel">
+        <div class="manual-field">
+          <md-field>
+            <label>Nome do usuário</label>
+            <md-input v-model="username" @keyup.enter="manualWheel" />
+          </md-field>
+        </div>
+        <div class="manual-button">
+          <md-button class="md-dense md-raised md-primary" :disabled="!username" @click="manualWheel">Roletar</md-button>
+        </div>
+      </md-card-content>
+
+    </md-card>
+
     <md-table v-model="filteredUsers" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
@@ -45,7 +65,8 @@ export default {
   data: () => ({
     subscribers: [],
     filteredUsers: [],
-    search: null
+    search: null,
+    username: null
   }),
 
   mounted () {
@@ -75,6 +96,12 @@ export default {
 
     retryWheel (subscriber) {
       this.$socket.emit('retryWheel', subscriber)
+    },
+
+    manualWheel () {
+      if (!this.username) return
+      this.$socket.emit('requestPrize', this.username)
+      this.username = null
     }
   },
 
@@ -101,6 +128,7 @@ export default {
 <style lang="scss">
   #dashboard {
     width: 100%;
+    max-width: 1280px;
     .md-table {
       display: block;
     }
@@ -109,6 +137,25 @@ export default {
       font-size: 12px;
       line-height: 22px;
       margin: 2px;
+    }
+    .md-card {
+      margin-bottom: 20px;
+    }
+    .md-title {
+      font-size: 20px;
+    }
+    .manual-wheel {
+      display: flex;
+      .manual-field {
+        width: 70%;
+      }
+      .manual-button {
+        width: 30%;
+        margin-top: 15px;
+        .md-button {
+          width: 100%;
+        }
+      }
     }
   }
 </style>
