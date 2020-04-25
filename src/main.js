@@ -15,7 +15,8 @@ import {
   MdDrawer,
   MdList,
   MdTable,
-  MdRipple
+  MdRipple,
+  MdChips
 } from 'vue-material/dist/components'
 
 import VueSocketIO from 'vue-socket.io'
@@ -36,6 +37,7 @@ Vue.use(MdDrawer)
 Vue.use(MdList)
 Vue.use(MdTable)
 Vue.use(MdRipple)
+Vue.use(MdChips)
 
 Vue.use(new VueSocketIO({
   debug: false,
