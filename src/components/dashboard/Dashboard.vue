@@ -12,9 +12,22 @@
       </md-table-toolbar>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Usuário" md-sort-by="user">{{ item.user }}</md-table-cell>
-        <md-table-cell md-label="Prêmio" md-sort-by="prize">{{ item.prize }}</md-table-cell>
-        <md-table-cell md-label="Data" md-sort-by="created_at">{{ item.created_at | formatDate }}</md-table-cell>
+        <md-table-cell md-label="Usuário">{{ item.username }}</md-table-cell>
+        <md-table-cell md-label="Prêmios">
+          <md-chip v-for="(prize, key) in item.prizes" :key="key">{{ prize }}</md-chip>
+        </md-table-cell>
+        <md-table-cell md-label="Data">{{ item.created_at | formatDate }}</md-table-cell>
+        <md-table-cell md-label="Ações">
+          <md-button
+            id="force-wheel"
+            class="md-icon-button md-dense md-raised md-primary"
+            @click="retryWheel(item)"
+            :disabled="!!item.prizes.length"
+            title="Tentar novamente"
+          >
+            <md-icon>cached</md-icon>
+          </md-button>
+        </md-table-cell>
       </md-table-row>
     </md-table>
   </div>
@@ -54,10 +67,14 @@ export default {
 
     filterUsers () {
       if (this.search) {
-        this.filteredUsers = this.subscribers.filter(value => value.user.toLowerCase().includes(this.search.toLowerCase()))
+        this.filteredUsers = this.subscribers.filter(value => value.username.toLowerCase().includes(this.search.toLowerCase()))
       } else {
         this.filteredUsers = this.subscribers
       }
+    },
+
+    retryWheel (subscriber) {
+      this.$socket.emit('retryWheel', subscriber)
     }
   },
 
@@ -70,7 +87,11 @@ export default {
       console.log('disconnect')
     },
 
-    confirmPrize(data) {
+    selectPrize() {
+      this.getSubscribers()
+    },
+
+    confirmPrize() {
       this.getSubscribers()
     }
   },
@@ -82,6 +103,12 @@ export default {
     width: 100%;
     .md-table {
       display: block;
+    }
+    .md-chip {
+      height: 22px;
+      font-size: 12px;
+      line-height: 22px;
+      margin: 2px;
     }
   }
 </style>
