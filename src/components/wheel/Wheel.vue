@@ -11,8 +11,8 @@
     </div>
     
     <div class="results">
-        <div class="subscriber" v-show="currentSubscriber">Roleta para: {{ currentSubscriber }}</div>
-        <div class="prize" v-show="prize">Prêmio: {{ prize }}</div>
+        <div class="subscriber" v-if="wheelSpinning">Roleta para: {{ currentSubscriber.username }}</div>
+        <div class="prize" v-if="prize">Prêmio: {{ prize }}</div>
     </div>
 
   </div>
@@ -28,7 +28,7 @@ export default {
 
   data: () => ({
         subscribers: [],
-        currentSubscriber: null,
+        currentSubscriber: {},
         prize: null,
         theWheel: null,
         wheelSpinning: false,
@@ -120,12 +120,15 @@ export default {
     onFinishSpin (indicatedSegment) {
         this.prize = indicatedSegment.text
 
-        this.$socket.emit('sayPrize', { user: this.currentSubscriber, prize: this.prize })
+        if (!this.currentSubscriber.prizes) this.currentSubscriber.prizes = []
+        this.currentSubscriber.prizes.push(this.prize)
 
         if (indicatedSegment.text === 'Roda 2x') {
             this.subscribers.unshift(this.currentSubscriber)
             this.subscribers.unshift(this.currentSubscriber)
         }
+
+        this.$socket.emit('sayPrize', this.currentSubscriber)
 
         setTimeout(() => {
             this.resetWheel()
@@ -145,9 +148,8 @@ export default {
       console.log('disconnect')
     },
 
-    selectPrize(data) {
-        // this.subscribers.push(data + parseInt(Math.random()*100))
-        this.subscribers.push(data)
+    selectPrize(subscriber) {
+        this.subscribers.push(subscriber)
         if (!this.wheelSpinning) this.checkSubs();
     }
   },
