@@ -79,7 +79,6 @@
 
 <script>
 import dayjs from 'dayjs'
-import store from '@/store/index'
 import axios from 'axios'
 import moment from 'moment'
 
