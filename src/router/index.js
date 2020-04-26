@@ -1,6 +1,7 @@
 import DefaultContainer from '@/containers/DefaultContainer'
 import LoginView from '../views/Login.vue'
 import DashboardView from '../views/Dashboard'
+import WheelConfigView from '../views/WheelConfig'
 import WheelView from '../views/Wheel'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -33,6 +34,11 @@ const routes = [
         path: '/dashboard',
         name: 'Dashboard',
         component: DashboardView
+      },
+      {
+        path: '/wheelConfig',
+        name: 'WheelConfig',
+        component: WheelConfigView
       },
       {
         path: '*',
