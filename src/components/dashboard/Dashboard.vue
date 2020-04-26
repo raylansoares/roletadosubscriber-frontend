@@ -48,12 +48,12 @@
       </md-table-toolbar>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Usuário">{{ item.username }}</md-table-cell>
-        <md-table-cell md-label="Prêmios">
+        <md-table-cell md-label="Usuário" class="cell-username">{{ item.username }}</md-table-cell>
+        <md-table-cell md-label="Prêmios" class="cell-prize">
           <md-chip v-for="(prize, key) in item.prizes" :key="key">{{ prize }}</md-chip>
         </md-table-cell>
-        <md-table-cell md-label="Data">{{ item.created_at | formatDate }}</md-table-cell>
-        <md-table-cell md-label="Ações">
+        <md-table-cell md-label="Data" class="cell-date">{{ item.created_at | formatDate }}</md-table-cell>
+        <md-table-cell md-label="Ações" class="cell-actions">
           <md-button
             id="force-wheel"
             class="md-icon-button md-dense md-raised md-primary"
@@ -62,6 +62,14 @@
             title="Tentar novamente"
           >
             <md-icon>cached</md-icon>
+          </md-button>
+          <md-button
+            id="delete-item"
+            class="md-icon-button md-dense md-raised md-accent"
+            @click="deleteSubscriber(item._id)"
+            title="Excluir registro"
+          >
+            <md-icon>close</md-icon>
           </md-button>
         </md-table-cell>
       </md-table-row>
@@ -118,6 +126,12 @@ export default {
       if (!this.username) return
       this.$socket.emit('requestPrize', this.username)
       this.username = null
+    },
+
+    async deleteSubscriber (id) {
+      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/subscribers/${id}`
+      const response = await axios.delete(url)
+      this.getSubscribers()
     }
   },
 
@@ -178,6 +192,18 @@ export default {
     .roll-button {
       width: 100%;
       margin: 0;
+    }
+    .cell-username {
+      width: 30%;
+    }
+    .cell-prizes {
+      width: 35%;
+    }
+    .cell-date {
+      width: 20%;
+    }
+    .cell-actions {
+      width: 15%;
     }
   }
 </style>
