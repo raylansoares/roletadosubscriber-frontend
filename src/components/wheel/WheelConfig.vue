@@ -13,7 +13,7 @@
                   <md-input v-model="prize.name" />
                 </md-field>
               </div>
-              <div class="md-layout-item md-size-35 form-item">
+              <div class="md-layout-item md-size-30 form-item">
                 <md-field>
                   <label>Descrição</label>
                   <md-input v-model="prize.description" />
@@ -31,7 +31,7 @@
               <div class="md-layout-item md-size-15 form-item">
                 <md-field>
                   <label>Cor</label>
-                  <md-select v-model="prize.color" :style="'background-color: ' + prize.color ? prize.color : '#ffffff'">
+                  <md-select v-model="prize.color">
                     <md-option value="#0172ac" style="background-color: #0172ac">#0172ac</md-option>
                     <md-option value="#fb426e" style="background-color: #fb426e">#fb426e</md-option>
                     <md-option value="#f07e26" style="background-color: #f07e26">#f07e26</md-option>
@@ -40,13 +40,14 @@
                   </md-select>
                 </md-field>
               </div>
-              <div class="md-layout-item md-size-10 form-item">
+              <div class="md-layout-item md-size-15 form-item">
                 <md-button
                   class="md-dense md-raised md-primary create-button"
                   :disabled="prize.name === null || prize.enabled === null || prize.color === null"
                   @click="createPrize"
+                  title="Cadastrar"
                 >
-                  Cadastrar
+                  <md-icon>add</md-icon>
                 </md-button>
               </div>
             </div>
@@ -54,6 +55,7 @@
         </md-card>
       </div>
     </div>
+
     <md-table v-model="filteredPrizes" md-card md-fixed-header>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
@@ -77,14 +79,14 @@
            </md-button>
         </md-table-cell>
         <md-table-cell md-label="Ações" class="cell-actions">
-          <md-button
+          <!-- <md-button
             id="edit-item"
             class="md-icon-button md-dense md-raised md-primary"
             @click="editPrize(item._id)"
             title="Editar registro"
           >
             <md-icon>create</md-icon>
-          </md-button>
+          </md-button> -->
           <md-button
             id="delete-item"
             class="md-icon-button md-dense md-raised md-accent"
@@ -96,6 +98,19 @@
         </md-table-cell>
       </md-table-row>
     </md-table>
+
+    <div class="md-layout">
+      <div class="md-layout-item">
+        <md-button
+          class="md-dense md-raised md-accent reset-button"
+          @click="resetPrizes()"
+          :disabled="reseting"
+        >
+          <md-icon v-if="!reseting">warning</md-icon>
+          {{ reseting ? 'Aguarde...' : 'Resetar Prêmios' }}
+        </md-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -114,7 +129,37 @@ export default {
       description: null,
       color: null,
       enabled: null
-    }
+    },
+    reseting: false,
+    defaultPrizes: [
+      {color : '#ffffff', enabled: true, name : 'Piada do saci'},
+      {color : '#fb426e', enabled: true, name : 'De timeout em alguém'},
+      {color : '#ffffff', enabled: true, name : 'Jogo Gratuito'},
+      {color : '#0172ac', enabled: true, name : 'Imagem para o cromakey'},
+      {color : '#ffffff', enabled: true, name : 'Ganso'},
+      {color : '#f07e26', enabled: true, name : 'Jogar água na cabeça'},
+      {color : '#ffffff', enabled: true, name : 'Adicionar emote da BTTV'},
+      {color : '#f2d809', enabled: true, name : '500 rosecoins'},
+      {color : '#ffffff', enabled: true, name : 'Frase de encerramento'},
+      {color : '#fb426e', enabled: true, name : 'Pergunte ao Tesdey'},
+      {color : '#ffffff', enabled: true, name : '10 minutos de timeout'},
+      {color : '#0172ac', enabled: true, name : 'Desenho na cara'},
+      {color : '#ffffff', enabled: true, name : 'Anúncio de graça'},
+      {color : '#f07e26', enabled: true, name : 'Roda 2x'},
+      {color : '#ffffff', enabled: true, name : 'Lendária ou ban'},
+      {color : '#f2d809', enabled: true, name : 'Duelo com Tesdey'},
+      {color : '#ffffff', enabled: true, name : '500 rosecoins'},
+      {color : '#fb426e', enabled: true, name : 'BG temático'},
+      {color : '#ffffff', enabled: true, name : 'Escolha 2 músicas'},
+      {color : '#0172ac', enabled: true, name : 'De timeout em alguém'},
+      {color : '#ffffff', enabled: true, name : '10 minutos de timeout'},
+      {color : '#f07e26', enabled: true, name : 'Imagem para o cromakey'},
+      {color : '#ffffff', enabled: true, name : 'Pergunte ao Tesdey'},
+      {color : '#f2d809', enabled: true, name : 'Desenho na cara'},
+      {color : '#ffffff', enabled: true, name : 'Anúncio de graça'},
+      {color : '#fb426e', enabled: true, name : 'Frase de encerramento'},
+      {color : '#ffffff', enabled: true, name : 'Duelo com Tesdey'},
+    ]
   }),
 
   mounted () {
@@ -144,9 +189,9 @@ export default {
       this.getPrizes()
     },
 
-    editPrize (id) {
-      // Todo: implement method
-    },
+    // editPrize (id) {
+    //   // Todo: implement method
+    // },
 
     async createPrize () {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`
@@ -158,6 +203,29 @@ export default {
         enabled: null
       }
       this.getPrizes()
+    },
+
+    async resetPrizes () {
+      this.reseting = true
+
+      const allPrizes = this.prizes
+
+      this.prizes = []
+      this.filteredPrizes = []
+
+      await Promise.all(allPrizes.map(async (prize) => {
+        const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${prize._id}`
+        await axios.delete(url)
+      }))
+
+      await Promise.all(this.defaultPrizes.map(async (prize) => {
+        const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`
+        await axios.post(url, prize)
+      }))
+
+      await this.getPrizes()
+
+      this.reseting = false
     }
   }
 }
@@ -186,12 +254,25 @@ export default {
     }
     .cell-color {
       .md-button {
+        width: 15%;
         cursor: default;
         box-shadow: none;
         border: #e0e0e0 solid 1px;
         height: 22px;
         font-size: 12px;
       }
+    }
+    .cell-name {
+      width: 25%;
+    }
+    .cell-description {
+      width: 30%;
+    }
+    .cell-enabled {
+      width: 15%;
+    }
+    .cell-actions {
+      width: 15%;
     }
   }
 </style>
