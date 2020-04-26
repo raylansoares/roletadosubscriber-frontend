@@ -21,6 +21,7 @@
 <script>
 import dayjs from 'dayjs'
 import store from '@/store/index'
+import axios from 'axios'
 import * as Winwheel from '../../assets/scripts/Winwheel'
 
 export default {
@@ -36,35 +37,7 @@ export default {
             textFontSize: 16,
             outterRadius: 212
         },
-        segments: [
-            {fillStyle : '#323eff', text : 'Piada do saci'},
-            {fillStyle : '#ffffff', text : 'De timeout em alguém'},
-            {fillStyle : '#ffed01', text : 'Jogo Gratuito'},
-            {fillStyle : '#ffffff', text : 'Imagem para o cromakey'},
-            {fillStyle : '#ff371f', text : 'Ganso'},
-            {fillStyle : '#ffffff', text : 'Jogar água na cabeça'},
-            {fillStyle : '#323eff', text : 'Adicionar emote da BTTV'},
-            {fillStyle : '#ffffff', text : '500 rosecoins'},
-            {fillStyle : '#ffed01', text : 'Frase de encerramento'},
-            {fillStyle : '#ffffff', text : 'Pergunte ao Tesdey'},
-            {fillStyle : '#ff371f', text : '10 minutos de timeout'},
-            {fillStyle : '#ffffff', text : 'Desenho na cara'},
-            {fillStyle : '#323eff', text : 'Anúncio de graça'},
-            {fillStyle : '#ffffff', text : 'Roda 2x'},
-            {fillStyle : '#ffed01', text : 'Lendária ou ban'},
-            {fillStyle : '#ffffff', text : 'Duelo com Tesdey'},
-            {fillStyle : '#ff371f', text : '500 rosecoins'},
-            {fillStyle : '#ffffff', text : 'BG temático'},
-            {fillStyle : '#323eff', text : 'Escolha 2 músicas'},
-            {fillStyle : '#ffffff', text : 'De timeout em alguém'},
-            {fillStyle : '#ffed01', text : '10 minutos de timeout'},
-            {fillStyle : '#ffffff', text : 'Imagem para o cromakey'},
-            {fillStyle : '#ff371f', text : 'Pergunte ao Tesdey'},
-            {fillStyle : '#ffffff', text : 'Desenho na cara'},
-            {fillStyle : '#323eff', text : 'Anúncio de graça'},
-            {fillStyle : '#ffffff', text : 'Frase de encerramento'},
-            {fillStyle : '#ff371f', text : 'Duelo com Tesdey'},
-        ]
+        segments: []
   }),
 
    mounted () {
@@ -72,11 +45,25 @@ export default {
   },
 
   methods: {
-    checkSubs () {
+    async checkSubs () {
         if (this.subscribers.length === 0) return
         this.currentSubscriber = this.subscribers[0]
         this.subscribers.shift()
+        await this.getPrizes()
         this.startSpin()
+    },
+
+    async getPrizes () {
+      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`
+      const response = await axios.get(url)
+      this.segments = this.formatSegments(response.data)
+    },
+
+    formatSegments (data) {
+      const enabledItems = data.filter((item) => item.enabled === true)
+      return enabledItems.map((item) => {
+        return { fillStyle : item.color, text : item.name }
+      })
     },
 
     startSpin () {
