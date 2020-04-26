@@ -218,8 +218,8 @@ export default {
         await axios.delete(url)
       }))
 
+      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`
       await Promise.all(this.defaultPrizes.map(async (prize) => {
-        const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`
         await axios.post(url, prize)
       }))
 
