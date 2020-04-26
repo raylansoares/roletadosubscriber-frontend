@@ -36,7 +36,7 @@
       </div>
     </div>
 
-    <md-table v-model="filteredUsers" md-sort="name" md-sort-order="asc" md-card md-fixed-header>
+    <md-table v-model="filteredUsers" md-card md-fixed-header>
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <h1 class="md-title">Subscribers</h1>
@@ -171,6 +171,9 @@ export default {
       .md-card {
         min-height: 170px;
       }
+    }
+    .md-content {
+      height: auto!important;
     }
     .md-table {
       display: block;
