@@ -15,6 +15,14 @@
         <div class="prize" v-if="prize">Prêmio: {{ prize }}</div>
     </div>
 
+    <audio id="wheelAudio" preload="auto"  >
+        <source src="@/assets/sounds/wheel.mp3" type="audio/mpeg">
+    </audio>
+
+    <audio id="finishAudio" preload="auto"  >
+        <source src="@/assets/sounds/finish.mp3" type="audio/mpeg">
+    </audio>
+
   </div>
 </template>
 
@@ -28,16 +36,16 @@ export default {
   name: 'Wheel',
 
   data: () => ({
-        subscribers: [],
-        currentSubscriber: {},
-        prize: null,
-        theWheel: null,
-        wheelSpinning: false,
-        WinWheelOptions: {
-            textFontSize: 16,
-            outterRadius: 212
-        },
-        segments: []
+    subscribers: [],
+    currentSubscriber: {},
+    prize: null,
+    theWheel: null,
+    wheelSpinning: false,
+    WinWheelOptions: {
+        textFontSize: 16,
+        outterRadius: 212
+    },
+    segments: []
   }),
 
    mounted () {
@@ -46,11 +54,11 @@ export default {
 
   methods: {
     async checkSubs () {
-        if (this.subscribers.length === 0) return
-        this.currentSubscriber = this.subscribers[0]
-        this.subscribers.shift()
-        await this.getPrizes()
-        this.startSpin()
+      if (this.subscribers.length === 0) return
+      this.currentSubscriber = this.subscribers[0]
+      this.subscribers.shift()
+      await this.getPrizes()
+      this.startSpin()
     },
 
     async getPrizes () {
@@ -75,8 +83,9 @@ export default {
           animation: {
             type: 'spinToStop',
             duration: 5,
-            spins: 8,
-            callbackFinished: this.onFinishSpin
+            spins: 10,
+            callbackFinished: this.onFinishSpin,
+            callbackSound: this.playSound,
           }
         })
         this.wheelSpinning = true
@@ -84,46 +93,56 @@ export default {
       }
     },
 
+    playSound () {
+      const audio = document.getElementById("wheelAudio");
+      audio.pause();
+      audio.currentTime = 0;
+      audio.play();
+    },
+
     resetWheel () {
-        this.currentSubscriber = null
-        this.prize = null
-        this.theWheel = new Winwheel.Winwheel({
-            ...this.WinWheelOptions,
-            numSegments: this.segments.length,
-            segments: this.segments
-        })
-        if (this.wheelSpinning) {
-            this.theWheel.stopAnimation(false) // Stop the animation, false as param so does not call callback function.
-        }
-        this.theWheel.rotationAngle = 0 // Re-set the wheel angle to 0 degrees.
-        this.theWheel.draw() // Call draw to render changes to the wheel.
-        this.wheelSpinning = false // Reset to false to power buttons and spin can be clicked again.
+      this.currentSubscriber = null
+      this.prize = null
+      this.theWheel = new Winwheel.Winwheel({
+        ...this.WinWheelOptions,
+        numSegments: this.segments.length,
+        segments: this.segments
+      })
+      if (this.wheelSpinning) {
+          this.theWheel.stopAnimation(false) // Stop the animation, false as param so does not call callback function.
+      }
+      this.theWheel.rotationAngle = 0 // Re-set the wheel angle to 0 degrees.
+      this.theWheel.draw() // Call draw to render changes to the wheel.
+      this.wheelSpinning = false // Reset to false to power buttons and spin can be clicked again.
     },
 
     initSpin () {
-        this.resetWheel()
+      this.resetWheel()
     },
 
     onFinishSpin (indicatedSegment) {
-        this.prize = indicatedSegment.text
+      const finishAudio = document.getElementById("finishAudio");
+      finishAudio.play();
 
-        if (!this.currentSubscriber.prizes) this.currentSubscriber.prizes = []
-        this.currentSubscriber.prizes.push(this.prize)
+      this.prize = indicatedSegment.text
 
-        if (indicatedSegment.text === 'Roda 2x') {
-            this.subscribers.unshift(this.currentSubscriber)
-            this.subscribers.unshift(this.currentSubscriber)
-        }
+      if (!this.currentSubscriber.prizes) this.currentSubscriber.prizes = []
+      this.currentSubscriber.prizes.push(this.prize)
 
-        this.$socket.emit('sayPrize', this.currentSubscriber)
+      if (indicatedSegment.text === 'Roda 2x') {
+          this.subscribers.unshift(this.currentSubscriber)
+          this.subscribers.unshift(this.currentSubscriber)
+      }
 
-        setTimeout(() => {
-            this.resetWheel()
-        }, 5000)
+      this.$socket.emit('sayPrize', this.currentSubscriber)
 
-        setTimeout(() => {
-            this.checkSubs()
-        }, 5100)
+      setTimeout(() => {
+          this.resetWheel()
+      }, 3000)
+
+      setTimeout(() => {
+          this.checkSubs()
+      }, 3100)
     }
   },
   sockets: {
@@ -145,32 +164,32 @@ export default {
 
 <style lang="scss">
 #wheel {
-    .wheel {
-        .pointer {
-            width: 100%;
-            text-align: center;
-            .md-icon{
-                color: #0172ac;
-                height: 35px!important;
-            }
-        }
-    }
-    .results {
-        font-size: 18px;
-        margin-top: 20px;
-        font-weight: 500;
-        .subscriber {
-            text-align: center;
-            color: #0172ac;
-            width: 100%;
-            padding: 5px;
-        }
-        .prize {
-            text-align: center;
-            color: #fb426e;
-            width: 100%;
-            padding: 5px;
-        }
-    }
+  .wheel {
+      .pointer {
+          width: 100%;
+          text-align: center;
+          .md-icon{
+              color: #0172ac;
+              height: 35px!important;
+          }
+      }
+  }
+  .results {
+      font-size: 18px;
+      margin-top: 20px;
+      font-weight: 500;
+      .subscriber {
+          text-align: center;
+          color: #0172ac;
+          width: 100%;
+          padding: 5px;
+      }
+      .prize {
+          text-align: center;
+          color: #fb426e;
+          width: 100%;
+          padding: 5px;
+      }
+  }
 }
 </style>
