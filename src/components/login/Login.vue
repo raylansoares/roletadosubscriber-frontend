@@ -79,9 +79,9 @@ export default {
   methods: {
     navigate () {
       this.loading = true
-
+      console.log(process.env.VUE_APP_PASS)
       /* bypass */
-      if (this.user.username === 'admin' && this.user.password === 'admin') {
+      if (this.user.username === 'admin' && this.user.password === process.env.VUE_APP_PASS) {
         const data = {
           username: 'admin',
           name: 'Admin',
@@ -92,26 +92,30 @@ export default {
         this.$router.push({ name: this.namedRoute })
         return
       }
+
+      this.loading = false
+      this.snackBar.show = true
+      this.snackBar.message = 'Login e/ou senha incorretos'
       /* bypass */
 
-      this.$http
-        .post('/auth', this.user)
-        .then((response) => {
-          const data = {
-            username: response.data.username,
-            name: response.data.name,
-            token: response.data.token,
-            expires: dayjs().add(12, 'hour')
-          }
+      // this.$http
+      //   .post('/auth', this.user)
+      //   .then((response) => {
+      //     const data = {
+      //       username: response.data.username,
+      //       name: response.data.name,
+      //       token: response.data.token,
+      //       expires: dayjs().add(12, 'hour')
+      //     }
 
-          store.commit('SET_USER', data)
-          this.$router.push({ name: this.namedRoute })
-        })
-        .catch((err) => {
-          this.loading = false
-          this.snackBar.show = true
-          this.snackBar.message = err
-        })
+      //     store.commit('SET_USER', data)
+      //     this.$router.push({ name: this.namedRoute })
+      //   })
+      //   .catch((err) => {
+      //     this.loading = false
+      //     this.snackBar.show = true
+      //     this.snackBar.message = err
+      //   })
     }
   }
 }
