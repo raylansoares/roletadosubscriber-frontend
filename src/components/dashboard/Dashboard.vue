@@ -58,7 +58,6 @@
             id="force-wheel"
             class="md-icon-button md-dense md-raised md-primary"
             @click="retryWheel(item)"
-            :disabled="!!item.prizes.length"
             title="Tentar novamente"
           >
             <md-icon>cached</md-icon>
