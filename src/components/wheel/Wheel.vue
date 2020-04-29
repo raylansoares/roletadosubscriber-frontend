@@ -5,7 +5,7 @@
         <div class="pointer">
             <md-icon class="md-size-5x">arrow_drop_down</md-icon>
         </div>
-        <canvas id="canvas" width="434" height="434">
+        <canvas id="canvas" width="500" height="500">
             <p style="color: white" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
         </canvas>
     </div>
@@ -41,15 +41,11 @@ export default {
     prize: null,
     theWheel: null,
     wheelSpinning: false,
-    WinWheelOptions: {
-        textFontSize: 16,
-        outterRadius: 212
-    },
     segments: []
   }),
 
    mounted () {
-    this.initSpin()
+    this.resetWheel()
   },
 
   methods: {
@@ -59,7 +55,7 @@ export default {
       this.subscribers.shift()
       await this.getPrizes()
       setTimeout(() => {
-        this.startSpin()
+      this.startSpin()
       }, 5000)
     },
 
@@ -79,7 +75,7 @@ export default {
     startSpin () {
       if (this.wheelSpinning === false) {
         this.theWheel = new Winwheel.Winwheel({
-          ...this.WinWheelOptions.Options,
+          textFontSize: 19,
           numSegments: this.segments.length,
           segments: this.segments,
           animation: {
@@ -105,21 +101,13 @@ export default {
     resetWheel () {
       this.currentSubscriber = null
       this.prize = null
-      this.theWheel = new Winwheel.Winwheel({
-        ...this.WinWheelOptions,
-        numSegments: this.segments.length,
-        segments: this.segments
-      })
+      this.theWheel = new Winwheel.Winwheel({})
       if (this.wheelSpinning) {
           this.theWheel.stopAnimation(false) // Stop the animation, false as param so does not call callback function.
       }
       this.theWheel.rotationAngle = 0 // Re-set the wheel angle to 0 degrees.
       this.theWheel.draw() // Call draw to render changes to the wheel.
       this.wheelSpinning = false // Reset to false to power buttons and spin can be clicked again.
-    },
-
-    initSpin () {
-      this.resetWheel()
     },
 
     onFinishSpin (indicatedSegment) {
@@ -175,22 +163,24 @@ export default {
               height: 35px!important;
           }
       }
+      #canvas {
+        margin-top: -3px;
+      }
   }
   .results {
-      font-size: 18px;
-      margin-top: 20px;
+      font-size: 24px;
+      margin-top: 6px;
       font-weight: 500;
       .subscriber {
           text-align: center;
           color: #0172ac;
           width: 100%;
-          padding: 5px;
+          padding-bottom: 1px;
       }
       .prize {
           text-align: center;
           color: #fb426e;
           width: 100%;
-          padding: 5px;
       }
   }
 }
