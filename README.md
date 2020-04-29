@@ -13,6 +13,7 @@ cp .env.example .env
 Open .env file and put you configs
 * VUE_APP_SERVER_HOST - The rose-server host
 * VUE_APP_SERVER_PORT - The rose-server port
+* VUE_APP_PASS= - The panel admin password (temporary)
 
 Start server by typing
 ```sh
