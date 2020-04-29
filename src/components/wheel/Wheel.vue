@@ -54,9 +54,7 @@ export default {
       this.currentSubscriber = this.subscribers[0]
       this.subscribers.shift()
       await this.getPrizes()
-      setTimeout(() => {
       this.startSpin()
-      }, 5000)
     },
 
     async getPrizes () {
