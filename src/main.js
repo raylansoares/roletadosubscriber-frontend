@@ -17,7 +17,8 @@ import {
   MdTable,
   MdRipple,
   MdChips,
-  MdMenu
+  MdMenu,
+  MdSwitch
 } from 'vue-material/dist/components'
 
 import VueSocketIO from 'vue-socket.io'
@@ -40,6 +41,7 @@ Vue.use(MdTable)
 Vue.use(MdRipple)
 Vue.use(MdChips)
 Vue.use(MdMenu)
+Vue.use(MdSwitch)
 
 Vue.use(new VueSocketIO({
   debug: false,
