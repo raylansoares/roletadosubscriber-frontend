@@ -21,15 +21,6 @@
               </div>
               <div class="md-layout-item md-size-15 form-item">
                 <md-field>
-                  <label>Status</label>
-                  <md-select v-model="prize.enabled">
-                    <md-option :value="1">Ativo</md-option>
-                    <md-option :value="0">Inativo</md-option>
-                  </md-select>
-                </md-field>
-              </div>
-              <div class="md-layout-item md-size-15 form-item">
-                <md-field>
                   <label>Cor</label>
                   <md-select v-model="prize.color">
                     <md-option value="#0172ac" style="background-color: #0172ac">#0172ac</md-option>
@@ -39,6 +30,11 @@
                     <md-option value="#ffffff" style="background-color: #ffffff">#ffffff</md-option>
                   </md-select>
                 </md-field>
+              </div>
+              <div class="md-layout-item md-size-15 form-item">
+                <md-switch v-model="prize.enabled" class="md-primary">
+                  {{ prize.enabled ? 'Ativo' : 'Inativo' }}
+                </md-switch>
               </div>
               <div class="md-layout-item md-size-15 form-item">
                 <md-button
@@ -62,36 +58,59 @@
           <h1 class="md-title">Prêmios da Roleta</h1>
         </div>
 
-        <md-field md-clearable class="md-toolbar-section-end">
+        <md-field class="md-toolbar-section-end">
           <md-input placeholder="Buscar prêmio..." v-model="search" @input="filterPrizes" />
         </md-field>
       </md-table-toolbar>
 
       <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Nome" class="cell-name">{{ item.name }}</md-table-cell>
-        <md-table-cell md-label="Descrição" class="cell-description">{{ item.description }}</md-table-cell>
-        <md-table-cell md-label="Status" class="cell-enabled">
-          {{ item.enabled ? 'Ativo' : 'Inativo' }}
+        <md-table-cell md-label="Nome" class="cell-name">
+          <span v-if="selectedItem !== item._id">{{ item.name }}</span>
+          <md-field v-else class="inline-edit">
+            <md-input v-model="item.name" />
+          </md-field>
+        </md-table-cell>
+        <md-table-cell md-label="Descrição" class="cell-description">
+          <span v-if="selectedItem !== item._id">{{ item.description }}</span>
+          <md-field v-else class="inline-edit">
+            <md-input v-model="item.description" />
+          </md-field>
         </md-table-cell>
         <md-table-cell md-label="Cor" class="cell-color">
-           <md-button class="md-dense md-raised" :style="'background-color: ' + item.color">
+           <md-button v-if="selectedItem !== item._id" class="md-dense md-raised" :style="'background-color: ' + item.color">
              {{ item.color }}
            </md-button>
+           <md-field v-else class="inline-edit">
+              <md-select v-model="item.color" class="inline-select">
+                <md-option value="#0172ac" style="background-color: #0172ac">#0172ac</md-option>
+                <md-option value="#fb426e" style="background-color: #fb426e">#fb426e</md-option>
+                <md-option value="#f07e26" style="background-color: #f07e26">#f07e26</md-option>
+                <md-option value="#f2d809" style="background-color: #f2d809">#f2d809</md-option>
+                <md-option value="#ffffff" style="background-color: #ffffff">#ffffff</md-option>
+              </md-select>
+            </md-field>
+        </md-table-cell>
+        <md-table-cell md-label="Status" class="cell-enabled">
+          <span v-if="selectedItem !== item._id">{{ item.enabled ? 'Ativo' : 'Inativo' }}</span>
+          <md-switch v-else v-model="item.enabled" class="md-primary">{{ item.enabled ? 'Ativo' : 'Inativo' }}</md-switch>
         </md-table-cell>
         <md-table-cell md-label="Ações" class="cell-actions">
-          <!-- <md-button
+          <md-button
             id="edit-item"
             class="md-icon-button md-dense md-raised md-primary"
-            @click="editPrize(item._id)"
-            title="Editar registro"
+            :class="selectedItem === item._id ? 'save' : ''"
+            @click="editPrize(item)"
+            :title="selectedItem !== item._id ? 'Editar' : 'Salvar'"
           >
-            <md-icon>create</md-icon>
-          </md-button> -->
+            <md-icon v-if="selectedItem !== item._id">create</md-icon>
+            <md-icon v-else>check</md-icon>
+          </md-button>
           <md-button
             id="delete-item"
             class="md-icon-button md-dense md-raised md-accent"
             @click="deletePrize(item._id)"
             title="Excluir registro"
+            :disabled="selectedItem === item._id"
           >
             <md-icon>close</md-icon>
           </md-button>
@@ -159,7 +178,8 @@ export default {
       {color : '#ffffff', enabled: true, name : 'Anúncio de graça'},
       {color : '#fb426e', enabled: true, name : 'Frase de encerramento'},
       {color : '#ffffff', enabled: true, name : 'Duelo com Tesdey'},
-    ]
+    ],
+    selectedItem: null
   }),
 
   mounted () {
@@ -189,9 +209,15 @@ export default {
       this.getPrizes()
     },
 
-    // editPrize (id) {
-    //   // Todo: implement method
-    // },
+    async editPrize (item) {
+      if (this.selectedItem !== item._id) {
+        this.selectedItem = item._id
+        return
+      }
+      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${item._id}`
+      const response = await axios.patch(url, item)
+      this.selectedItem = null
+    },
 
     async createPrize () {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`
@@ -247,6 +273,9 @@ export default {
     }
     .form-item {
       padding: 0 10px;
+      .md-switch {
+        margin: 28px 7px 7px 7px;
+      }
     }
     .create-button {
       width: 100%;
@@ -273,6 +302,20 @@ export default {
     }
     .cell-actions {
       width: 15%;
+    }
+    .save {
+      background-color: #4caf81;
+    }
+    .md-field.inline-edit {
+      min-height: 34px;
+      margin: 0;
+      padding-top: 2px;
+    }
+    .md-switch {
+      margin: 8px 7px 5px 0;
+    }
+    .inline-select {
+      width: 100px;
     }
   }
 </style>
