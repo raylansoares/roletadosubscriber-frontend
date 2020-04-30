@@ -108,7 +108,7 @@
           <md-button
             id="delete-item"
             class="md-icon-button md-dense md-raised md-accent"
-            @click="deletePrize(item._id)"
+            @dblclick="deletePrize(item._id)"
             title="Excluir registro"
             :disabled="selectedItem === item._id"
           >

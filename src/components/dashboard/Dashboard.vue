@@ -57,7 +57,7 @@
           <md-button
             id="force-wheel"
             class="md-icon-button md-dense md-raised md-primary"
-            @click="retryWheel(item)"
+            @dblclick="retryWheel(item)"
             title="Tentar novamente"
           >
             <md-icon>cached</md-icon>
@@ -65,7 +65,7 @@
           <md-button
             id="delete-item"
             class="md-icon-button md-dense md-raised md-accent"
-            @click="deleteSubscriber(item._id)"
+            @dblclick="deleteSubscriber(item._id)"
             title="Excluir registro"
           >
             <md-icon>close</md-icon>
