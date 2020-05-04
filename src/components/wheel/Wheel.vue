@@ -11,7 +11,7 @@
     </div>
     
     <div class="results">
-        <div class="subscriber" v-if="wheelSpinning">Roleta para: {{ currentSubscriber.username }}</div>
+        <div class="subscriber" v-if="wheelSpinning">Roleta do {{ currentSubscriber.username }}</div>
         <div class="prize" v-if="prize">Prêmio: {{ prize }}</div>
     </div>
 
@@ -171,14 +171,39 @@ export default {
       font-weight: 500;
       .subscriber {
           text-align: center;
-          color: #0172ac;
+          color: #f2d809;
+          font-weight: 700;
+          letter-spacing: 1px;
+          text-shadow:
+            0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
+            0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
+            0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
+            0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
+            0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
+            0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
+            0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
+            0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
+            0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
+            0 0 3px #0172ac;
           width: 100%;
           padding-bottom: 1px;
       }
       .prize {
-          text-align: center;
-          color: #fb426e;
-          width: 100%;
+        text-align: center;
+        color: #f2d809;
+        font-weight: 700;
+        text-shadow:
+          0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
+          0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
+          0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
+          0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
+          0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
+          0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
+          0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
+          0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
+          0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
+          0 0 3px #fb426e;
+        width: 100%;
       }
   }
 }
