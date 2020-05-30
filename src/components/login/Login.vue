@@ -1,154 +1,104 @@
 <template>
-  <div id="login">
-    <md-card-content id="header">
-      <img class="logo" src="@/assets/logo.png" alt="logo">
-    </md-card-content>
-
-    <div id="content">
-      <md-field>
-        <label>Usuário</label>
-        <md-input
-          type="text"
-          id="username"
-          v-model="user.username"
-          :disabled="loading"
-        />
-      </md-field>
-
-      <md-field>
-        <label>Senha</label>
-        <md-input
-          type="password"
-          id="password"
-          v-model="user.password"
-          :disabled="loading"
-          @keyup.enter="navigate"
-        />
-      </md-field>
+  <div>
+    <h1 class="logo">
+      <i class="el-icon-stopwatch"></i>
+    </h1>
+    <h1 class="title">
+      Twitch Wheel
+    </h1>
+    <h2 class="subtitle">
+      A simple service for Twitch interactions
+    </h2>
+    <div class="links">
+      <el-button type="primary" plain :disabled="loading" @click="connect">
+        Connect with Twitch
+      </el-button>
     </div>
-
-    <div id="actions">
-
-      <md-button
-        id="login-btn"
-        class="md-raised md-primary"
-        :disabled="loading"
-        @click="navigate"
-      >
-        <span>Entrar</span>
-      </md-button>
-
-      <md-progress-bar v-show="loading" md-mode="indeterminate"></md-progress-bar>
-
-    </div>
-
-    <md-snackbar
-      md-position="center"
-      :md-duration="snackBar.duration"
-      :md-active.sync="snackBar.show"
-      md-persistent
-    >
-      <span> {{ snackBar.message }} </span>
-    </md-snackbar>
   </div>
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import store from '@/store/index'
+import { authConfig } from "@/utils/auth";
+import dayjs from "dayjs";
 
 export default {
-  name: 'Login',
-  props: {
-    namedRoute: {
-      type: String
-    }
-  },
+  name: "Login",
+
   data: () => ({
-    loading: false,
-    user: {
-      username: '',
-      password: ''
-    },
-    snackBar: {
-      show: false,
-      duration: 4000,
-      message: ''
-    }
+    loading: false
   }),
+
+  mounted() {
+    this.makeAuth();
+  },
+
   methods: {
-    navigate () {
-      this.loading = true
-      console.log(process.env.VUE_APP_PASS)
-      /* bypass */
-      if (this.user.username === 'admin' && this.user.password === process.env.VUE_APP_PASS) {
-        const data = {
-          username: 'admin',
-          name: 'Admin',
-          token: 'admin',
-          expires: dayjs().add(12, 'hour')
-        }
-        store.commit('SET_USER', data)
-        this.$router.push({ name: this.namedRoute })
-        return
-      }
+    async makeAuth() {
+      const hash = document.location.hash;
+      const hashArray = hash.split("&");
+      const tokenKey = hashArray[0];
+      const accessToken = tokenKey.replace("#access_token=", "");
 
-      this.loading = false
-      this.snackBar.show = true
-      this.snackBar.message = 'Login e/ou senha incorretos'
-      /* bypass */
+      if (!accessToken) return;
 
-      // this.$http
-      //   .post('/auth', this.user)
-      //   .then((response) => {
-      //     const data = {
-      //       username: response.data.username,
-      //       name: response.data.name,
-      //       token: response.data.token,
-      //       expires: dayjs().add(12, 'hour')
-      //     }
+      // const authenticatedUser = await this.$axios.$post("/api/v1/users", {
+      //   access_token: accessToken
+      // });
 
-      //     store.commit('SET_USER', data)
-      //     this.$router.push({ name: this.namedRoute })
-      //   })
-      //   .catch((err) => {
-      //     this.loading = false
-      //     this.snackBar.show = true
-      //     this.snackBar.message = err
-      //   })
+      // this.$store.commit("SET_USER", authenticatedUser);
+
+      this.$store.commit("SET_USER", {
+        user: "Admin",
+        email: "admin@admin.com",
+        token: accessToken,
+        expires: dayjs().add(12, "hour")
+      });
+
+      this.$router.push({ name: "Dashboard" });
+    },
+
+    connect() {
+      this.loading = true;
+      window.location = this.getAuthUrl();
+    },
+
+    getAuthUrl() {
+      let url = authConfig.authUrl;
+
+      url += "?client_id=" + authConfig.client_id;
+      url += "&redirect_uri=" + authConfig.redirect_uri;
+      url += "&response_type=" + authConfig.response_type;
+      url += "&scope=" + authConfig.scopes;
+
+      return url;
     }
   }
-}
+};
 </script>
 
 <style lang="scss">
-
-#login {
-    width: 400px;
-
-    #header {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-
-        .logo {
-          width: 100px;
-        }
-    }
-
-    #content {
-      padding: 6px 8px;
-    }
-
-    #actions {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        .md-progress-bar {
-          margin: -6px 8px 0 8px;
-        }
-    }
+.logo i {
+  font-size: 98px;
+  color: #35495e;
 }
 
+.title {
+  display: block;
+  font-weight: 300;
+  font-size: 72px;
+  color: #35495e;
+  letter-spacing: 1px;
+}
+
+.subtitle {
+  font-weight: 300;
+  font-size: 32px;
+  color: #526488;
+  word-spacing: 5px;
+  padding-bottom: 15px;
+}
+
+.links {
+  padding-top: 15px;
+}
 </style>

@@ -1,28 +1,27 @@
 <template>
-  <div class="page-container md-layout-column">
+  <div>
     <TopBar />
-    <md-content class="container-content">
-      <router-view />
-    </md-content>
+    <el-container><router-view /></el-container>
   </div>
 </template>
 
 <script>
-import TopBar from '@/components/layout/TopBar'
+import TopBar from "@/components/layout/TopBar";
 
 export default {
-  name: 'Temporary',
+  name: "DefaultContainer",
+
   components: {
     TopBar
   }
-}
+};
 </script>
 
 <style lang="scss">
-  .container-content {
-    padding: 20px;
+.el-container {
+  justify-content: center;
+  main {
+    max-width: 1280px;
   }
-  .page-container {
-    height: 100vh;
-  }
+}
 </style>

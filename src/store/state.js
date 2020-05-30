@@ -1,9 +1,5 @@
 const state = {
-  user: {
-    name: '',
-    username: '',
-    expires: ''
-  }
-}
+  user: null
+};
 
-export default state
+export default state;

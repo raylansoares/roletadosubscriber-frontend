@@ -1,38 +1,73 @@
 <template>
   <div>
-    <md-toolbar class="md-primary">
-      <span class="md-title">Rose Panel</span>
-      <div class="md-toolbar-section-end">
-        <md-button to="dashboard"> <md-icon>dashboard</md-icon> Dashboard </md-button>
-        <md-button to="wheelConfig"> <md-icon>slow_motion_video</md-icon> Configurar Roleta </md-button>
-        <md-button @click="logout()">Sair</md-button>
-      </div>
-    </md-toolbar>
+    <el-menu
+      :default-active="currentPage"
+      class="el-menu-demo"
+      mode="horizontal"
+      :router="true"
+      background-color="#409EFF"
+      text-color="#f9f9f9"
+      active-text-color="#f9f9f9"
+    >
+      <el-menu-item @click="logout()">
+        <i class="el-icon-switch-button"></i> Logout
+      </el-menu-item>
+      <el-menu-item index="/wheelConfig">
+        <i class="el-icon-stopwatch"></i> Wheel Config
+      </el-menu-item>
+      <el-menu-item index="/dashboard">
+        <i class="el-icon-pie-chart"></i> Dashboard
+      </el-menu-item>
+      <el-menu-item class="menu-item-logo">
+        <i class="el-icon-stopwatch"></i> Rose Panel
+      </el-menu-item>
+    </el-menu>
   </div>
 </template>
 
 <script>
-import store from '../../store'
-import { mapState } from 'vuex'
+import store from "../../store";
+import { mapState } from "vuex";
 
 export default {
   computed: {
-    ...mapState(['user'])
+    ...mapState(["user"])
   },
+
   data: () => ({
-      showNavigation: false
+    showNavigation: false,
+    currentPage: null
   }),
+
+  mounted () {
+    this.currentPage = this.$route.path
+  },
+
   methods: {
-    logout () {
-      store.commit('SET_USER', {
-        expires: ''
-      })
-      this.$router.push('/login')
+    logout() {
+      store.commit("SET_USER", null);
+      this.$router.push("/login");
     }
   }
-}
-
+};
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
+.el-menu--horizontal > .el-menu-item {
+  float: right;
+}
+
+.el-menu-item i {
+  color: #ffffff;
+}
+
+.menu-item-logo {
+  float: left !important;
+  font-size: 20px;
+  font-weight: 500;
+  cursor: default;
+  i {
+    font-size: 28px;
+  }
+}
 </style>
