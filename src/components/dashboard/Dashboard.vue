@@ -2,7 +2,7 @@
   <div id="dashboard">
     <el-row :gutter="20">
       <el-col :span="8">
-        <el-card shadow="hover">
+        <el-card shadow="hover" class="top-card">
           <el-form label-position="top" @submit.native.prevent="manualWheel">
             <el-form-item label="Custom Roll" class="big-label">
               <el-input v-model="username" placeholder="Username"></el-input>
@@ -18,11 +18,16 @@
       </el-col>
 
       <el-col :span="8">
-        <el-card shadow="hover">Widget 2</el-card>
+        <el-card shadow="hover" class="top-card">Widget 2</el-card>
       </el-col>
 
       <el-col :span="8">
-        <el-card shadow="hover">Widget 3</el-card>
+        <el-card shadow="hover" class="top-card">
+          <div class="profile-card">
+            <el-avatar :size="80" :src="user.profile_image_url"></el-avatar>
+            <p>{{ user.display_name }}</p>
+          </div>
+        </el-card>
       </el-col>
     </el-row>
 
@@ -109,10 +114,18 @@
 
 <script>
 import axios from "axios";
+import { mapState } from 'vuex'
 import dayjs from "dayjs";
+import 'dayjs/locale/pt-br';
+
+dayjs.locale("pt-br");
 
 export default {
   name: "Dashboard",
+
+  computed: {
+    ...mapState(['user'])
+  },
 
   data: () => ({
     subscribers: [],
@@ -211,6 +224,22 @@ export default {
     font-size: 18px;
     font-weight: 500;
     color: #606266;
+  }
+
+  .profile-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      font-size: 22px;
+      color: #606266;
+      margin-top: 10px;
+    }
+  }
+
+  .top-card {
+    min-height: 200px;
   }
 }
 </style>
