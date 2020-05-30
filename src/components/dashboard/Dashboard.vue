@@ -145,7 +145,10 @@ export default {
   methods: {
     async getSubscribers() {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/subscribers`;
-      const response = await axios.get(url);
+      const response = await axios.get(url, { headers: { 
+        'x-auth-token': this.user.access_token,
+        'x-user-id': this.user.user_id
+      } });
 
       this.subscribers = response.data;
       this.filterSubscribers();
@@ -173,7 +176,10 @@ export default {
 
     async deleteSubscriber(id) {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/subscribers/${id}`;
-      await axios.delete(url);
+      await axios.delete(url, { headers: { 
+        'x-auth-token': this.user.access_token,
+        'x-user-id': this.user.user_id
+      } });
       this.getSubscribers();
     }
   },

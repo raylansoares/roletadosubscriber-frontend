@@ -151,9 +151,14 @@
 
 <script>
 import axios from "axios";
+import { mapState } from 'vuex'
 
 export default {
   name: "WheelConfig",
+
+  computed: {
+    ...mapState(['user'])
+  },
 
   data: () => ({
     prizes: [],
@@ -205,7 +210,10 @@ export default {
   methods: {
     async getPrizes() {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
-      const response = await axios.get(url);
+      const response = await axios.get(url, { headers: { 
+        'x-auth-token': this.user.access_token,
+        'x-user-id': this.user.user_id
+      } });
 
       this.prizes = response.data;
       this.filterPrizes();
@@ -223,7 +231,10 @@ export default {
 
     async deletePrize(id) {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${id}`;
-      await axios.delete(url);
+      await axios.delete(url, { headers: { 
+        'x-auth-token': this.user.access_token,
+        'x-user-id': this.user.user_id
+      } });
       this.getPrizes();
     },
 
@@ -233,14 +244,20 @@ export default {
         return;
       }
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${item._id}`;
-      await axios.patch(url, item);
+      await axios.patch(url, item, { headers: { 
+        'x-auth-token': this.user.access_token,
+        'x-user-id': this.user.user_id
+      } });
       this.selectedItem = null;
     },
 
     async createPrize() {
       if (!this.prize.name) return
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
-      await axios.post(url, this.prize);
+      await axios.post(url, this.prize, { headers: { 
+        'x-auth-token': this.user.access_token,
+        'x-user-id': this.user.user_id
+      } });
       this.prize = {
         name: null,
         description: null,
@@ -261,13 +278,19 @@ export default {
       await Promise.all(
         allPrizes.map(async prize => {
           const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${prize._id}`;
-          await axios.delete(url);
+          await axios.delete(url, { headers: { 
+            'x-auth-token': this.user.access_token,
+            'x-user-id': this.user.user_id
+          } });
         })
       );
 
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
       for (let prize of this.defaultPrizes) {
-        await axios.post(url, prize);
+        await axios.post(url, prize, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-user-id': this.user.user_id
+        } });
       }
 
       await this.getPrizes();
