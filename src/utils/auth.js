@@ -20,8 +20,8 @@ const isAuthenticated = () => {
 const authConfig = {
   authUrl: "https://id.twitch.tv/oauth2/authorize",
   client_id: process.env.VUE_APP_CLIENT_ID,
-  redirect_uri: "http://localhost:8080/login/callback",
-  response_type: "token",
+  redirect_uri: `${process.env.VUE_APP_URL}/login/callback`,
+  response_type: "code",
   scopes: "user:read:email"
 };
 
