@@ -19,7 +19,11 @@
 
 <script>
 import { authConfig } from "@/utils/auth";
+import axios from "axios";
 import dayjs from "dayjs";
+import 'dayjs/locale/pt-br';
+
+dayjs.locale("pt-br");
 
 export default {
   name: "Login",
@@ -34,27 +38,19 @@ export default {
 
   methods: {
     async makeAuth() {
-      const hash = document.location.hash;
-      const hashArray = hash.split("&");
-      const tokenKey = hashArray[0];
-      const accessToken = tokenKey.replace("#access_token=", "");
+      const code = this.$route.query.code
 
-      if (!accessToken) return;
+      if (!code) return
 
-      // const authenticatedUser = await this.$axios.$post("/api/v1/users", {
-      //   access_token: accessToken
-      // });
+      try {
+        const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/auth`
+        const authenticatedUser = await axios.post(url, { code: code, redirect: authConfig.redirect_uri });
 
-      // this.$store.commit("SET_USER", authenticatedUser);
-
-      this.$store.commit("SET_USER", {
-        user: "Admin",
-        email: "admin@admin.com",
-        token: accessToken,
-        expires: dayjs().add(12, "hour")
-      });
-
-      this.$router.push({ name: "Dashboard" });
+        this.$store.commit("SET_USER", authenticatedUser.data);
+        this.$router.push({ name: "Dashboard" });
+      } catch (e) {
+        console.log(e)
+      }
     },
 
     connect() {
