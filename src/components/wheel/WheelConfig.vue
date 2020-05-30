@@ -132,6 +132,7 @@
                     circle
                     plain
                     type="danger"
+                    :disabled="!!selectedItem"
                   >
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
