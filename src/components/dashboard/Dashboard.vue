@@ -165,12 +165,12 @@ export default {
     },
 
     retryWheel(subscriber) {
-      this.$socket.emit("retryWheel", subscriber);
+      this.$socket.emit("retryWheel", { subscriber: subscriber, user_id: this.user.user_id });
     },
 
     manualWheel() {
       if (!this.username) return;
-      this.$socket.emit("requestPrize", this.username);
+      this.$socket.emit("requestPrize", { username: this.username, room: this.user.user_id });
       this.username = null;
     },
 
@@ -185,11 +185,13 @@ export default {
   },
 
   sockets: {
-    selectPrize() {
+    selectPrize(data) {
+      if (data.room !== this.user.user_id) return
       this.getSubscribers();
     },
 
-    confirmPrize() {
+    confirmPrize(data) {
+      if (data.room !== this.user.user_id) return
       this.getSubscribers();
     }
   }

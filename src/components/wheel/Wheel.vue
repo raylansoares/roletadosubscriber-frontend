@@ -61,7 +61,7 @@ export default {
 
     async getPrizes() {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
-      const response = await axios.get(url);
+      const response = await axios.get(url, { headers: { 'x-user-id': this.$route.query.code } });
       this.segments = this.formatSegments(response.data);
     },
 
@@ -124,6 +124,8 @@ export default {
         this.subscribers.unshift(this.currentSubscriber);
       }
 
+      this.currentSubscriber.room = this.$route.query.code
+
       this.$socket.emit("sayPrize", this.currentSubscriber);
 
       setTimeout(() => {
@@ -136,8 +138,9 @@ export default {
     }
   },
   sockets: {
-    selectPrize(subscriber) {
-      this.subscribers.push(subscriber);
+    selectPrize(data) {
+      if (data.room !== this.$route.query.code) return
+      this.subscribers.push(data.subscriber);
       if (!this.wheelSpinning) this.checkSubs();
     }
   }
