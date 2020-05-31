@@ -47,10 +47,16 @@ export default {
   }),
 
   mounted() {
+    this.checkCode();
     this.resetWheel();
   },
 
   methods: {
+    checkCode () {
+      // Todo: get valid code from server
+      if (!this.$route.query.code) this.$router.push({ path: "/" });
+    },
+
     async checkSubs() {
       if (this.subscribers.length === 0) return;
       this.currentSubscriber = this.subscribers[0];
@@ -61,7 +67,7 @@ export default {
 
     async getPrizes() {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
-      const response = await axios.get(url, { headers: { 'x-user-id': this.$route.query.code } });
+      const response = await axios.get(url, { headers: { 'x-code': this.$route.query.code } });
       this.segments = this.formatSegments(response.data);
     },
 
@@ -124,7 +130,7 @@ export default {
         this.subscribers.unshift(this.currentSubscriber);
       }
 
-      this.currentSubscriber.room = this.$route.query.code
+      this.currentSubscriber.code = this.$route.query.code
 
       this.$socket.emit("sayPrize", this.currentSubscriber);
 
@@ -139,7 +145,7 @@ export default {
   },
   sockets: {
     selectPrize(data) {
-      if (data.room !== this.$route.query.code) return
+      if (data.code !== this.$route.query.code) return
       this.subscribers.push(data.subscriber);
       if (!this.wheelSpinning) this.checkSubs();
     }

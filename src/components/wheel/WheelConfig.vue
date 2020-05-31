@@ -212,7 +212,7 @@ export default {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
       const response = await axios.get(url, { headers: { 
         'x-auth-token': this.user.access_token,
-        'x-user-id': this.user.user_id
+        'x-code': this.user.code
       } });
 
       this.prizes = response.data;
@@ -233,7 +233,7 @@ export default {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${id}`;
       await axios.delete(url, { headers: { 
         'x-auth-token': this.user.access_token,
-        'x-user-id': this.user.user_id
+        'x-code': this.user.code
       } });
       this.getPrizes();
     },
@@ -246,7 +246,7 @@ export default {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${item._id}`;
       await axios.patch(url, item, { headers: { 
         'x-auth-token': this.user.access_token,
-        'x-user-id': this.user.user_id
+        'x-code': this.user.code
       } });
       this.selectedItem = null;
     },
@@ -256,7 +256,7 @@ export default {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
       await axios.post(url, this.prize, { headers: { 
         'x-auth-token': this.user.access_token,
-        'x-user-id': this.user.user_id
+        'x-code': this.user.code
       } });
       this.prize = {
         name: null,
@@ -280,7 +280,7 @@ export default {
           const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${prize._id}`;
           await axios.delete(url, { headers: { 
             'x-auth-token': this.user.access_token,
-            'x-user-id': this.user.user_id
+            'x-code': this.user.code
           } });
         })
       );
@@ -289,7 +289,7 @@ export default {
       for (let prize of this.defaultPrizes) {
         await axios.post(url, prize, { headers: { 
           'x-auth-token': this.user.access_token,
-          'x-user-id': this.user.user_id
+          'x-code': this.user.code
         } });
       }
 

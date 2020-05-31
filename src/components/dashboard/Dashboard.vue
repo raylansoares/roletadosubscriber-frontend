@@ -147,7 +147,7 @@ export default {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/subscribers`;
       const response = await axios.get(url, { headers: { 
         'x-auth-token': this.user.access_token,
-        'x-user-id': this.user.user_id
+        'x-code': this.user.code
       } });
 
       this.subscribers = response.data;
@@ -165,12 +165,12 @@ export default {
     },
 
     retryWheel(subscriber) {
-      this.$socket.emit("retryWheel", { subscriber: subscriber, user_id: this.user.user_id });
+      this.$socket.emit("retryWheel", { subscriber: subscriber, code: this.user.code });
     },
 
     manualWheel() {
       if (!this.username) return;
-      this.$socket.emit("requestPrize", { username: this.username, room: this.user.user_id });
+      this.$socket.emit("requestPrize", { username: this.username, code: this.user.code });
       this.username = null;
     },
 
@@ -178,7 +178,7 @@ export default {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/subscribers/${id}`;
       await axios.delete(url, { headers: { 
         'x-auth-token': this.user.access_token,
-        'x-user-id': this.user.user_id
+        'x-code': this.user.code
       } });
       this.getSubscribers();
     }
@@ -186,12 +186,12 @@ export default {
 
   sockets: {
     selectPrize(data) {
-      if (data.room !== this.user.user_id) return
+      if (data.code !== this.user.code) return
       this.getSubscribers();
     },
 
     confirmPrize(data) {
-      if (data.room !== this.user.user_id) return
+      if (data.code !== this.user.code) return
       this.getSubscribers();
     }
   }
