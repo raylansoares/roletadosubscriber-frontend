@@ -1,5 +1,5 @@
 <template>
-  <el-main>
+  <el-main class="wheel-main">
     <Wheel />
   </el-main>
 </template>
@@ -16,4 +16,8 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+  .wheel-main {
+    padding: 0!important;
+  }
+</style>

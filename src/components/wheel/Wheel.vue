@@ -157,6 +157,7 @@ export default {
 #wheel {
   .wheel {
     .pointer {
+      margin-top: -10px;
       width: 100%;
       text-align: center;
       i {
@@ -173,7 +174,7 @@ export default {
   }
   .results {
     font-size: 24px;
-    margin-top: 6px;
+    margin-top: -2px;
     font-weight: 500;
     .subscriber {
       text-align: center;

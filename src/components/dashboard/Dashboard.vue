@@ -18,7 +18,19 @@
       </el-col>
 
       <el-col :span="8">
-        <el-card shadow="hover" class="top-card">Widget 2</el-card>
+        <el-card shadow="hover" class="top-card">
+          <el-form label-position="top" @submit.native.prevent="copyWheelUrl">
+            <el-form-item label="Wheel URL for OBS" class="big-label">
+              <el-input v-model="wheelUrl" readonly="readonly"></el-input>
+            </el-form-item>
+
+            <el-form-item class="roll-button">
+              <el-button type="primary" plain @click="copyWheelUrl">
+                Copy URL
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
       </el-col>
 
       <el-col :span="8">
@@ -131,11 +143,13 @@ export default {
     subscribers: [],
     filteredSubscribers: [],
     search: "",
-    username: null
+    username: null,
+    wheelUrl: null
   }),
 
   mounted() {
     this.getSubscribers();
+    this.setWheelUrl();
   },
 
   filters: {
@@ -181,6 +195,14 @@ export default {
         'x-code': this.user.code
       } });
       this.getSubscribers();
+    },
+
+    setWheelUrl() {
+      this.wheelUrl = `${process.env.VUE_APP_URL}/wheel?code=${this.user.code}`;
+    },
+
+    copyWheelUrl() {
+      navigator.clipboard.writeText(this.wheelUrl)
     }
   },
 
