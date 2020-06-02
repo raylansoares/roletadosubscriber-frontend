@@ -1,5 +1,18 @@
 <template>
   <div id="dashboard">
+
+    <el-row>
+      <el-col :span="24">
+        <el-alert
+          :closable="false"
+          title="Closed Beta Information"
+          type="warning"
+          description="While the app is in closed beta the bot can take up to 48 hours to connect to your channel. Questions or suggestions? send me a message on dircord! RaylanPrime#3896"
+          show-icon>
+        </el-alert>
+      </el-col>
+    </el-row>
+
     <el-row :gutter="20">
       <el-col :span="8">
         <el-card shadow="hover" class="top-card">

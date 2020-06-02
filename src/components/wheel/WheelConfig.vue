@@ -1,5 +1,18 @@
 <template>
   <div id="wheel-config">
+
+    <el-row>
+      <el-col :span="24">
+        <el-alert
+          :closable="false"
+          title="Reset Prizes Information"
+          type="warning"
+          description="Currently, the redefinition of prizes replaces your current prizes with the standard prizes used on the Tesdey channel (twitch.tv/tesdey), the channel that gave rise to the project."
+          show-icon>
+        </el-alert>
+      </el-col>
+    </el-row>
+
     <el-row :gutter="20">
       <el-col :span="16">
         <el-card shadow="hover" class="top-card">
