@@ -34,7 +34,7 @@
         <el-card shadow="hover" class="top-card">
           <el-form label-position="top" @submit.native.prevent="copyWheelUrl">
             <el-form-item label="Wheel URL for OBS" class="big-label">
-              <el-input v-model="wheelUrl" readonly="readonly"></el-input>
+              <el-input v-model="wheelUrl" readonly="readonly" id="wheelUrl"></el-input>
             </el-form-item>
 
             <el-form-item class="roll-button">
@@ -215,7 +215,9 @@ export default {
     },
 
     copyWheelUrl() {
-      navigator.clipboard.writeText(this.wheelUrl)
+      const wheelUrl = document.getElementById("wheelUrl");
+      wheelUrl.select();
+      document.execCommand("copy")
     }
   },
 
