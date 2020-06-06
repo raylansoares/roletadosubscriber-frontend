@@ -10,10 +10,10 @@
       active-text-color="#f9f9f9"
     >
       <el-menu-item @click="logout()">
-        <i class="el-icon-switch-button"></i> Logout
+        <i class="el-icon-switch-button"></i> Sair
       </el-menu-item>
       <el-menu-item index="/wheelConfig">
-        <i class="el-icon-stopwatch"></i> Wheel Config
+        <i class="el-icon-stopwatch"></i> Configurar Roleta
       </el-menu-item>
       <el-menu-item index="/dashboard">
         <i class="el-icon-pie-chart"></i> Dashboard

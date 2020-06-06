@@ -17,7 +17,7 @@
       <div class="subscriber" v-if="wheelSpinning">
         Roleta do {{ currentSubscriber.username }}
       </div>
-      <div class="prize" v-if="prize">Prêmio: {{ prize }}</div>
+      <div class="prize" v-if="prize">Prêmio: {{ prize.name }}</div>
     </div>
 
     <audio id="wheelAudio" preload="auto">
@@ -43,7 +43,8 @@ export default {
     prize: null,
     theWheel: null,
     wheelSpinning: false,
-    segments: []
+    segments: [],
+    prizes: []
   }),
 
   mounted() {
@@ -68,6 +69,7 @@ export default {
     async getPrizes() {
       const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
       const response = await axios.get(url, { headers: { 'x-code': this.$route.query.code } });
+      this.prizes = response.data
       this.segments = this.formatSegments(response.data);
     },
 
@@ -120,12 +122,16 @@ export default {
       const finishAudio = document.getElementById("finishAudio");
       finishAudio.play();
 
-      this.prize = indicatedSegment.text;
+      this.prize = this.prizes.find(item => item.name === indicatedSegment.text);
 
       if (!this.currentSubscriber.prizes) this.currentSubscriber.prizes = [];
       this.currentSubscriber.prizes.push(this.prize);
 
-      if (indicatedSegment.text === "Roda 2x") {
+      if (this.prize.command === "@1") {
+        this.subscribers.unshift(this.currentSubscriber);
+      }
+
+      if (this.prize.command === "@2") {
         this.subscribers.unshift(this.currentSubscriber);
         this.subscribers.unshift(this.currentSubscriber);
       }

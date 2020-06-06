@@ -4,14 +4,14 @@
       <i class="el-icon-stopwatch"></i>
     </h1>
     <h1 class="title">
-      Twitch Wheel
+      Roleta do Subscriber
     </h1>
     <h2 class="subtitle">
-      A simple service for Twitch interactions
+      Roleta automatica e personalizável para os subs do seu canal!
     </h2>
     <div class="links">
       <el-button type="primary" plain :disabled="loading" @click="connect">
-        Connect with Twitch
+        Conectar conta da Twitch
       </el-button>
     </div>
   </div>

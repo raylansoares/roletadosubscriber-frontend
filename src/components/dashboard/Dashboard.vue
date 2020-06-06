@@ -4,13 +4,13 @@
       <el-col :span="8">
         <el-card shadow="hover" class="top-card">
           <el-form label-position="top" @submit.native.prevent="manualWheel">
-            <el-form-item label="Custom Roll" class="big-label">
+            <el-form-item label="Roletar Manualmente" class="big-label">
               <el-input v-model="username" placeholder="Username"></el-input>
             </el-form-item>
 
             <el-form-item class="roll-button">
               <el-button type="primary" plain @click="manualWheel">
-                Roll
+                Roletar
               </el-button>
             </el-form-item>
           </el-form>
@@ -20,13 +20,13 @@
       <el-col :span="8">
         <el-card shadow="hover" class="top-card">
           <el-form label-position="top" @submit.native.prevent="copyWheelUrl">
-            <el-form-item label="Wheel URL for OBS" class="big-label">
+            <el-form-item label="URL da Roleta para o OBS" class="big-label">
               <el-input v-model="wheelUrl" readonly="readonly" id="wheelUrl"></el-input>
             </el-form-item>
 
             <el-form-item class="roll-button">
               <el-button type="primary" plain @click="copyWheelUrl">
-                Copy URL
+                Copiar URL
               </el-button>
             </el-form-item>
           </el-form>
@@ -53,7 +53,7 @@
               <el-input
                 size="small"
                 v-model="search"
-                placeholder="Search subscriber"
+                placeholder="Buscar subscriber"
                 @input="filterSubscribers"
               />
             </div>
@@ -65,22 +65,22 @@
             height="520"
             header-cell-class-name="sub-table-header"
           >
-            <el-table-column label="Username" prop="username" min-width="200px">
+            <el-table-column label="Subscriber" prop="username" min-width="200px">
             </el-table-column>
 
-            <el-table-column label="Prizes" min-width="400px">
+            <el-table-column label="Prêmio" min-width="400px">
               <template slot-scope="scope">
                 <el-tag
                   v-for="(prize, index) in scope.row.prizes"
                   :key="index"
                   class="prize-tag"
                 >
-                  {{ prize }}
+                  {{ prize.name }}
                 </el-tag>
               </template>
             </el-table-column>
 
-            <el-table-column label="Sub Date" min-width="200px">
+            <el-table-column label="Data do Sub" min-width="200px">
               <template slot-scope="scope">
                 {{ scope.row.created_at | formatDate }}
               </template>
@@ -98,7 +98,7 @@
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
-                      <span @click="retryWheel(scope.row)">Confirm Roll</span></el-dropdown-item>
+                      <span @click="retryWheel(scope.row)">Confirmar</span></el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
 
@@ -112,7 +112,7 @@
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
-                      <span @click="deleteSubscriber(scope.row._id)">Confirm Delete</span></el-dropdown-item>
+                      <span @click="deleteSubscriber(scope.row._id)">Confirmar</span></el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </template>
