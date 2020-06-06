@@ -19,7 +19,7 @@
         <i class="el-icon-pie-chart"></i> Dashboard
       </el-menu-item>
       <el-menu-item class="menu-item-logo">
-        <i class="el-icon-stopwatch"></i> Twitch Wheel
+        <i class="el-icon-stopwatch"></i> Roleta do Subscriber
       </el-menu-item>
     </el-menu>
   </div>
