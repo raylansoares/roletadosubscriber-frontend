@@ -21,14 +21,16 @@
         <el-card shadow="hover" class="top-card">
           <el-form label-position="top" @submit.native.prevent="copyWheelUrl">
             <el-form-item label="URL da Roleta para o OBS" class="big-label">
-              <el-input v-model="wheelUrl" readonly="readonly" id="wheelUrl"></el-input>
+              <el-input v-model="wheelUrl" id="wheelUrl" show-password></el-input>
             </el-form-item>
 
-            <el-form-item class="roll-button">
-              <el-button type="primary" plain @click="copyWheelUrl">
-                Copiar URL
-              </el-button>
-            </el-form-item>
+            <el-alert
+              :closable="false"
+              type="info"
+              show-icon
+            >
+              <p><strong>Não compartilhe</strong> este endereço! <strong>Utilize apenas no OBS</strong> (não deixe aberto no navegador).</p>
+            </el-alert>
           </el-form>
         </el-card>
       </el-col>
