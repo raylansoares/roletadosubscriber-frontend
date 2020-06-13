@@ -21,7 +21,8 @@
         <el-card shadow="hover" class="top-card">
           <el-form label-position="top" @submit.native.prevent="copyWheelUrl">
             <el-form-item label="URL da Roleta para o OBS" class="big-label">
-              <el-input v-model="wheelUrl" id="wheelUrl" show-password></el-input>
+              <el-input v-model="wheelUrl" id="wheelUrl" show-password>
+              </el-input>
             </el-form-item>
 
             <el-alert
@@ -29,7 +30,12 @@
               type="info"
               show-icon
             >
-              <p><strong>Não compartilhe</strong> este endereço! <strong>Utilize apenas no OBS</strong> (não deixe aberto no navegador).</p>
+              <p>
+                <strong>Não compartilhe</strong>
+                este endereço!
+                <strong>Utilize apenas no OBS</strong>
+                (não deixe aberto no navegador).
+              </p>
             </el-alert>
           </el-form>
         </el-card>
@@ -67,8 +73,11 @@
             height="520"
             header-cell-class-name="sub-table-header"
           >
-            <el-table-column label="Subscriber" prop="username" min-width="200px">
-            </el-table-column>
+            <el-table-column
+              label="Subscriber"
+              prop="username"
+              min-width="200px"
+            ></el-table-column>
 
             <el-table-column label="Prêmio" min-width="400px">
               <template slot-scope="scope">
@@ -98,9 +107,11 @@
                     type="primary"
                   >
                   </el-button>
+
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
-                      <span @click="retryWheel(scope.row)">Confirmar</span></el-dropdown-item>
+                      <span @click="retryWheel(scope.row)">Confirmar</span>
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
 
@@ -112,9 +123,13 @@
                     type="danger"
                   >
                   </el-button>
+
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
-                      <span @click="deleteSubscriber(scope.row._id)">Confirmar</span></el-dropdown-item>
+                      <span @click="deleteSubscriber(scope.row._id)">
+                        Confirmar
+                      </span>
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </template>
@@ -127,7 +142,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
 import dayjs from "dayjs";
 import 'dayjs/locale/pt-br';
@@ -146,7 +161,9 @@ export default {
     filteredSubscribers: [],
     search: "",
     username: null,
-    wheelUrl: null
+    wheelUrl: null,
+    host: process.env.VUE_APP_SERVER_HOST,
+    port: process.env.VUE_APP_SERVER_PORT
   }),
 
   mounted() {
@@ -160,7 +177,7 @@ export default {
 
   methods: {
     async getSubscribers() {
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/subscribers`;
+      const url = '/api/subscribers';
       const response = await axios.get(url, { headers: { 
         'x-auth-token': this.user.access_token,
         'x-code': this.user.code
@@ -181,17 +198,21 @@ export default {
     },
 
     retryWheel(subscriber) {
-      this.$socket.emit("retryWheel", { subscriber: subscriber, code: this.user.code });
+      this.$socket.emit("retryWheel", { 
+        subscriber: subscriber, code: this.user.code
+      });
     },
 
     manualWheel() {
       if (!this.username) return;
-      this.$socket.emit("requestPrize", { username: this.username, code: this.user.code });
+      this.$socket.emit("requestPrize", { 
+        username: this.username, code: this.user.code 
+      });
       this.username = null;
     },
 
     async deleteSubscriber(id) {
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/subscribers/${id}`;
+      const url = `/api/subscribers/${id}`;
       await axios.delete(url, { headers: { 
         'x-auth-token': this.user.access_token,
         'x-code': this.user.code

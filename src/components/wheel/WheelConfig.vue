@@ -7,10 +7,20 @@
           :closable="false"
           title="Variáveis disponíveis"
           type="info"
-          show-icon>
-          <p><strong>{user}</strong> - Exibe o nome do subscriber na mensagem ou comando</p>
-          <p><strong>{prize}</strong> - Exibe o nome do prêmio na mensagem</p>
-          <p><strong>@2</strong> - Comando para roletar mais 2x (mínimo 1 e máximo 2)</p>
+          show-icon
+        >
+          <p>
+            <strong>{user}</strong>
+            - Exibe o nome do subscriber na mensagem ou comando
+          </p>
+          <p>
+            <strong>{prize}</strong>
+            - Exibe o nome do prêmio na mensagem
+          </p>
+          <p>
+            <strong>@2</strong>
+            - Comando para roletar mais 2x (mínimo 1 e máximo 2)
+          </p>
         </el-alert>
       </el-col>
 
@@ -21,7 +31,8 @@
                 placement="left"
                 width="320"
                 trigger="hover"
-                content="Reseta os prêmios para o padrão. (o padrão atual é baseado no canal do Tesdey)"
+                content="Reseta os prêmios para o padrão.
+                (O padrão atual é baseado no canal do Tesdey)"
               >
                 <el-button
                   slot="reference"
@@ -47,34 +58,63 @@
     <el-row :gutter="20">
       <el-col :span="24">
         <el-card shadow="hover" class="top-card">
-          <el-form @submit.native.prevent="createPrize" :inline="true" :model="prize" label-position="top" class="prize-form">
+          <el-form
+            @submit.native.prevent="createPrize"
+            :inline="true"
+            :model="prize"
+            label-position="top"
+            class="prize-form"
+          >
             <el-form-item label="Nome" prop="name" class="inline-label name">
               <el-popover
                 placement="bottom"
                 width="220"
                 trigger="hover"
-                content="Nome do prêmio na roleta">
-                <el-input slot="reference" v-model="prize.name" placeholder="Nome" size="medium" maxlength="25" clearable></el-input>
+                content="Nome do prêmio na roleta"
+              >
+                <el-input
+                  slot="reference"
+                  v-model="prize.name"
+                  placeholder="Nome"
+                  size="medium"
+                  maxlength="25"
+                  clearable
+                ></el-input>
               </el-popover>
             </el-form-item>
 
-            <el-form-item label="Mensagem" prop="message" class="inline-label message">
+            <el-form-item label="Mensagem" class="inline-label message">
               <el-popover
                 placement="bottom"
                 width="300"
                 trigger="hover"
-                content="Mensagem a ser exibida no chat quando o usuário ganhar este prêmio">
-                <el-input slot="reference" v-model="prize.message" placeholder="Mensagem" size="medium" clearable></el-input>
+                content="Mensagem a ser exibida no chat quando
+                  o usuário ganhar este prêmio"
+              >
+                <el-input
+                  slot="reference"
+                  v-model="prize.message"
+                  placeholder="Mensagem"
+                  size="medium"
+                  clearable
+                ></el-input>
               </el-popover>
             </el-form-item>
 
-            <el-form-item label="Comando" prop="message" class="inline-label command">
+            <el-form-item label="Comando" class="inline-label command">
               <el-popover
                 placement="bottom"
                 width="260"
                 trigger="hover"
-                content="Comando a ser executado quando o usuário ganhar este prêmio">
-                <el-input slot="reference" v-model="prize.command" placeholder="Comando" size="medium" clearable></el-input>
+                content="Comando a ser executado quando o usuário ganhar este prêmio"
+              >
+                <el-input
+                  slot="reference"
+                  v-model="prize.command"
+                  placeholder="Comando"
+                  size="medium"
+                  clearable
+                ></el-input>
               </el-popover>
             </el-form-item>
 
@@ -84,18 +124,32 @@
                 width="220"
                 trigger="hover"
                 content="O comando será executado depois do delay (segundos)">
-                <el-input-number slot="reference" v-model="prize.delay" placeholder="Delay" size="medium"
-                type="number" :min="0" :max="60" :controls="false" class="delay"></el-input-number>
+                <el-input-number
+                  slot="reference"
+                  v-model="prize.delay"
+                  placeholder="Delay"
+                  size="medium"
+                  type="number"
+                  :min="0"
+                  :max="60"
+                  :controls="false"
+                  class="delay"
+                ></el-input-number>
               </el-popover>
             </el-form-item>
 
             <el-form-item label="Cor" prop="color" class="inline-label color">
-              <el-color-picker v-model="prize.color" size="medium"></el-color-picker>
+              <el-color-picker v-model="prize.color" size="medium">
+              </el-color-picker>
             </el-form-item>
 
-            <el-form-item label="Status" prop="enabled" class="inline-label status">
-              <el-switch v-model="prize.enabled" active-color="#67c23a" inactive-color="#ff4949"></el-switch>
-            </el-form-item>
+            <el-form-item label="Status" prop="enabled" class="inline-label">
+              <el-switch
+                v-model="prize.enabled"
+                active-color="#67c23a"
+                inactive-color="#ff4949"
+              ></el-switch>
+           </el-form-item>
 
             <el-form-item class="inline-button">
               <el-button type="primary" plain @click="createPrize">
@@ -107,7 +161,7 @@
       </el-col>
     </el-row>
 
-     <el-row>
+    <el-row>
       <el-col :span="24">
         <el-card shadow="hover">
           <div slot="header" class="clearfix">
@@ -140,7 +194,12 @@
                   width="220"
                   trigger="hover"
                   content="Nome do prêmio na roleta">
-                  <el-input slot="reference" size="small" v-model="scope.row.name" maxlength="25"></el-input>
+                  <el-input
+                    slot="reference"
+                    size="small"
+                    v-model="scope.row.name"
+                    maxlength="25"
+                  ></el-input>
                 </el-popover>
               </template>
             </el-table-column>
@@ -151,12 +210,18 @@
                   {{ scope.row.message }}
                 </span>
                 <el-popover
-                v-else
+                  v-else
                   placement="bottom"
                   width="300"
                   trigger="hover"
-                  content="Mensagem a ser exibida no chat quando o usuário ganhar este prêmio">
-                  <el-input slot="reference" size="small" v-model="scope.row.message"></el-input>
+                  content="Mensagem a ser exibida no chat quando
+                    o usuário ganhar este prêmio"
+                >
+                  <el-input
+                    slot="reference"
+                    size="small"
+                    v-model="scope.row.message"
+                  ></el-input>
                 </el-popover>
               </template>
             </el-table-column>
@@ -171,8 +236,14 @@
                   placement="bottom"
                   width="260"
                   trigger="hover"
-                  content="Comando a ser executado quando o usuário ganhar este prêmio">
-                <el-input slot="reference" size="small" v-model="scope.row.command"></el-input>
+                  content="Comando a ser executado quando
+                    o usuário ganhar este prêmio"
+                >
+                <el-input
+                  slot="reference"
+                  size="small"
+                  v-model="scope.row.command"
+                ></el-input>
               </el-popover>
               </template>
             </el-table-column>
@@ -188,9 +259,17 @@
                   width="220"
                   trigger="hover"
                   content="O comando será executado depois do delay (segundos)">
-                  <el-input-number slot="reference" v-model="scope.row.delay" size="small"
-                  type="number" :min="0" :max="60" :controls="false" class="delay-edit"></el-input-number>
-                </el-popover>
+                  <el-input-number
+                    slot="reference"
+                    v-model="scope.row.delay"
+                    size="small"
+                    type="number"
+                    :min="0"
+                    :max="60"
+                    :controls="false"
+                    class="delay-edit"
+                  ></el-input-number>
+                 </el-popover>
               </template>
             </el-table-column>
 
@@ -199,7 +278,8 @@
                 <span v-if="selectedItem !== scope.row._id">
                   <el-tag class="color-tag" :color="scope.row.color"></el-tag>
                 </span>
-                <el-color-picker v-else v-model="scope.row.color" size="small"></el-color-picker>
+                <el-color-picker v-else v-model="scope.row.color" size="small">
+                </el-color-picker>
               </template>
             </el-table-column>
 
@@ -213,7 +293,12 @@
                     {{ scope.row.enabled ? "Ativo" : "Inativo" }}
                   </el-tag>
                 </span>
-                <el-switch v-else v-model="scope.row.enabled" active-color="#67c23a" inactive-color="#ff4949"></el-switch>
+                <el-switch
+                  v-else
+                  v-model="scope.row.enabled"
+                  active-color="#67c23a"
+                  inactive-color="#ff4949"
+                ></el-switch>
               </template>
             </el-table-column>
 
@@ -240,7 +325,10 @@
                   </el-button>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
-                      <span @click="deletePrize(scope.row._id)">Confirm Delete</span></el-dropdown-item>
+                      <span @click="deletePrize(scope.row._id)">
+                        Confirm Delete
+                      </span>
+                    </el-dropdown-item>
                   </el-dropdown-menu>
                 </el-dropdown>
               </template>
@@ -253,7 +341,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
 
 export default {
@@ -296,7 +384,9 @@ export default {
       { color: "#ffffff", enabled: true, name: "Frase de encerramento", message: "{user} ganhou {prize}!" },
       { color: "#0172ac", enabled: true, name: "Duelo com Tesdey", message: "{user} ganhou {prize}!" },
     ],
-    selectedItem: null
+    selectedItem: null,
+    host: process.env.VUE_APP_SERVER_HOST,
+    port: process.env.VUE_APP_SERVER_PORT
   }),
 
   mounted() {
@@ -305,7 +395,7 @@ export default {
 
   methods: {
     async getPrizes() {
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
+      const url = '/api/prizes';
       const response = await axios.get(url, { headers: { 
         'x-auth-token': this.user.access_token,
         'x-code': this.user.code
@@ -326,7 +416,7 @@ export default {
     },
 
     async deletePrize(id) {
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${id}`;
+      const url = `/api/prizes/${id}`;
       await axios.delete(url, { headers: { 
         'x-auth-token': this.user.access_token,
         'x-code': this.user.code
@@ -339,7 +429,7 @@ export default {
         this.selectedItem = item._id;
         return;
       }
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${item._id}`;
+      const url = `/api/prizes/${item._id}`;
       await axios.patch(url, item, { headers: { 
         'x-auth-token': this.user.access_token,
         'x-code': this.user.code
@@ -349,7 +439,7 @@ export default {
 
     async createPrize() {
       if (!this.prize.name || !this.prize.message) return
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
+      const url = '/api/prizes';
       await axios.post(url, this.prize, { headers: { 
         'x-auth-token': this.user.access_token,
         'x-code': this.user.code
@@ -375,7 +465,7 @@ export default {
 
       await Promise.all(
         allPrizes.map(async prize => {
-          const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes/${prize._id}`;
+          const url = `/api/prizes/${prize._id}`;
           await axios.delete(url, { headers: { 
             'x-auth-token': this.user.access_token,
             'x-code': this.user.code
@@ -383,7 +473,7 @@ export default {
         })
       );
 
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
+      const url = '/api/prizes';
       for (let prize of this.defaultPrizes) {
         await axios.post(url, prize, { headers: { 
           'x-auth-token': this.user.access_token,

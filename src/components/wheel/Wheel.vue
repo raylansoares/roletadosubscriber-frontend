@@ -4,6 +4,7 @@
       <div class="pointer">
         <i class="el-icon-caret-bottom"></i>
       </div>
+
       <div class="wheel-canvas">
         <canvas id="canvas" width="500" height="500">
           <p style="color: white" align="center">
@@ -31,7 +32,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from '@/repositories/clients/axios'
 import * as Winwheel from "../../assets/scripts/Winwheel";
 
 export default {
@@ -44,7 +45,9 @@ export default {
     theWheel: null,
     wheelSpinning: false,
     segments: [],
-    prizes: []
+    prizes: [],
+    host: process.env.VUE_APP_SERVER_HOST,
+    port: process.env.VUE_APP_SERVER_PORT
   }),
 
   mounted() {
@@ -67,8 +70,10 @@ export default {
     },
 
     async getPrizes() {
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/prizes`;
-      const response = await axios.get(url, { headers: { 'x-code': this.$route.query.code } });
+      const url = '/api/prizes';
+      const response = await axios.get(url, { headers: {
+        'x-code': this.$route.query.code
+      } });
       this.prizes = response.data
       this.segments = this.formatSegments(response.data);
     },
@@ -111,11 +116,11 @@ export default {
       this.prize = null;
       this.theWheel = new Winwheel.Winwheel({});
       if (this.wheelSpinning) {
-        this.theWheel.stopAnimation(false); // Stop the animation, false as param so does not call callback function.
+        this.theWheel.stopAnimation(false);
       }
-      this.theWheel.rotationAngle = 0; // Re-set the wheel angle to 0 degrees.
-      this.theWheel.draw(); // Call draw to render changes to the wheel.
-      this.wheelSpinning = false; // Reset to false to power buttons and spin can be clicked again.
+      this.theWheel.rotationAngle = 0;
+      this.theWheel.draw(); 
+      this.wheelSpinning = false;
     },
 
     onFinishSpin(indicatedSegment) {

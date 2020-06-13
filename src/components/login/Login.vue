@@ -19,7 +19,7 @@
 
 <script>
 import { authConfig } from "@/utils/auth";
-import axios from "axios";
+import axios from '@/repositories/clients/axios'
 import dayjs from "dayjs";
 import 'dayjs/locale/pt-br';
 
@@ -43,8 +43,10 @@ export default {
       if (!code) return
 
       try {
-        const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/auth`
-        const authenticatedUser = await axios.post(url, { code: code, redirect: authConfig.redirect_uri });
+        const url = '/api/auth'
+        const authenticatedUser = await axios.post(url, {
+          code: code, redirect: authConfig.redirect_uri
+        });
 
         this.$store.commit("SET_USER", authenticatedUser.data);
         this.$router.push({ name: "Dashboard" });
