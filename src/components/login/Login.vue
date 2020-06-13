@@ -11,7 +11,8 @@
     </h2>
     <div class="links">
       <el-button type="primary" plain :disabled="loading" @click="connect">
-        Conectar conta da Twitch
+        <i class="el-icon-loading" v-if="loading"></i>
+        {{ loading ? "Conectando..." : "Conectar conta da Twitch" }}
       </el-button>
     </div>
   </div>
@@ -29,7 +30,7 @@ export default {
   name: "Login",
 
   data: () => ({
-    loading: false
+    loading: true
   }),
 
   mounted() {
@@ -40,7 +41,10 @@ export default {
     async makeAuth() {
       const code = this.$route.query.code
 
-      if (!code) return
+      if (!code) {
+        this.loading = false
+        return
+      }
 
       try {
         const url = '/api/auth'
