@@ -46,17 +46,20 @@ export default {
         return
       }
 
+      const url = '/api/auth'
+
       try {
-        const url = '/api/auth'
         const authenticatedUser = await axios.post(url, {
           code: code, redirect: authConfig.redirect_uri
         });
-
+        
         this.$store.commit("SET_USER", authenticatedUser.data);
         this.$router.push({ name: "Dashboard" });
       } catch (e) {
-        console.log(e)
+        this.$message.error('Ops, não foi possível conectar sua conta');
       }
+
+      this.loading = false
     },
 
     connect() {

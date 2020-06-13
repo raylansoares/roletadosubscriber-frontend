@@ -32,7 +32,7 @@
                 width="320"
                 trigger="hover"
                 content="Reseta os prêmios para o padrão.
-                (O padrão atual é baseado no canal do Tesdey)"
+                (o padrão atual é baseado no canal do Tesdey)"
               >
                 <el-button
                   slot="reference"
@@ -396,13 +396,19 @@ export default {
   methods: {
     async getPrizes() {
       const url = '/api/prizes';
-      const response = await axios.get(url, { headers: { 
-        'x-auth-token': this.user.access_token,
-        'x-code': this.user.code
-      } });
-      this.prizes = response.data;
-      this.filterPrizes();
-      if (!response.data.length) await this.resetPrizes()
+
+      try {
+        const response = await axios.get(url, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+
+        this.prizes = response.data;
+        this.filterPrizes();
+        if (!response.data.length) await this.resetPrizes()
+      } catch (e) {
+        this.$message.error('Ops, não foi possível carregar a lista de prêmios');
+      }
     },
 
     filterPrizes() {
@@ -417,11 +423,17 @@ export default {
 
     async deletePrize(id) {
       const url = `/api/prizes/${id}`;
-      await axios.delete(url, { headers: { 
-        'x-auth-token': this.user.access_token,
-        'x-code': this.user.code
-      } });
-      this.getPrizes();
+
+      try {
+        await axios.delete(url, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+
+        this.getPrizes();
+      } catch (e) {
+        this.$message.error('Ops, não foi possível excluir este item');
+      }
     },
 
     async editPrize(item) {
@@ -429,30 +441,43 @@ export default {
         this.selectedItem = item._id;
         return;
       }
+
       const url = `/api/prizes/${item._id}`;
-      await axios.patch(url, item, { headers: { 
-        'x-auth-token': this.user.access_token,
-        'x-code': this.user.code
-      } });
+
+      try {
+        await axios.patch(url, item, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+      } catch (e) {
+        this.$message.error('Ops, não foi possível editar este item');
+      }
       this.selectedItem = null;
     },
 
     async createPrize() {
       if (!this.prize.name || !this.prize.message) return
       const url = '/api/prizes';
-      await axios.post(url, this.prize, { headers: { 
-        'x-auth-token': this.user.access_token,
-        'x-code': this.user.code
-      } });
-      this.prize = {
-        name: null,
-        message: null,
-        command: null,
-        delay: null,
-        color: null,
-        enabled: null
-      };
-      this.getPrizes();
+
+      try {
+        await axios.post(url, this.prize, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+
+        this.prize = {
+          name: null,
+          message: null,
+          command: null,
+          delay: null,
+          color: null,
+          enabled: null
+        };
+
+        this.getPrizes();
+      } catch (e) {
+        this.$message.error('Ops, não foi possível cadastrar este item');
+      }
     },
 
     async resetPrizes() {
@@ -463,26 +488,31 @@ export default {
       this.prizes = [];
       this.filteredPrizes = [];
 
-      await Promise.all(
-        allPrizes.map(async prize => {
-          const url = `/api/prizes/${prize._id}`;
-          await axios.delete(url, { headers: { 
+      try {
+        await Promise.all(
+          allPrizes.map(async prize => {
+            const url = `/api/prizes/${prize._id}`;
+
+            await axios.delete(url, { headers: { 
+              'x-auth-token': this.user.access_token,
+              'x-code': this.user.code
+            } });
+          })
+        );
+
+        const url = '/api/prizes';
+
+        for (let prize of this.defaultPrizes) {
+          await axios.post(url, prize, { headers: { 
             'x-auth-token': this.user.access_token,
             'x-code': this.user.code
           } });
-        })
-      );
+        }
 
-      const url = '/api/prizes';
-      for (let prize of this.defaultPrizes) {
-        await axios.post(url, prize, { headers: { 
-          'x-auth-token': this.user.access_token,
-          'x-code': this.user.code
-        } });
+        await this.getPrizes();
+      } catch (e) {
+        this.$message.error('Ops, não foi possível resetar seus prêmios');
       }
-
-      await this.getPrizes();
-
       this.reseting = false;
     }
   }

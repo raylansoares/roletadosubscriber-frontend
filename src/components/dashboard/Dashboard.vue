@@ -178,13 +178,18 @@ export default {
   methods: {
     async getSubscribers() {
       const url = '/api/subscribers';
-      const response = await axios.get(url, { headers: { 
-        'x-auth-token': this.user.access_token,
-        'x-code': this.user.code
-      } });
 
-      this.subscribers = response.data;
-      this.filterSubscribers();
+      try {
+        const response = await axios.get(url, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+
+        this.subscribers = response.data;
+        this.filterSubscribers();
+      } catch (e) {
+        this.$message.error('Ops, não foi possível carregar a lista de subs');
+      }
     },
 
     filterSubscribers() {
@@ -213,11 +218,17 @@ export default {
 
     async deleteSubscriber(id) {
       const url = `/api/subscribers/${id}`;
-      await axios.delete(url, { headers: { 
-        'x-auth-token': this.user.access_token,
-        'x-code': this.user.code
-      } });
-      this.getSubscribers();
+
+      try {
+        await axios.delete(url, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+        
+        this.getSubscribers();
+      } catch (e) {
+        this.$message.error('Ops, não foi possível excluir este item');
+      }
     },
 
     setWheelUrl() {

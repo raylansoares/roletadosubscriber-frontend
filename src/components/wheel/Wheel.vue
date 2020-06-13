@@ -66,20 +66,25 @@ export default {
       this.currentSubscriber = this.subscribers[0];
       this.subscribers.shift();
       await this.getPrizes();
-      this.startSpin();
+      if (this.prizes.length) this.startSpin();
     },
 
     async getPrizes() {
       const url = '/api/prizes';
-      const response = await axios.get(url, { headers: {
-        'x-code': this.$route.query.code
-      } });
-      this.prizes = response.data
-      this.segments = this.formatSegments(response.data);
+
+      try {
+        const response = await axios.get(url, { headers: {
+          'x-code': this.$route.query.code
+        } });
+
+        this.prizes = response.data
+        this.segments = this.formatSegments(response.data);
+      } catch (e) {}
     },
 
     formatSegments(data) {
       const enabledItems = data.filter(item => item.enabled === true);
+
       return enabledItems.map(item => {
         return { fillStyle: item.color, text: item.name };
       });
