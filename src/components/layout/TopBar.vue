@@ -5,7 +5,7 @@
       class="el-menu-demo"
       mode="horizontal"
       :router="true"
-      background-color="#409EFF"
+      background-color="#2d3744"
       text-color="#f9f9f9"
       active-text-color="#f9f9f9"
     >

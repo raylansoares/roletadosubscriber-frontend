@@ -170,6 +170,9 @@ export default {
 </script>
 
 <style lang="scss">
+html, body {
+  background: transparent!important;
+}
 #wheel {
   .wheel {
     .pointer {

@@ -10,9 +10,14 @@ html {
     box-sizing: border-box;
 }
 
-body {
-    background-color: #f9f9f9;
-}
+.container {
+    background-color: #181c23;
+    background-image: url(./assets/images/dots.png);
+    background-size: contain;
+    color: #e4e4e4;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
   
 *,
 *:before,
@@ -29,17 +34,21 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background-color: #f9f9f9;
+    background-color: #181c23;
   }
 
 ::-webkit-scrollbar {
-width: 5px;
-background-color: #f9f9f9;
+    width: 5px;
+    background-color: #181c23;
 }
 
 ::-webkit-scrollbar-thumb {
-background-color: #e4e4e4;
+    background-color: #0c0f15;
 }
+
+::-webkit-input-placeholder { /* Webkit */
+    color: #364250!important;
+} 
 
 .el-button.is-circle {
     padding: 8px;
@@ -48,4 +57,41 @@ background-color: #e4e4e4;
 
 .el-dropdown .el-button.is-circle {
     margin: 0 0 0 4px;
+}
+
+.el-alert--info.is-dark {
+    background-color: #222933;
+}
+
+.el-avatar {
+    color: #222933;
+}
+
+.el-alert.is-dark .el-alert__closebtn, .el-alert.is-dark .el-alert__description {
+    color: #e4e4e4;
+}
+
+.el-table th {
+    background-color: #262f3a;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+    background-color: #262f3a;
+}
+
+.el-input__inner {
+    background-color: #1f252d;
+    color: #e4e4e4;    
+}
+
+.el-tag.el-tag--success {
+    background-color: #2a3934;
+    border-color: #446733;
+    color: #67c23a;
+}
+
+.el-tag.el-tag--danger {
+    background-color: #383039;
+    border-color: #8d4d4d;
+    color: #f56c6c;
 }

@@ -7,7 +7,7 @@
       Roleta do Subscriber
     </h1>
     <h2 class="subtitle">
-      Roleta automatica e personalizável para os subs do seu canal!
+      Roleta automática e personalizável para os subs do seu canal!
     </h2>
     <div class="links">
       <el-button type="primary" plain :disabled="loading" @click="connect">
@@ -84,21 +84,21 @@ export default {
 <style lang="scss">
 .logo i {
   font-size: 98px;
-  color: #35495e;
+  color: #b2b6bd;
 }
 
 .title {
   display: block;
   font-weight: 300;
   font-size: 72px;
-  color: #35495e;
+  color: #b2b6bd;
   letter-spacing: 1px;
 }
 
 .subtitle {
   font-weight: 300;
   font-size: 32px;
-  color: #526488;
+  color: #9fa4ad;
   word-spacing: 5px;
   padding-bottom: 15px;
 }

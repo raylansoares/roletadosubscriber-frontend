@@ -8,6 +8,7 @@
           title="Variáveis disponíveis"
           type="info"
           show-icon
+          effect="dark"
         >
           <p>
             <strong>{user}</strong>
@@ -542,7 +543,7 @@ export default {
   .card-title {
     font-size: 18px;
     font-weight: 500;
-    color: #606266;
+    color: #e4e4e4;
   }
 
   .color-tag {

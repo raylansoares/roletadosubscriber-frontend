@@ -29,6 +29,7 @@
               :closable="false"
               type="info"
               show-icon
+              effect="dark"
             >
               <p>
                 <strong>Não compartilhe</strong>
@@ -289,7 +290,7 @@ export default {
   .card-title {
     font-size: 18px;
     font-weight: 500;
-    color: #606266;
+    color: #e4e4e4;
   }
 
   .profile-card {
@@ -299,7 +300,7 @@ export default {
     align-items: center;
     p {
       font-size: 22px;
-      color: #606266;
+      color: #e4e4e4;
       margin-top: 10px;
     }
   }
