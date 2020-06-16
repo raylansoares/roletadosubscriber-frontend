@@ -29,7 +29,6 @@ export default {
     checkAuth() {
       setInterval(() => {
         const validToken = isAuthenticated()
-        console.log(validToken)
       }, 300000);
     }
   },
