@@ -19,26 +19,7 @@
 
       <el-col :span="8">
         <el-card shadow="hover" class="top-card">
-          <el-form label-position="top" @submit.native.prevent="copyWheelUrl">
-            <el-form-item label="URL da Roleta para o OBS" class="big-label">
-              <el-input v-model="wheelUrl" id="wheelUrl" show-password>
-              </el-input>
-            </el-form-item>
-
-            <el-alert
-              :closable="false"
-              type="info"
-              show-icon
-              effect="dark"
-            >
-              <p>
-                <strong>Não compartilhe</strong>
-                este endereço!
-                <strong>Utilize apenas no OBS</strong>
-                (não deixe aberto no navegador).
-              </p>
-            </el-alert>
-          </el-form>
+          ...
         </el-card>
       </el-col>
 
@@ -162,14 +143,12 @@ export default {
     filteredSubscribers: [],
     search: "",
     username: null,
-    wheelUrl: null,
     host: process.env.VUE_APP_SERVER_HOST,
     port: process.env.VUE_APP_SERVER_PORT
   }),
 
   mounted() {
     this.getSubscribers();
-    this.setWheelUrl();
   },
 
   filters: {
@@ -230,16 +209,6 @@ export default {
       } catch (e) {
         this.$message.error('Ops, não foi possível excluir este item');
       }
-    },
-
-    setWheelUrl() {
-      this.wheelUrl = `${process.env.VUE_APP_URL}/wheel?code=${this.user.code}`;
-    },
-
-    copyWheelUrl() {
-      const wheelUrl = document.getElementById("wheelUrl");
-      wheelUrl.select();
-      document.execCommand("copy")
     }
   },
 

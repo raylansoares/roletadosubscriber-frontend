@@ -2,15 +2,13 @@
   <div id="wheel-config">
 
     <el-row :gutter="20">
-      <el-col :span="16">
-        <el-alert
-          :closable="false"
-          title="Variáveis disponíveis"
-          type="info"
-          show-icon
-          effect="dark"
-        >
-          <p>
+      <el-col :span="8">
+        <el-card shadow="hover" class="top-card">
+          <div class="big-label">
+            <p>Variáveis Disponíveis</p>
+          </div>
+          <div class="var-desc">
+            <p>
             <strong>{user}</strong>
             - Exibe o nome do subscriber na mensagem ou comando
           </p>
@@ -20,45 +18,78 @@
           </p>
           <p>
             <strong>@2</strong>
-            - Comando para roletar mais 2x (mínimo 1 e máximo 2)
+            - Comando para roletar mais 2x (mín 1 e máx 2)
           </p>
-        </el-alert>
+          </div>
+        </el-card>
       </el-col>
 
       <el-col :span="8">
         <el-card shadow="hover" class="top-card">
-          <el-dropdown trigger="click" class="reset-button" placement="bottom">
-            <el-popover
-                placement="left"
-                width="320"
-                trigger="hover"
-                content="Reseta os prêmios para o padrão.
-                (o padrão atual é baseado no canal do Tesdey)"
-              >
-                <el-button
-                  slot="reference"
-                  :disabled="reseting"
-                  plain
-                  type="warning"
-                >
-                  <i class="el-icon-warning-outline" v-if="!reseting"></i>
-                  <i class="el-icon-loading" v-else></i>
-                  {{ reseting ? "Resetando..." : "Resetar Prêmios" }}
-                </el-button>
-              </el-popover>
+          <el-form label-position="top">
+            <el-form-item label="URL da Roleta para o OBS" class="big-label">
+              <el-input v-model="wheelUrl" id="wheelUrl" show-password>
+              </el-input>
+            </el-form-item>
 
+            <el-alert
+              :closable="false"
+              type="info"
+              show-icon
+              effect="dark"
+            >
+              <p>
+                <strong>Não compartilhe</strong>
+                este endereço!
+                <strong>Utilize apenas no OBS</strong>
+                (não deixe aberto no navegador).
+              </p>
+            </el-alert>
+          </el-form>
+        </el-card>
+      </el-col>
+
+      <el-col :span="8">
+        <el-card shadow="hover" class="top-card">
+          <div class="big-label">
+            <p>Resetar Prêmios</p>
+          </div>
+
+          <el-dropdown trigger="click" placement="bottom" class="reset-button">
+            <el-button
+              :disabled="reseting"
+              plain
+              type="warning"
+            >
+              <i class="el-icon-warning-outline" v-if="!reseting"></i>
+              <i class="el-icon-loading" v-else></i>
+              {{ reseting ? "Resetando..." : "Resetar" }}
+            </el-button>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
-                <span @click="resetPrizes">Confirmar</span></el-dropdown-item>
+                <span @click="resetPrizes">
+                  Confirmar
+                </span>
+              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
+
+          <el-alert
+            :closable="false"
+            type="info"
+            show-icon
+            effect="dark"
+          >
+            <p>Reseta os prêmios para o padrão.</p>
+            <p>(O padrão atual é baseado no canal do Tesdey).</p>
+          </el-alert>
         </el-card>
       </el-col>
     </el-row>
 
     <el-row :gutter="20">
       <el-col :span="24">
-        <el-card shadow="hover" class="top-card">
+        <el-card shadow="hover">
           <el-form
             @submit.native.prevent="createPrize"
             :inline="true"
@@ -327,7 +358,7 @@
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
                       <span @click="deletePrize(scope.row._id)">
-                        Confirm Delete
+                        Confirmar
                       </span>
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -356,6 +387,7 @@ export default {
     prizes: [],
     filteredPrizes: [],
     search: null,
+    wheelUrl: null,
     prize: {
       name: null,
       message: null,
@@ -392,6 +424,7 @@ export default {
 
   mounted() {
     this.getPrizes();
+    this.setWheelUrl();
   },
 
   methods: {
@@ -515,6 +548,10 @@ export default {
         this.$message.error('Ops, não foi possível resetar seus prêmios');
       }
       this.reseting = false;
+    },
+
+    setWheelUrl() {
+      this.wheelUrl = `${process.env.VUE_APP_URL}/wheel?code=${this.user.code}`;
     }
   }
 };
@@ -532,7 +569,7 @@ export default {
   }
 
   .top-card {
-    min-height: 90px;
+    min-height: 190px;
   }
 
   .prize-form {
@@ -580,6 +617,34 @@ export default {
   .reset-button, .reset-button button {
     width: 100%;
     margin: 2px 0;
+  }
+
+  .big-label {
+    color: #fff;
+    label {
+      font-size: 20px;
+    }
+    p {
+      font-size: 20px;
+      margin-top: 7px;
+    }
+  }
+
+  .el-form-item {
+    margin-bottom: 5px;
+  }
+
+  .var-desc p {
+    font-size: 12px;
+    padding: 5px 0;
+    &:first-child {
+      padding: 20px 0 5px 0;
+    }
+  }
+
+  .reset-button {
+    margin-top: 15px;
+    width: 100%;
   }
 }
 </style>
