@@ -8,6 +8,7 @@
 <script>
 import TopBar from "@/components/layout/TopBar";
 import { mapState } from 'vuex'
+import { isAuthenticated } from "../utils/auth";
 
 export default {
   name: "DefaultContainer",
@@ -18,6 +19,19 @@ export default {
 
   computed: {
     ...mapState(['user'])
+  },
+
+  mounted () {
+    this.checkAuth()
+  },
+
+  methods: {
+    checkAuth() {
+      setInterval(() => {
+        const validToken = isAuthenticated()
+        console.log(validToken)
+      }, 300000);
+    }
   },
 
   sockets: {
