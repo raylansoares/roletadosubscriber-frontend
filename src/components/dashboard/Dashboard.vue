@@ -20,15 +20,15 @@
       <el-col :span="8">
         <el-card shadow="hover" class="top-card">
           <el-form label-position="top" @submit.native.prevent="" disabled>
-            <el-form-item label="Sorteio no Chat (Em breve)" class="big-label">
-              <el-input v-model="command" placeholder="Comando"></el-input>
+            <el-form-item label="Em breve" class="big-label">
+              <!-- <el-input v-model="command" placeholder="Comando"></el-input> -->
             </el-form-item>
 
-            <el-form-item class="open-raffle-button">
+            <!-- <el-form-item class="open-raffle-button">
               <el-button type="primary" plain @click="openRaffle">
                 Abrir sorteio
               </el-button>
-            </el-form-item>
+            </el-form-item> -->
 
             <!-- <el-form-item class="close-raffle-button">
               <el-button type="primary" plain @click="closeRaffle">
