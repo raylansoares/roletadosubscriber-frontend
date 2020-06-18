@@ -64,7 +64,6 @@ export default {
     async checkSubs() {
       if (this.subscribers.length === 0) return;
       this.currentSubscriber = this.subscribers[0];
-      this.subscribers.shift();
       await this.getPrizes();
       if (this.prizes.length) this.startSpin();
     },
@@ -131,6 +130,8 @@ export default {
     onFinishSpin(indicatedSegment) {
       const finishAudio = document.getElementById("finishAudio");
       finishAudio.play();
+
+      this.subscribers.shift();
 
       this.prize = this.prizes.find(item => item.name === indicatedSegment.text);
 
