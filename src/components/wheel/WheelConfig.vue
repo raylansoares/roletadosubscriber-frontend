@@ -81,7 +81,7 @@
             effect="dark"
           >
             <p>Reseta os prêmios para o padrão.</p>
-            <p>(O padrão atual é baseado no canal do Tesdey).</p>
+            <p>(O padrão atual é baseado no canal do Tesdey)</p>
           </el-alert>
         </el-card>
       </el-col>
@@ -645,6 +645,10 @@ export default {
   .reset-button {
     margin-top: 15px;
     width: 100%;
+  }
+
+  .el-alert, .el-alert p {
+    color: #ccc
   }
 }
 </style>
