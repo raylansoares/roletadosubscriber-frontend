@@ -9,7 +9,7 @@
 
     <div id="start-section">
       <div class="logo">
-        <i class="el-icon-stopwatch"></i>
+        <i class="el-icon-orange"></i>
       </div>
 
       <h1 class="title">
@@ -100,7 +100,7 @@
 
     <div id="contact-section">
       <h2 class="title">Contato</h2>
-      <p class="description">Em breve...</p>
+      <p class="description">Discord: RaylanPrime#3896</p>
     </div>
   </div>
 </template>

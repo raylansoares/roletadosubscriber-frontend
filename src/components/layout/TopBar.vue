@@ -13,13 +13,13 @@
         <i class="el-icon-switch-button"></i> Sair
       </el-menu-item>
       <el-menu-item index="/wheelConfig">
-        <i class="el-icon-stopwatch"></i> Configurar Roleta
+        <i class="el-icon-s-tools"></i> Configurar Roleta
       </el-menu-item>
       <el-menu-item index="/dashboard">
         <i class="el-icon-pie-chart"></i> Dashboard
       </el-menu-item>
       <el-menu-item class="menu-item-logo">
-        <i class="el-icon-stopwatch"></i> Roleta do Subscriber
+        <i class="el-icon-orange"></i> Roleta do Subscriber
       </el-menu-item>
     </el-menu>
   </div>
