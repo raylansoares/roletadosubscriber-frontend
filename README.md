@@ -11,9 +11,10 @@ cp .env.example .env
 ```
 
 Open .env file and put you configs
+* VUE_APP_URL - The rose-panel app url
 * VUE_APP_SERVER_HOST - The rose-server host
 * VUE_APP_SERVER_PORT - The rose-server port
-* VUE_APP_PASS= - The panel admin password (temporary)
+* VUE_APP_CLIENT_ID - The Twitch app client id
 
 Start server by typing
 ```sh
