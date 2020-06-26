@@ -57,7 +57,7 @@
 
           <el-dropdown trigger="click" placement="bottom" class="reset-button">
             <el-button
-              :disabled="reseting"
+              :disabled="reseting || sort || !!selectedItem"
               plain
               type="warning"
             >
@@ -138,7 +138,7 @@
                 placement="bottom"
                 width="260"
                 trigger="hover"
-                content="Comando a ser executado quando o usuário ganhar este prêmio"
+                content="Comando executado quando o usuário ganhar este prêmio"
               >
                 <el-input
                   slot="reference"
@@ -184,7 +184,12 @@
            </el-form-item>
 
             <el-form-item class="inline-button">
-              <el-button type="primary" plain @click="createPrize">
+              <el-button
+                type="primary"
+                plain
+                @click="createPrize"
+                :disabled="sort || !!selectedItem"
+              >
                 Cadastrar
               </el-button>
             </el-form-item>
@@ -195,7 +200,7 @@
 
     <el-row>
       <el-col :span="24">
-        <el-card shadow="hover">
+        <el-card shadow="hover" class="prizes-card">
           <div slot="header" class="clearfix">
             <span class="card-title">Prêmios da Roleta</span>
 
@@ -205,167 +210,215 @@
                 v-model="search"
                 placeholder="Buscar prêmio"
                 @input="filterPrizes"
+                :disabled="sort || !!selectedItem"
               />
             </div>
+
+            <el-button
+              :type="sort ? 'success' : 'primary'"
+              plain
+              size="small"
+              class="order-button"
+              @click="togleSort()"
+              :disabled="!!selectedItem"
+            >
+              <span v-if="!sorting">
+                <i :class="sort ? 'el-icon-success' : 'el-icon-d-caret'"></i>
+                {{ sort ? 'Salvar Ordernção' : 'Alterar Ordernção' }}
+              </span>
+              <span v-else>
+                <i class="el-icon-loading"></i>
+                Salvando ordenação...
+              </span>
+            </el-button>
           </div>
 
-          <el-table
-            :data="filteredPrizes"
-            style="width: 100%"
-            height="493"
-            header-cell-class-name="sub-table-header"
-          >
-            <el-table-column label="Nome" prop="name" min-width="200px">
-              <template slot-scope="scope">
-                <span v-if="selectedItem !== scope.row._id">
-                  {{ scope.row.name }}
-                </span>
-                <el-popover
-                  v-else
-                  placement="bottom"
-                  width="220"
-                  trigger="hover"
-                  content="Nome do prêmio na roleta">
-                  <el-input
-                    slot="reference"
-                    size="small"
-                    v-model="scope.row.name"
-                    maxlength="25"
-                  ></el-input>
-                </el-popover>
-              </template>
-            </el-table-column>
+          <table class="header-table">
+            <tr>
+              <td class="name">Nome</td>
+              <td class="message">Mensagem</td>
+              <td class="command">Comando</td>
+              <td class="delay">Delay</td>
+              <td class="color">Cor</td>
+              <td class="status">Status</td>
+              <td class="actions">Ações</td>
+            </tr>
+          </table>
+          
+          <div class="prizes-container">
+            <draggable
+              v-model="filteredPrizes"
+              tag="ul"
+              v-bind="dragOptions"
+              @start="drag = true"
+              @end="drag = false"
+              handle=".handle"
+            >
+              <transition-group type="transition" :name="!drag ? 'flip-list' : null">
+                <li v-for="prize in filteredPrizes" :key="prize._id" class="list-item">
+                  <table>
+                    <tr>
+                      <td class="name">
+                        <span v-if="selectedItem !== prize._id">
+                          {{ prize.name }}
+                        </span>
+                        <el-popover
+                          v-else
+                          placement="bottom"
+                          width="220"
+                          trigger="hover"
+                          content="Nome do prêmio na roleta">
+                          <el-input
+                            slot="reference"
+                            size="small"
+                            v-model="prize.name"
+                            maxlength="25"
+                          ></el-input>
+                        </el-popover>
+                      </td>
 
-            <el-table-column label="Mensagem" prop="message" min-width="200px">
-              <template slot-scope="scope">
-                <span v-if="selectedItem !== scope.row._id">
-                  {{ scope.row.message }}
-                </span>
-                <el-popover
-                  v-else
-                  placement="bottom"
-                  width="300"
-                  trigger="hover"
-                  content="Mensagem a ser exibida no chat quando
-                    o usuário ganhar este prêmio"
-                >
-                  <el-input
-                    slot="reference"
-                    size="small"
-                    v-model="scope.row.message"
-                  ></el-input>
-                </el-popover>
-              </template>
-            </el-table-column>
+                      <td class="message">
+                        <span v-if="selectedItem !== prize._id">
+                          {{ prize.message }}
+                        </span>
+                        <el-popover
+                          v-else
+                          placement="bottom"
+                          width="300"
+                          trigger="hover"
+                          content="Mensagem a ser exibida no chat quando
+                            o usuário ganhar este prêmio"
+                        >
+                          <el-input
+                            slot="reference"
+                            size="small"
+                            v-model="prize.message"
+                          ></el-input>
+                        </el-popover>
+                      </td>
 
-            <el-table-column label="Comando" prop="command" min-width="200px">
-              <template slot-scope="scope">
-                <span v-if="selectedItem !== scope.row._id">
-                  {{ scope.row.command }}
-                </span>
-                <el-popover
-                  v-else
-                  placement="bottom"
-                  width="260"
-                  trigger="hover"
-                  content="Comando a ser executado quando
-                    o usuário ganhar este prêmio"
-                >
-                <el-input
-                  slot="reference"
-                  size="small"
-                  v-model="scope.row.command"
-                ></el-input>
-              </el-popover>
-              </template>
-            </el-table-column>
+                      <td class="command">
+                        <span v-if="selectedItem !== prize._id">
+                          {{ prize.command }}
+                        </span>
+                        <el-popover
+                          v-else
+                          placement="bottom"
+                          width="260"
+                          trigger="hover"
+                          content="Comando a ser executado quando
+                            o usuário ganhar este prêmio"
+                        >
+                          <el-input
+                            slot="reference"
+                            size="small"
+                            v-model="prize.command"
+                          ></el-input>
+                        </el-popover>
+                      </td>
 
-            <el-table-column label="Delay" prop="delay" min-width="70px">
-              <template slot-scope="scope">
-                <span v-if="selectedItem !== scope.row._id">
-                  {{ scope.row.delay }}
-                </span>
-                <el-popover
-                  v-else
-                  placement="bottom"
-                  width="220"
-                  trigger="hover"
-                  content="O comando será executado depois do delay (segundos)">
-                  <el-input-number
-                    slot="reference"
-                    v-model="scope.row.delay"
-                    size="small"
-                    type="number"
-                    :min="0"
-                    :max="60"
-                    :controls="false"
-                    class="delay-edit"
-                  ></el-input-number>
-                 </el-popover>
-              </template>
-            </el-table-column>
+                      <td class="delay">
+                        <span v-if="selectedItem !== prize._id">
+                          {{ prize.delay }}
+                        </span>
+                        <el-popover
+                          v-else
+                          placement="bottom"
+                          width="220"
+                          trigger="hover"
+                          content="O comando será executado depois do delay (segundos)"
+                        >
+                          <el-input-number
+                            slot="reference"
+                            v-model="prize.delay"
+                            size="small"
+                            type="number"
+                            :min="0"
+                            :max="60"
+                            :controls="false"
+                            class="delay-edit"
+                          ></el-input-number>
+                        </el-popover>
+                      </td>
 
-            <el-table-column label="Cor" min-width="70px">
-              <template slot-scope="scope">
-                <span v-if="selectedItem !== scope.row._id">
-                  <el-tag class="color-tag" :color="scope.row.color"></el-tag>
-                </span>
-                <el-color-picker v-else v-model="scope.row.color" size="small">
-                </el-color-picker>
-              </template>
-            </el-table-column>
+                      <td class="color">
+                        <span v-if="selectedItem !== prize._id">
+                          <el-tag class="color-tag" :color="prize.color">
+                          </el-tag>
+                        </span>
+                        <el-color-picker
+                          v-else
+                          v-model="prize.color"
+                          size="small"
+                        ></el-color-picker>
+                      </td>
 
-            <el-table-column label="Status" min-width="70px">
-              <template slot-scope="scope">
-                {{ scope.row.enabled ? "Ativo" : "Inativo" }}
-              </template>
-              <template slot-scope="scope">
-                <span v-if="selectedItem !== scope.row._id">
-                  <el-tag :type="scope.row.enabled ? 'success' : 'danger'">
-                    {{ scope.row.enabled ? "Ativo" : "Inativo" }}
-                  </el-tag>
-                </span>
-                <el-switch
-                  v-else
-                  v-model="scope.row.enabled"
-                  active-color="#67c23a"
-                  inactive-color="#ff4949"
-                ></el-switch>
-              </template>
-            </el-table-column>
+                      <td class="status">
+                        <span v-if="selectedItem !== prize._id">
+                          <el-tag :type="prize.enabled ? 'success' : 'danger'">
+                            {{ prize.enabled ? "Ativo" : "Inativo" }}
+                          </el-tag>
+                        </span>
+                        <el-switch
+                          v-else
+                          v-model="prize.enabled"
+                          active-color="#67c23a"
+                          inactive-color="#ff4949"
+                        ></el-switch>
+                      </td>
 
-            <el-table-column align="right" min-width="100px">
-              <template slot-scope="scope">
-                <el-button
-                  plain
-                  circle
-                  :icon="selectedItem !== scope.row._id ? 'el-icon-edit' : 'el-icon-check'"
-                  :type="selectedItem !== scope.row._id ? 'primary' : 'success'"
-                  :disabled="!!selectedItem && selectedItem !== scope.row._id"
-                  @click="editPrize(scope.row)"
-                >
-                </el-button>
+                      <td class="actions">
 
-                <el-dropdown trigger="click" placement="bottom">
-                  <el-button
-                    icon="el-icon-delete"
-                    circle
-                    plain
-                    type="danger"
-                    :disabled="!!selectedItem"
-                  >
-                  </el-button>
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>
-                      <span @click="deletePrize(scope.row._id)">
-                        Confirmar
-                      </span>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </template>
-            </el-table-column>
-          </el-table>
+                        <el-button
+                          v-show="sort"
+                          plain
+                          circle
+                          :class="!sorting ? 'handle' : ''"
+                          icon="el-icon-d-caret"
+                          type="primary"
+                          :disabled="sorting"
+                        >
+                        </el-button>
+
+                        <el-button
+                          v-show="!sort"
+                          plain
+                          circle
+                          :icon="selectedItem !== prize._id ? 'el-icon-edit' : 'el-icon-check'"
+                          :type="selectedItem !== prize._id ? 'primary' : 'success'"
+                          :disabled="!!selectedItem && selectedItem !== prize._id"
+                          @click="editPrize(prize)"
+                        >
+                        </el-button>
+
+                        <el-dropdown
+                          trigger="click"
+                          placement="bottom"
+                          v-show="!sort"
+                        >
+                          <el-button
+                            icon="el-icon-delete"
+                            circle
+                            plain
+                            type="danger"
+                            :disabled="!!selectedItem"
+                          >
+                          </el-button>
+                          <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item>
+                              <span @click="deletePrize(prize._id)">
+                                Confirmar
+                              </span>
+                            </el-dropdown-item>
+                          </el-dropdown-menu>
+                        </el-dropdown>
+                      </td>
+                    </tr>
+                  </table>
+                </li>
+              </transition-group>
+            </draggable>
+          </div>
         </el-card>
       </el-col>
     </el-row>
@@ -375,12 +428,25 @@
 <script>
 import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
+import draggable from 'vuedraggable'
 
 export default {
   name: "WheelConfig",
 
+  components: {
+    draggable
+  },
+
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user']),
+    dragOptions() {
+      return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
   },
 
   data: () => ({
@@ -398,28 +464,31 @@ export default {
     },
     reseting: false,
     defaultPrizes: [
-      { color: "#ffffff", enabled: true, name: "Piada do saci", message: "{user} ganhou {prize}!" },
-      { color: "#0172ac", enabled: true, name: "Jogo Gratuito", message: "{user} ganhou {prize}!" },
-      { color: "#ffffff", enabled: true, name: "Ganso", message: "{user} ganhou {prize}!" },
-      { color: "#f07e26", enabled: true, name: "Jogar água na cabeça", message: "{user} ganhou {prize}!" },
-      { color: "#ffffff", enabled: true, name: "Adicionar emote da BTTV", message: "{user} ganhou {prize}!", command: "!bttv", delay: 1 },
-      { color: "#fb426e", enabled: true, name: "Anúncio de graça", message: "{user} ganhou {prize}!", command: "/commercial 60", delay: 15 },
-      { color: "#ffffff", enabled: true, name: "Roda 2x", message: "{user} ganhou {prize}!", command: "@2" },
-      { color: "#f2d809", enabled: true, name: "Lendária ou ban", message: "{user} ganhou {prize}!" },
-      { color: "#ffffff", enabled: true, name: "500 rosecoins", message: "{user} ganhou {prize}!", command: "!givepoints {user} 500", delay: 1 },
-      { color: "#0172ac", enabled: true, name: "BG temático", message: "{user} ganhou {prize}!" },
-      { color: "#ffffff", enabled: true, name: "Escolha 2 músicas", message: "{user} ganhou {prize}!" },
-      { color: "#f07e26", enabled: true, name: "De timeout em alguém", message: "{user} ganhou {prize}!" },
-      { color: "#ffffff", enabled: true, name: "10 minutos de timeout", message: "{user} ganhou {prize}!", command: "/timeout {user} 600", delay: 15 },
-      { color: "#fb426e", enabled: true, name: "Imagem para o cromakey", message: "{user} ganhou {prize}!" },
-      { color: "#ffffff", enabled: true, name: "Pergunte ao Tesdey", message: "{user} ganhou {prize}!" },
-      { color: "#f2d809", enabled: true, name: "Desenho na cara", message: "{user} ganhou {prize}!" },
-      { color: "#ffffff", enabled: true, name: "Frase de encerramento", message: "{user} ganhou {prize}!" },
-      { color: "#0172ac", enabled: true, name: "Duelo com Tesdey", message: "{user} ganhou {prize}!" },
+      { index: 0, color: "#ffffff", enabled: true, name: "Piada do saci", message: "{user} ganhou {prize}!" },
+      { index: 1, color: "#0172ac", enabled: true, name: "Jogo Gratuito", message: "{user} ganhou {prize}!" },
+      { index: 2, color: "#ffffff", enabled: true, name: "Ganso", message: "{user} ganhou {prize}!" },
+      { index: 3, color: "#f07e26", enabled: true, name: "Jogar água na cabeça", message: "{user} ganhou {prize}!" },
+      { index: 4, color: "#ffffff", enabled: true, name: "Adicionar emote da BTTV", message: "{user} ganhou {prize}!", command: "!bttv", delay: 1 },
+      { index: 5, color: "#fb426e", enabled: true, name: "Anúncio de graça", message: "{user} ganhou {prize}!", command: "/commercial 60", delay: 15 },
+      { index: 6, color: "#ffffff", enabled: true, name: "Roda 2x", message: "{user} ganhou {prize}!", command: "@2" },
+      { index: 7, color: "#f2d809", enabled: true, name: "Lendária ou ban", message: "{user} ganhou {prize}!" },
+      { index: 8, color: "#ffffff", enabled: true, name: "500 rosecoins", message: "{user} ganhou {prize}!", command: "!givepoints {user} 500", delay: 1 },
+      { index: 9, color: "#0172ac", enabled: true, name: "BG temático", message: "{user} ganhou {prize}!" },
+      { index: 10, color: "#ffffff", enabled: true, name: "Escolha 2 músicas", message: "{user} ganhou {prize}!" },
+      { index: 11, color: "#f07e26", enabled: true, name: "De timeout em alguém", message: "{user} ganhou {prize}!" },
+      { index: 12, color: "#ffffff", enabled: true, name: "10 minutos de timeout", message: "{user} ganhou {prize}!", command: "/timeout {user} 600", delay: 15 },
+      { index: 13, color: "#fb426e", enabled: true, name: "Imagem para o cromakey", message: "{user} ganhou {prize}!" },
+      { index: 14, color: "#ffffff", enabled: true, name: "Pergunte ao Tesdey", message: "{user} ganhou {prize}!" },
+      { index: 15, color: "#f2d809", enabled: true, name: "Desenho na cara", message: "{user} ganhou {prize}!" },
+      { index: 16, color: "#ffffff", enabled: true, name: "Frase de encerramento", message: "{user} ganhou {prize}!" },
+      { index: 17, color: "#0172ac", enabled: true, name: "Duelo com Tesdey", message: "{user} ganhou {prize}!" },
     ],
     selectedItem: null,
     host: process.env.VUE_APP_SERVER_HOST,
-    port: process.env.VUE_APP_SERVER_PORT
+    port: process.env.VUE_APP_SERVER_PORT,
+    drag: false,
+    sort: false,
+    sorting: false
   }),
 
   mounted() {
@@ -455,6 +524,36 @@ export default {
       }
     },
 
+    async togleSort() {
+      if (!this.sort) {
+        this.search = null
+        this.filteredPrizes = this.prizes
+        this.sort = true
+        return
+      }
+
+      this.sorting = true
+
+      await Promise.all(
+        this.filteredPrizes.map(async (prize, index) => {
+          const oldIndex = this.prizes.findIndex(item => item._id === prize._id)
+          const newIndex = index
+
+          if (oldIndex === newIndex && prize.index !== undefined) return
+
+          prize.index = index
+
+          await this.updatePrize(prize)
+
+        })
+      )
+
+      this.prizes = this.filteredPrizes
+
+      this.sort = false
+      this.sorting = false
+    },
+
     async deletePrize(id) {
       const url = `/api/prizes/${id}`;
 
@@ -476,6 +575,12 @@ export default {
         return;
       }
 
+      await this.updatePrize(item)
+
+      this.selectedItem = null;
+    },
+
+    async updatePrize (item) {
       const url = `/api/prizes/${item._id}`;
 
       try {
@@ -486,7 +591,6 @@ export default {
       } catch (e) {
         this.$message.error('Ops, não foi possível editar este item');
       }
-      this.selectedItem = null;
     },
 
     async createPrize() {
@@ -561,6 +665,81 @@ export default {
 #wheel-config {
   .el-row {
     margin-bottom: 20px;
+  }
+
+  .prizes-card { 
+    .el-card__body {
+      padding: 5px 10px 15px 10px;
+    }
+
+    .header-table {
+      width: 100%;
+      padding: 10px;
+      border-bottom: solid 1px #121820;
+      background-color: #262f3a;
+      font-size: 14px;
+      color: #eee;
+      font-weight: 500;
+    }
+
+    .handle {
+      cursor: move;
+    }
+
+    .order-button {
+      float: right;
+      margin-right: 10px;
+    }
+
+    table {
+      width: 100%;
+      tr {
+        td.name {
+          min-width: 200px;
+        }
+        td.message {
+          min-width: 200px;
+        }
+        td.command {
+          min-width: 200px;
+        }
+        td.delay {
+          min-width: 70px;
+        }
+        td.color {
+          min-width: 70px;
+        }
+        td.status {
+          min-width: 70px;
+        }
+        td.actions {
+          min-width: 100px;
+          text-align: right;
+        }
+      }
+    }
+  }
+
+  .prizes-container {
+    height: 540px;
+    overflow-y: scroll;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+    color: #eee;
+    li.list-item {
+      padding: 5px 0;
+      border-bottom: solid 1px #121820;
+      padding: 10px;
+      transition: background-color 200ms linear;
+      &:hover {
+        background-color: #262f3a;
+        transition: background-color 200ms linear;
+      }
+    }
   }
 
   .search-input {
