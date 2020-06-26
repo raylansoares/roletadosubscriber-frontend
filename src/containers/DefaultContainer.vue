@@ -1,28 +1,52 @@
 <template>
-  <div class="page-container md-layout-column">
+  <div class="container">
     <TopBar />
-    <md-content class="container-content">
-      <router-view />
-    </md-content>
+    <el-container><router-view /></el-container>
   </div>
 </template>
 
 <script>
-import TopBar from '@/components/layout/TopBar'
+import TopBar from "@/components/layout/TopBar";
+import { mapState } from 'vuex'
+import { isAuthenticated } from "../utils/auth";
 
 export default {
-  name: 'Temporary',
+  name: "DefaultContainer",
+
   components: {
     TopBar
+  },
+
+  computed: {
+    ...mapState(['user'])
+  },
+
+  mounted () {
+    this.checkAuth()
+  },
+
+  methods: {
+    checkAuth() {
+      setInterval(() => {
+        const validToken = isAuthenticated()
+      }, 300000);
+    }
+  },
+
+  sockets: {
+    updateToken(data) {
+      if (data.code !== this.user.code) return
+      this.$store.commit("SET_USER", data);
+    }
   }
-}
+};
 </script>
 
 <style lang="scss">
-  .container-content {
-    padding: 20px;
+.el-container {
+  justify-content: center;
+  main {
+    max-width: 1280px;
   }
-  .page-container {
-    height: 100vh;
-  }
+}
 </style>

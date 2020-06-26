@@ -1,154 +1,292 @@
 <template>
-  <div id="login">
-    <md-card-content id="header">
-      <img class="logo" src="@/assets/logo.png" alt="logo">
-    </md-card-content>
+  <div>
+    <ul id="topbar">
+      <li><a href="#start-section">Início</a></li>
+      <li><a href="#how-section">Como funciona</a></li>
+      <li><a href="#faq-section">Dúvidas frequentes</a></li>
+      <li><a href="#contact-section">Contato</a></li>
+    </ul>
 
-    <div id="content">
-      <md-field>
-        <label>Usuário</label>
-        <md-input
-          type="text"
-          id="username"
-          v-model="user.username"
-          :disabled="loading"
-        />
-      </md-field>
+    <div id="start-section">
+      <div class="logo">
+        <i class="el-icon-orange"></i>
+      </div>
 
-      <md-field>
-        <label>Senha</label>
-        <md-input
-          type="password"
-          id="password"
-          v-model="user.password"
-          :disabled="loading"
-          @keyup.enter="navigate"
-        />
-      </md-field>
+      <h1 class="title">
+        Roleta do Subscriber
+      </h1>
+
+      <h2 class="subtitle">
+        Roleta automática e personalizável para os subs do seu canal!
+      </h2>
+
+      <div class="links">
+        <el-button type="primary" class="login-button" plain :disabled="loading" @click="connect">
+          <i class="el-icon-loading" v-if="loading"></i>
+          {{ loading ? "Conectando..." : "Conectar conta da Twitch" }}
+        </el-button>
+      </div>
     </div>
 
-    <div id="actions">
+    <div id="how-section">
+      <h2 class="title">Como Funciona</h2>
 
-      <md-button
-        id="login-btn"
-        class="md-raised md-primary"
-        :disabled="loading"
-        @click="navigate"
-      >
-        <span>Entrar</span>
-      </md-button>
+      <p class="description">
+        Sempre que seu canal receber uma nova inscrição, a roleta aparecerá 
+        automaticamente e irá selecionar aleatoriamente um dos prêmios
+        configurados por você. Veja o passo a passo:
+      </p>
 
-      <md-progress-bar v-show="loading" md-mode="indeterminate"></md-progress-bar>
+      <ul class="steps">
+        <li class="step">
+          <span class="step-number">1</span>
+          <span class="step-content">
+            Conecte sua conta da Twitch para acessar o painel.
+          </span>
+        </li>
 
+        <li class="step">
+          <span class="step-number">2</span>
+          <span class="step-content">
+            No painel, acesse a página de configurações clicando em
+            <strong>"Configurar Roleta"</strong> no menu.
+          </span>
+        </li>
+
+        <li class="step">
+          <span class="step-number">3</span>
+          <span class="step-content">
+            Cadastre ou edite os prêmios que aparecerão na roleta.
+          </span>
+        </li>
+
+        <li class="step">
+          <span class="step-number">4</span>
+          <span class="step-content">
+            No bloco <strong>"URL da Roleta para o OBS"</strong>, clique no campo
+            para exibir o endereço da roleta e em seguida copie o link exibido.
+          </span>
+        </li>
+
+        <li class="step">
+          <span class="step-number">5</span>
+          <span class="step-content">
+            No OBS, adicione uma nova fonte do tipo "Navegador/Browser" e cole
+            o link da roleta.
+          </span>
+        </li>
+
+        <li class="step">
+          <span class="step-number">6</span>
+          <span class="step-content">
+            Pronto! Assim que receber uma nova inscrição no seu canal a roleta
+            irá aparecer e selecionar um prêmio automaticamente.
+          </span>
+        </li>
+
+        <p class="description last">
+          Clicando no link <strong>Dashboard</strong> do painel, além de
+          visualizar a o histórico de inscrições e seus respectivos prêmios,
+          você também pode rodar a roleta manualmente para um usuário conforme
+          indicado no primeiro bloco da página.
+        </p>
+      </ul>
     </div>
 
-    <md-snackbar
-      md-position="center"
-      :md-duration="snackBar.duration"
-      :md-active.sync="snackBar.show"
-      md-persistent
-    >
-      <span> {{ snackBar.message }} </span>
-    </md-snackbar>
+    <div id="faq-section">
+      <h2 class="title">Dúvidas Frequentes</h2>
+      <p class="description">Em breve...</p>
+    </div>
+
+    <div id="contact-section">
+      <h2 class="title">Contato</h2>
+      <p class="description">Discord: RaylanPrime#3896</p>
+    </div>
   </div>
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import store from '@/store/index'
+import { authConfig } from "@/utils/auth";
+import axios from '@/repositories/clients/axios'
+import dayjs from "dayjs";
+import 'dayjs/locale/pt-br';
+
+dayjs.locale("pt-br");
 
 export default {
-  name: 'Login',
-  props: {
-    namedRoute: {
-      type: String
-    }
-  },
+  name: "Login",
+
   data: () => ({
-    loading: false,
-    user: {
-      username: '',
-      password: ''
-    },
-    snackBar: {
-      show: false,
-      duration: 4000,
-      message: ''
-    }
+    loading: true
   }),
+
+  mounted() {
+    this.makeAuth();
+  },
+
   methods: {
-    navigate () {
-      this.loading = true
-      console.log(process.env.VUE_APP_PASS)
-      /* bypass */
-      if (this.user.username === 'admin' && this.user.password === process.env.VUE_APP_PASS) {
-        const data = {
-          username: 'admin',
-          name: 'Admin',
-          token: 'admin',
-          expires: dayjs().add(12, 'hour')
-        }
-        store.commit('SET_USER', data)
-        this.$router.push({ name: this.namedRoute })
+    async makeAuth() {
+      const code = this.$route.query.code
+
+      if (!code) {
+        this.loading = false
         return
       }
 
+      const url = '/api/auth'
+
+      try {
+        const authenticatedUser = await axios.post(url, {
+          code: code, redirect: authConfig.redirect_uri
+        });
+        
+        this.$store.commit("SET_USER", authenticatedUser.data);
+        this.$router.push({ name: "Dashboard" });
+      } catch (e) {
+        this.$message.error('Ops, não foi possível conectar sua conta');
+      }
+
       this.loading = false
-      this.snackBar.show = true
-      this.snackBar.message = 'Login e/ou senha incorretos'
-      /* bypass */
+    },
 
-      // this.$http
-      //   .post('/auth', this.user)
-      //   .then((response) => {
-      //     const data = {
-      //       username: response.data.username,
-      //       name: response.data.name,
-      //       token: response.data.token,
-      //       expires: dayjs().add(12, 'hour')
-      //     }
+    connect() {
+      this.loading = true;
+      window.location = this.getAuthUrl();
+    },
 
-      //     store.commit('SET_USER', data)
-      //     this.$router.push({ name: this.namedRoute })
-      //   })
-      //   .catch((err) => {
-      //     this.loading = false
-      //     this.snackBar.show = true
-      //     this.snackBar.message = err
-      //   })
+    getAuthUrl() {
+      let url = authConfig.authUrl;
+
+      url += "?client_id=" + authConfig.client_id;
+      url += "&redirect_uri=" + authConfig.redirect_uri;
+      url += "&response_type=" + authConfig.response_type;
+      url += "&scope=" + authConfig.scopes;
+
+      return url;
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+#topbar {
+  background-color: #1a202ce8;
+  position: fixed;
+  width: 100%;
+  padding: 30px 0;
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  font-weight: lighter;
+  li {
+    padding: 0 30px;
+    a {
+      text-decoration: none;
+      color: #ececec;
     }
   }
 }
-</script>
 
-<style lang="scss">
+#start-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 200px 0;
+  background-color: #1a202c;
+  background-image: url(/img/dots.b81dabc0.png);
+  background-size: contain;
 
-#login {
-    width: 400px;
+  .logo i {
+    font-size: 98px;
+    color: #b2b6bd;
+  }
 
-    #header {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
+  .title {
+    display: block;
+    font-weight: 300;
+    font-size: 62px;
+    color: #b2b6bd;
+    letter-spacing: 1px;
+  }
 
-        .logo {
-          width: 100px;
-        }
+  .subtitle {
+    font-weight: 300;
+    font-size: 28px;
+    color: #9fa4ad;
+    word-spacing: 5px;
+    padding-bottom: 15px;
+  }
+
+  .links {
+    padding-top: 15px;
+    .login-button {
+      padding: 15px 40px;
+      font-size: 16px;
+      font-weight: normal;
     }
-
-    #content {
-      padding: 6px 8px;
-    }
-
-    #actions {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        .md-progress-bar {
-          margin: -6px 8px 0 8px;
-        }
-    }
+  }
 }
 
+#how-section, #faq-section, #contact-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 80px 0;
+  text-align: center;
+  .title {
+    font-weight: 300;
+    font-size: 48px;
+    color: #9fa4ad;
+    word-spacing: 5px;
+    padding-bottom: 60px;
+  }
+  .description {
+    color: #9fa4ad;
+    max-width: 1024px;
+    &.last {
+      padding-top: 30px;
+    }
+  }
+}
+
+#how-section {
+  background-color: #2d3748;
+  .steps {
+    max-width: 1024px;
+    padding: 20px 0;
+    list-style: none;
+    .step {
+      display: flex;
+      align-items: center;
+      padding: 5px 0;
+      color: #c9ccd2;
+      .step-number {
+        font-size: 22px;
+        padding: 0 10px;
+        height: 35px;
+        width: 35px;
+        border: 1px solid #c9ccd2;
+        background-color: #384456;
+        border-radius: 100px;
+        margin: 10px;
+      }
+      .step-content {
+        text-align: left;
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+#faq-section {
+  background-color: #1a202c;
+  background-image: url(/img/dots.b81dabc0.png);
+  background-size: contain;
+}
+
+#contact-section {
+  background-color: #2d3748;
+}
 </style>

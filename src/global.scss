@@ -1,42 +1,98 @@
-/* #fb426e #0172ac #f07e26 #f2d809 */
-
-*{
-    margin: 0;
-    padding: 0;
-    outline: 0;
-    box-sizing: border-box;
-}
-
-html.md-theme-default {
-    background-color: transparent;
-    color: rgba(0, 0, 0, 0.87);
-}
-
-body{
-    font: 400 14px Roboto, sans-serif;
-    background: none;
+html {
+    font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
+      'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    word-spacing: 1px;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
 }
 
-input, button, textarea {
-    font: 400 18px Roboto, sans-serif;
-    &:disabled{
-        opacity: 0.5;
-    }
+.container {
+    background-color: #181c23;
+    background-image: url(./assets/images/dots.png);
+    background-size: contain;
+    color: #e4e4e4;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+  
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+}
+  
+.page-enter-active, .page-leave-active {
+    transition: opacity .2s;
+}
+.page-enter, .page-leave-to {
+    opacity: 0;
 }
 
-button {
-    cursor: pointer;
-    &:disabled{
-        opacity: 0.5;
-    }
+::-webkit-scrollbar-track {
+    background-color: #181c23;
+  }
+
+::-webkit-scrollbar {
+    width: 5px;
+    background-color: #181c23;
 }
 
-.md-card {
-    box-shadow: 0 0 3px #00000029;
-    border-radius: 4px;
+::-webkit-scrollbar-thumb {
+    background-color: #0c0f15;
 }
 
-.page-container {
-    background-color: #f9f9f9;
+::-webkit-input-placeholder { /* Webkit */
+    color: #364250!important;
+} 
+
+.el-button.is-circle {
+    padding: 8px;
+    font-size: 16px;
+}
+
+.el-dropdown .el-button.is-circle {
+    margin: 0 0 0 4px;
+}
+
+.el-alert--info.is-dark {
+    background-color: #222933;
+}
+
+.el-avatar {
+    color: #222933;
+}
+
+.el-alert.is-dark .el-alert__closebtn, .el-alert.is-dark .el-alert__description {
+    color: #e4e4e4;
+}
+
+.el-table th {
+    background-color: #262f3a;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover > td {
+    background-color: #262f3a;
+}
+
+.el-input__inner {
+    background-color: #1f252d;
+    color: #e4e4e4;    
+}
+
+.el-tag.el-tag--success {
+    background-color: #2a3934;
+    border-color: #446733;
+    color: #67c23a;
+}
+
+.el-tag.el-tag--danger {
+    background-color: #383039;
+    border-color: #8d4d4d;
+    color: #f56c6c;
 }

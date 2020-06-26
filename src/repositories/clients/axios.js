@@ -1,12 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
-const environment = {
-  development: {
-    baseURL: 'http://localhost:8000'
-  },
-  production: {
-    baseURL: 'http://localhost:8000'
-  }
-}
+const axiosConfig = {
+  baseURL: `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}`
+};
 
-export default axios.create(environment[process.env.NODE_ENV])
+export default axios.create(axiosConfig);

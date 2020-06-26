@@ -1,210 +1,306 @@
 <template>
   <div id="dashboard">
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <el-card shadow="hover" class="top-card">
+          <el-form label-position="top" @submit.native.prevent="manualWheel">
+            <el-form-item label="Roletar Manualmente" class="big-label">
+              <el-input v-model="username" placeholder="Username"></el-input>
+            </el-form-item>
 
-    <div class="md-layout">
-      <div class="md-layout-item three-cards">
-        <md-card>
-          <md-card-content>
-            <p class="card-title">Roletar manualmente</p>
-            <md-field>
-              <label>Nome do usuário</label>
-              <md-input v-model="username" @keyup.enter="manualWheel" />
-            </md-field>
-            <md-button
-              class="md-dense md-raised md-primary roll-button"
-              :disabled="!username"
-              @click="manualWheel"
-            >
-              Roletar
-            </md-button>
-          </md-card-content>
-        </md-card>
-      </div>
-      <div class="md-layout-item three-cards">
-        <md-card>
-          <md-card-content>
-            <p class="card-title">Widget 2</p>
-          </md-card-content>
-        </md-card>
-      </div>
-      <div class="md-layout-item three-cards">
-        <md-card>
-          <md-card-content>
-            <p class="card-title">Widget 3</p>
-          </md-card-content>
-        </md-card>
-      </div>
-    </div>
+            <el-form-item class="roll-button">
+              <el-button type="primary" plain @click="manualWheel">
+                Roletar
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-card>
+      </el-col>
 
-    <md-table v-model="filteredUsers" md-card md-fixed-header>
-      <md-table-toolbar>
-        <div class="md-toolbar-section-start">
-          <h1 class="md-title">Subscribers</h1>
-        </div>
+      <el-col :span="8">
+        <el-card shadow="hover" class="top-card">
+          <el-form label-position="top" @submit.native.prevent="" disabled>
+            <el-form-item label="Em breve" class="big-label">
+              <!-- <el-input v-model="command" placeholder="Comando"></el-input> -->
+            </el-form-item>
 
-        <md-field md-clearable class="md-toolbar-section-end">
-          <md-input placeholder="Buscar usuário..." v-model="search" @input="filterUsers" />
-        </md-field>
-      </md-table-toolbar>
+            <!-- <el-form-item class="open-raffle-button">
+              <el-button type="primary" plain @click="openRaffle">
+                Abrir sorteio
+              </el-button>
+            </el-form-item> -->
 
-      <md-table-row slot="md-table-row" slot-scope="{ item }">
-        <md-table-cell md-label="Usuário" class="cell-username">{{ item.username }}</md-table-cell>
-        <md-table-cell md-label="Prêmios" class="cell-prize">
-          <md-chip v-for="(prize, key) in item.prizes" :key="key">{{ prize }}</md-chip>
-        </md-table-cell>
-        <md-table-cell md-label="Data" class="cell-date">{{ item.created_at | formatDate }}</md-table-cell>
-        <md-table-cell md-label="Ações" class="cell-actions">
-          <md-button
-            id="force-wheel"
-            class="md-icon-button md-dense md-raised md-primary"
-            @dblclick="retryWheel(item)"
-            title="Tentar novamente"
+            <!-- <el-form-item class="close-raffle-button">
+              <el-button type="primary" plain @click="closeRaffle">
+                Finalizar sorteio
+              </el-button>
+            </el-form-item> -->
+          </el-form>
+        </el-card>
+      </el-col>
+
+      <el-col :span="8">
+        <el-card shadow="hover" class="top-card">
+          <div class="profile-card">
+            <el-avatar :size="80" :src="user.profile_image_url"></el-avatar>
+            <p>{{ user.display_name }}</p>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+
+    <el-row>
+      <el-col :span="24">
+        <el-card shadow="hover">
+          <div slot="header" class="clearfix">
+            <span class="card-title">Subscribers</span>
+
+            <div class="search-input">
+              <el-input
+                size="small"
+                v-model="search"
+                placeholder="Buscar subscriber"
+                @input="filterSubscribers"
+              />
+            </div>
+          </div>
+
+          <el-table
+            :data="filteredSubscribers"
+            style="width: 100%"
+            height="520"
+            header-cell-class-name="sub-table-header"
           >
-            <md-icon>cached</md-icon>
-          </md-button>
-          <md-button
-            id="delete-item"
-            class="md-icon-button md-dense md-raised md-accent"
-            @dblclick="deleteSubscriber(item._id)"
-            title="Excluir registro"
-          >
-            <md-icon>close</md-icon>
-          </md-button>
-        </md-table-cell>
-      </md-table-row>
-    </md-table>
+            <el-table-column
+              label="Subscriber"
+              prop="username"
+              min-width="200px"
+            ></el-table-column>
+
+            <el-table-column label="Prêmio" min-width="400px">
+              <template slot-scope="scope">
+                <el-tag
+                  v-for="(prize, index) in scope.row.prizes"
+                  :key="index"
+                  class="prize-tag"
+                >
+                  {{ prize.name }}
+                </el-tag>
+              </template>
+            </el-table-column>
+
+            <el-table-column label="Data do Sub" min-width="200px">
+              <template slot-scope="scope">
+                {{ scope.row.created_at | formatDate }}
+              </template>
+            </el-table-column>
+
+            <el-table-column align="right" min-width="100px">
+              <template slot-scope="scope">
+                <el-dropdown trigger="click" placement="bottom">
+                  <el-button
+                    icon="el-icon-refresh"
+                    circle
+                    plain
+                    type="primary"
+                  >
+                  </el-button>
+
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>
+                      <span @click="retryWheel(scope.row)">Confirmar</span>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+
+                <el-dropdown trigger="click" placement="bottom">
+                  <el-button
+                    icon="el-icon-delete"
+                    circle
+                    plain
+                    type="danger"
+                  >
+                  </el-button>
+
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item>
+                      <span @click="deleteSubscriber(scope.row._id)">
+                        Confirmar
+                      </span>
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+              </template>
+            </el-table-column>
+          </el-table>
+        </el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import dayjs from 'dayjs'
-import axios from 'axios'
-import moment from 'moment'
+import axios from '@/repositories/clients/axios'
+import { mapState } from 'vuex'
+import dayjs from "dayjs";
+import 'dayjs/locale/pt-br';
+
+dayjs.locale("pt-br");
 
 export default {
-  name: 'Dashboard',
+  name: "Dashboard",
+
+  computed: {
+    ...mapState(['user'])
+  },
 
   data: () => ({
     subscribers: [],
-    filteredUsers: [],
-    search: null,
-    username: null
+    filteredSubscribers: [],
+    search: "",
+    username: null,
+    command: '!sorteio',
+    host: process.env.VUE_APP_SERVER_HOST,
+    port: process.env.VUE_APP_SERVER_PORT
   }),
 
-  mounted () {
-    this.getSubscribers()
+  mounted() {
+    this.getSubscribers();
   },
 
   filters: {
-      formatDate: value => (moment(value).format('DD/MM/YYYY - HH:mm:ss'))
+    formatDate: value => dayjs(value).format("DD/MM/YYYY - HH:mm:ss")
   },
 
   methods: {
-    async getSubscribers () {
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/subscribers`
-      const response = await axios.get(url)
-      
-      this.subscribers = response.data
-      this.filterUsers()
-    },
+    async getSubscribers() {
+      const url = '/api/subscribers';
 
-    filterUsers () {
-      if (this.search) {
-        this.filteredUsers = this.subscribers.filter(value => value.username.toLowerCase().includes(this.search.toLowerCase()))
-      } else {
-        this.filteredUsers = this.subscribers
+      try {
+        const response = await axios.get(url, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+
+        this.subscribers = response.data;
+        this.filterSubscribers();
+      } catch (e) {
+        this.$message.error('Ops, não foi possível carregar a lista de subs');
       }
     },
 
-    retryWheel (subscriber) {
-      this.$socket.emit('retryWheel', subscriber)
+    filterSubscribers() {
+      if (this.search) {
+        this.filteredSubscribers = this.subscribers.filter(value =>
+          value.username.toLowerCase().includes(this.search.toLowerCase())
+        );
+      } else {
+        this.filteredSubscribers = this.subscribers;
+      }
     },
 
-    manualWheel () {
-      if (!this.username) return
-      this.$socket.emit('requestPrize', this.username)
-      this.username = null
+    retryWheel(subscriber) {
+      this.$socket.emit("retryWheel", { 
+        subscriber: subscriber, code: this.user.code
+      });
     },
 
-    async deleteSubscriber (id) {
-      const url = `${process.env.VUE_APP_SERVER_HOST}:${process.env.VUE_APP_SERVER_PORT}/api/subscribers/${id}`
-      const response = await axios.delete(url)
-      this.getSubscribers()
-    }
+    manualWheel() {
+      if (!this.username) return;
+      this.$socket.emit("requestPrize", { 
+        username: this.username, code: this.user.code 
+      });
+      this.username = null;
+    },
+
+    async deleteSubscriber(id) {
+      const url = `/api/subscribers/${id}`;
+
+      try {
+        await axios.delete(url, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+        
+        this.getSubscribers();
+      } catch (e) {
+        this.$message.error('Ops, não foi possível excluir este item');
+      }
+    },
+
+    openRaffle () {},
+    closeRaffle () {}
   },
 
   sockets: {
-    connect() {
-      console.log('connect')
+    selectPrize(data) {
+      if (data.code !== this.user.code) return
+      this.getSubscribers();
     },
 
-    disconnect() {
-      console.log('disconnect')
-    },
-
-    selectPrize() {
-      this.getSubscribers()
-    },
-
-    confirmPrize() {
-      this.getSubscribers()
+    confirmPrize(data) {
+      if (data.code !== this.user.code) return
+      this.getSubscribers();
     }
-  },
-}
+  }
+};
 </script>
 
 <style lang="scss">
-  #dashboard {
-    width: 100%;
-    max-width: 1280px;
-    .three-cards {
-      &:nth-child(1) {
-        margin-right: 10px;
-      }
-      &:nth-child(2) {
-        margin: 0 10px;
-      }
-      &:nth-child(3) {
-        margin-left: 10px;
-      }
-      .md-card {
-        min-height: 170px;
-      }
-    }
-    .md-content {
-      height: auto!important;
-    }
-    .md-table {
-      display: block;
-    }
-    .md-chip {
-      height: 22px;
-      font-size: 12px;
-      line-height: 22px;
-      margin: 2px;
-    }
-    .md-card {
-      margin-bottom: 20px;
-    }
-    .card-title {
-      font-size: 18px;
-      color: rgba(0, 0, 0, 0.87)
-    }
-    .roll-button {
+#dashboard {
+  .big-label label {
+    font-size: 20px;
+  }
+
+  .roll-button, .open-raffle-button, .close-raffle-button {
+    margin-bottom: 0;
+    button {
       width: 100%;
-      margin: 0;
-    }
-    .cell-username {
-      width: 30%;
-    }
-    .cell-prizes {
-      width: 35%;
-    }
-    .cell-date {
-      width: 20%;
-    }
-    .cell-actions {
-      width: 15%;
     }
   }
+
+  .el-form-item {
+    margin-bottom: 15px;
+  }
+
+  .el-row {
+    margin-bottom: 20px;
+  }
+
+  .prize-tag {
+    margin: 3px;
+  }
+
+  .search-input {
+    float: right;
+    width: 300px;
+  }
+
+  .card-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #e4e4e4;
+  }
+
+  .profile-card {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    p {
+      font-size: 22px;
+      color: #e4e4e4;
+      margin-top: 10px;
+    }
+  }
+
+  .top-card {
+    min-height: 200px;
+  }
+
+  input:disabled{
+    background-color: #222933;
+    color: #121820;
+  }
+}
 </style>

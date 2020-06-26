@@ -1,26 +1,23 @@
 <template>
-  <div class="wheel-container">
+  <el-main class="wheel-main">
     <Wheel />
-  </div>
+  </el-main>
 </template>
 
 <script>
-import Wheel from '@/components/wheel/Wheel'
+import Wheel from "@/components/wheel/Wheel";
 
 export default {
-  name: 'WheelView',
+  name: "WheelView",
+
   components: {
     Wheel
   }
-}
+};
 </script>
 
 <style lang="scss">
-  .wheel-container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-content: center;
-    align-items: center;
+  .wheel-main {
+    padding: 0!important;
   }
 </style>

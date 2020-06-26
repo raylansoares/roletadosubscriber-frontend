@@ -1,47 +1,17 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import AxiosClient from './repositories/clients/axios'
-import {
-  MdButton,
-  MdCard,
-  MdContent,
-  MdIcon,
-  MdField,
-  MdProgress,
-  MdSnackbar,
-  MdToolbar,
-  MdDrawer,
-  MdList,
-  MdTable,
-  MdRipple,
-  MdChips,
-  MdMenu,
-  MdSwitch
-} from 'vue-material/dist/components'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import AxiosClient from "./repositories/clients/axios";
+import ElementUI from "element-ui";
+import locale from "element-ui/lib/locale/lang/en";
+import VueSocketIO from "vue-socket.io";
 
-import VueSocketIO from 'vue-socket.io'
+import "element-ui/lib/theme-chalk/index.css";
+import 'element-theme-dark';
+import "./global.scss";
 
-import 'vue-material/dist/vue-material.min.css'
-import './assets/theme/custom.css'
-import './global.scss'
-
-Vue.use(MdButton)
-Vue.use(MdCard)
-Vue.use(MdContent)
-Vue.use(MdIcon)
-Vue.use(MdField)
-Vue.use(MdProgress)
-Vue.use(MdSnackbar)
-Vue.use(MdToolbar)
-Vue.use(MdDrawer)
-Vue.use(MdList)
-Vue.use(MdTable)
-Vue.use(MdRipple)
-Vue.use(MdChips)
-Vue.use(MdMenu)
-Vue.use(MdSwitch)
+Vue.use(ElementUI, { locale });
 
 Vue.use(new VueSocketIO({
   debug: false,
