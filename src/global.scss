@@ -85,6 +85,10 @@ html {
     color: #e4e4e4;    
 }
 
+.el-input.is-disabled .el-input__inner {
+    background-color: #222933;
+}
+
 .el-tag.el-tag--success {
     background-color: #2a3934;
     border-color: #446733;
