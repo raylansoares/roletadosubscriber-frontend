@@ -97,39 +97,24 @@
 
             <el-table-column align="right" min-width="100px">
               <template slot-scope="scope">
-                <el-dropdown trigger="click" placement="bottom">
-                  <el-button
-                    icon="el-icon-refresh"
-                    circle
-                    plain
-                    type="primary"
-                  >
-                  </el-button>
-
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>
-                      <span @click="retryWheel(scope.row)">Confirmar</span>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-
-                <el-dropdown trigger="click" placement="bottom">
-                  <el-button
-                    icon="el-icon-delete"
-                    circle
-                    plain
-                    type="danger"
-                  >
-                  </el-button>
-
-                  <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item>
-                      <span @click="deleteSubscriber(scope.row._id)">
-                        Confirmar
-                      </span>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
+                <el-button
+                  icon="el-icon-refresh"
+                  circle
+                  plain
+                  type="primary"
+                  @click="retryWheel(scope.row)"
+                  title="Roletar novamente"
+                >
+                </el-button>
+                <el-button
+                  icon="el-icon-delete"
+                  circle
+                  plain
+                  type="danger"
+                  title="Excluir"
+                  @click="deleteSubscriber(scope.row._id)"
+                >
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
