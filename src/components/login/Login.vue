@@ -21,7 +21,13 @@
       </h2>
 
       <div class="links">
-        <el-button type="primary" class="login-button" plain :disabled="loading" @click="connect">
+        <el-button
+          type="primary"
+          class="login-button"
+          plain
+          :disabled="loading"
+          @click="connect"
+        >
           <i class="el-icon-loading" v-if="loading"></i>
           {{ loading ? "Conectando..." : "Conectar conta da Twitch" }}
         </el-button>
@@ -34,7 +40,8 @@
       <p class="description">
         Sempre que seu canal receber uma nova inscrição, a roleta aparecerá 
         automaticamente e irá selecionar aleatoriamente um dos prêmios
-        configurados por você. Veja o passo a passo:
+        configurados por você. Em seguida o bot "<strong>RoseChatBot</strong>"
+        anunciará o prêmio no chat. Veja o passo a passo:
       </p>
 
       <ul class="steps">
@@ -95,12 +102,43 @@
 
     <div id="faq-section">
       <h2 class="title">Dúvidas Frequentes</h2>
-      <p class="description">Em breve...</p>
+
+      <ul class="questions">
+        <li class="question">
+          <span class="question-content">
+            Por que alguns comandos configurados nos prêmios não funcionam?
+          </span>
+          <span class="question-answer">
+            O Bot necessita de algumas permissões especiais para determinados
+            comandos, para o <strong>/timeout</strong> por exemplo, é preciso
+            dar status de moderador para o bot. Para o comando
+            <strong>/commercial</strong> o bot precisa ter permissão de editor.
+          </span>
+        </li>
+
+        <li class="question">
+          <span class="question-content">
+            Por que os prêmios estão aparecendo 2x no chat?
+          </span>
+          <span class="question-answer">
+            O link da roleta só pode estar ativo em um lugar, no OBS. Se os
+            prêmios estão sendo anuncioados 2x no chat verifique se não deixou a
+            roleta aberta em alguma aba do navegador. Lembrando que para utilizar
+            a roleta em várias cenas diferentes no OBS é necessário copiar a
+            primeira fonte cadastrada com o link da roleta e colar na nova cena a
+            <strong>referência</strong> da fonte.
+          </span>
+        </li>
+
+      </ul>
     </div>
 
     <div id="contact-section">
       <h2 class="title">Contato</h2>
-      <p class="description">Discord: RaylanPrime#3896</p>
+      <p class="description">
+        Ficou com alguma dúvida? Me chame no Discord:
+        <strong>RaylanPrime#3896</strong>
+      </p>
     </div>
   </div>
 </template>
@@ -240,7 +278,7 @@ export default {
     font-size: 48px;
     color: #9fa4ad;
     word-spacing: 5px;
-    padding-bottom: 60px;
+    padding-bottom: 30px;
   }
   .description {
     color: #9fa4ad;
@@ -284,6 +322,26 @@ export default {
   background-color: #1a202c;
   background-image: url(/img/dots.b81dabc0.png);
   background-size: contain;
+  .questions {
+    max-width: 1024px;
+    padding: 0 0 20px 0;
+    list-style: none;
+    .question {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0 20px 0;
+      .question-content {
+        color: #c9ccd2;
+        font-size: 22px;
+      }
+      .question-answer {
+        padding: 10px 0;
+        font-size: 16px;
+        color: #9fa4ad;
+      }
+    }
+  }
 }
 
 #contact-section {
