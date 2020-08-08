@@ -22,7 +22,7 @@ const authConfig = {
   client_id: process.env.VUE_APP_CLIENT_ID,
   redirect_uri: `${process.env.VUE_APP_URL}/login/callback`,
   response_type: "code",
-  scopes: "user:read:email"
+  scopes: "user:read:email channel:read:redemptions"
 };
 
 export { isAuthenticated, authConfig };
