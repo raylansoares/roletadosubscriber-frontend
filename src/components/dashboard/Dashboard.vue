@@ -315,5 +315,9 @@ export default {
     height: 22px;
     min-width: 50px;
   }
+
+  #badge-hot .top-card {
+    border: solid 1px #145e85;
+  } 
 }
 </style>
