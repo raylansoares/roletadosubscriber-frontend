@@ -51,7 +51,7 @@ export default {
             showClose: true
           });
         }
-      }, 3600);
+      }, 3600000);
     }
   }
 };
