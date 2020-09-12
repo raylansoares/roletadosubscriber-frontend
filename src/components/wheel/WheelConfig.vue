@@ -9,17 +9,17 @@
           </div>
           <div class="var-desc">
             <p>
-            <strong>{user}</strong>
-            - Exibe o nome do subscriber na mensagem ou comando
-          </p>
-          <p>
-            <strong>{prize}</strong>
-            - Exibe o nome do prêmio na mensagem
-          </p>
-          <p>
-            <strong>@2</strong>
-            - Comando para roletar mais 2x (mín 1 e máx 2)
-          </p>
+              <strong>{user}</strong>
+              - Exibe o nome do subscriber na mensagem ou comando
+            </p>
+            <p>
+              <strong>{prize}</strong>
+              - Exibe o nome do prêmio na mensagem
+            </p>
+            <p>
+              <strong>@2</strong>
+              - Comando para roletar mais 2x (mín 1 e máx 2)
+            </p>
           </div>
         </el-card>
       </el-col>

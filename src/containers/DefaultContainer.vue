@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import axios from '@/repositories/clients/axios'
 import TopBar from "@/components/layout/TopBar";
 import { mapState } from 'vuex'
 import { isAuthenticated } from "../utils/auth";
@@ -27,16 +28,30 @@ export default {
 
   methods: {
     checkAuth() {
-      setInterval(() => {
-        const validToken = isAuthenticated()
-      }, 300000);
-    }
-  },
+      setInterval(async () => {
+        if (!this.user) return
 
-  sockets: {
-    updateToken(data) {
-      if (data.code !== this.user.code) return
-      this.$store.commit("SET_USER", data);
+        const userCode = this.user.code;
+        const userAccessToken = this.user.access_token;
+        const url = '/api/auth/refresh';
+
+        try {
+          const response = await axios.get(url, { headers: { 
+            'x-auth-token': userAccessToken,
+            'x-code': userCode
+          } });
+          this.$store.commit("SET_USER", response.data);
+        } catch (e) {
+          this.$store.commit("SET_USER", null);
+          this.$router.push({ name: "Login" });
+          this.$message({
+            message: 'Ops, sua sessão expirou. Faça login novamente para continuar.',
+            type: 'error',
+            duration: 0,
+            showClose: true
+          });
+        }
+      }, 3600000);
     }
   }
 };

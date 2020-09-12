@@ -18,25 +18,21 @@
       </el-col>
 
       <el-col :span="8">
-        <el-card shadow="hover" class="top-card">
-          <el-form label-position="top" @submit.native.prevent="" disabled>
-            <el-form-item label="Em breve" class="big-label">
-              <!-- <el-input v-model="command" placeholder="Comando"></el-input> -->
-            </el-form-item>
-
-            <!-- <el-form-item class="open-raffle-button">
-              <el-button type="primary" plain @click="openRaffle">
-                Abrir sorteio
-              </el-button>
-            </el-form-item> -->
-
-            <!-- <el-form-item class="close-raffle-button">
-              <el-button type="primary" plain @click="closeRaffle">
-                Finalizar sorteio
-              </el-button>
-            </el-form-item> -->
-          </el-form>
-        </el-card>
+        <el-badge value="Novo!" id="badge-hot" type="primary">
+          <el-card shadow="hover" class="top-card">
+            <div class="big-label">
+              <p>Channel Points</p>
+            </div>
+            <div class="channel-points-desc">
+              <p>
+                Para integrar a roleta com os pontos do canal basta adicionar
+                uma recompensa personalizada exatamente com o seguinte nome:
+                <strong>Ganhe uma roleta do subscriber</strong>
+                <small>Precisa estar logado aqui no painel para que funcione!</small>
+              </p>
+            </div>
+          </el-card>
+        </el-badge>
       </el-col>
 
       <el-col :span="8">
@@ -287,5 +283,41 @@ export default {
     background-color: #222933;
     color: #121820;
   }
+
+  .big-label {
+    color: #fff;
+    label {
+      font-size: 20px;
+    }
+    p {
+      font-size: 20px;
+      margin-top: 7px;
+    }
+  }
+
+  .channel-points-desc p {
+    font-size: 14px;
+    padding: 14px 0 5px 0;
+    strong {
+      display: block;
+      font-size: 16px;
+      margin: 5px 0;
+    }
+  }
+
+  #badge-hot sup {
+    right: 40px;
+    top: 2px;
+    line-height: 18px;
+    color: #14a2f4;
+    background-color: #1f3647;
+    border: solid 1px #145e85;
+    height: 22px;
+    min-width: 50px;
+  }
+
+  #badge-hot .top-card {
+    border: solid 1px #145e85;
+  } 
 }
 </style>

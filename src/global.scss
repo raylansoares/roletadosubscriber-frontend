@@ -100,3 +100,7 @@ html {
     border-color: #8d4d4d;
     color: #f56c6c;
 }
+
+.el-message.is-closable .el-message__content {
+    padding-right: 30px;
+}
