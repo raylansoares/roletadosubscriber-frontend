@@ -472,7 +472,7 @@ export default {
       { index: 5, color: "#fb426e", enabled: true, name: "Anúncio de graça", message: "{user} ganhou {prize}!", command: "/commercial 60", delay: 15 },
       { index: 6, color: "#ffffff", enabled: true, name: "Roda 2x", message: "{user} ganhou {prize}!", command: "@2" },
       { index: 7, color: "#f2d809", enabled: true, name: "Lendária ou ban", message: "{user} ganhou {prize}!" },
-      { index: 8, color: "#ffffff", enabled: true, name: "500 rosecoins", message: "{user} ganhou {prize}!", command: "!givepoints {user} 500", delay: 1 },
+      { index: 8, color: "#ffffff", enabled: true, name: "500 rosecoins", message: "{user} ganhou {prize}!", command: "!addpoints {user} 500", delay: 1 },
       { index: 9, color: "#0172ac", enabled: true, name: "BG temático", message: "{user} ganhou {prize}!" },
       { index: 10, color: "#ffffff", enabled: true, name: "Escolha 2 músicas", message: "{user} ganhou {prize}!" },
       { index: 11, color: "#f07e26", enabled: true, name: "De timeout em alguém", message: "{user} ganhou {prize}!" },
