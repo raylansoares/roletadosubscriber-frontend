@@ -175,6 +175,11 @@
               </el-color-picker>
             </el-form-item>
 
+            <el-form-item label="Texto" prop="text_color" class="inline-label text-color">
+              <el-color-picker v-model="prize.text_color" size="medium">
+              </el-color-picker>
+            </el-form-item>
+
             <el-form-item label="Status" prop="enabled" class="inline-label">
               <el-switch
                 v-model="prize.enabled"
@@ -240,6 +245,7 @@
               <td class="command">Comando</td>
               <td class="delay">Delay</td>
               <td class="color">Cor</td>
+              <td class="text-color">Texto</td>
               <td class="status">Status</td>
               <td class="actions">Ações</td>
             </tr>
@@ -353,6 +359,18 @@
                         ></el-color-picker>
                       </td>
 
+                      <td class="text-color">
+                        <span v-if="selectedItem !== prize._id">
+                          <el-tag class="color-tag" :color="prize.text_color">
+                          </el-tag>
+                        </span>
+                        <el-color-picker
+                          v-else
+                          v-model="prize.text_color"
+                          size="small"
+                        ></el-color-picker>
+                      </td>
+
                       <td class="status">
                         <span v-if="selectedItem !== prize._id">
                           <el-tag :type="prize.enabled ? 'success' : 'danger'">
@@ -460,28 +478,29 @@ export default {
       command: null,
       delay: null,
       color: null,
+      text_color: null,
       enabled: null
     },
     reseting: false,
     defaultPrizes: [
-      { index: 0, color: "#ffffff", enabled: true, name: "Piada do saci", message: "{user} ganhou {prize}!" },
-      { index: 1, color: "#0172ac", enabled: true, name: "Jogo Gratuito", message: "{user} ganhou {prize}!" },
-      { index: 2, color: "#ffffff", enabled: true, name: "Ganso", message: "{user} ganhou {prize}!" },
-      { index: 3, color: "#f07e26", enabled: true, name: "Jogar água na cabeça", message: "{user} ganhou {prize}!" },
-      { index: 4, color: "#ffffff", enabled: true, name: "Adicionar emote da BTTV", message: "{user} ganhou {prize}!", command: "!bttv", delay: 1 },
-      { index: 5, color: "#fb426e", enabled: true, name: "Anúncio de graça", message: "{user} ganhou {prize}!", command: "/commercial 60", delay: 15 },
-      { index: 6, color: "#ffffff", enabled: true, name: "Roda 2x", message: "{user} ganhou {prize}!", command: "@2" },
-      { index: 7, color: "#f2d809", enabled: true, name: "Lendária ou ban", message: "{user} ganhou {prize}!" },
-      { index: 8, color: "#ffffff", enabled: true, name: "500 rosecoins", message: "{user} ganhou {prize}!", command: "!givepoints {user} 500", delay: 1 },
-      { index: 9, color: "#0172ac", enabled: true, name: "BG temático", message: "{user} ganhou {prize}!" },
-      { index: 10, color: "#ffffff", enabled: true, name: "Escolha 2 músicas", message: "{user} ganhou {prize}!" },
-      { index: 11, color: "#f07e26", enabled: true, name: "De timeout em alguém", message: "{user} ganhou {prize}!" },
-      { index: 12, color: "#ffffff", enabled: true, name: "10 minutos de timeout", message: "{user} ganhou {prize}!", command: "/timeout {user} 600", delay: 15 },
-      { index: 13, color: "#fb426e", enabled: true, name: "Imagem para o cromakey", message: "{user} ganhou {prize}!" },
-      { index: 14, color: "#ffffff", enabled: true, name: "Pergunte ao Tesdey", message: "{user} ganhou {prize}!" },
-      { index: 15, color: "#f2d809", enabled: true, name: "Desenho na cara", message: "{user} ganhou {prize}!" },
-      { index: 16, color: "#ffffff", enabled: true, name: "Frase de encerramento", message: "{user} ganhou {prize}!" },
-      { index: 17, color: "#0172ac", enabled: true, name: "Duelo com Tesdey", message: "{user} ganhou {prize}!" },
+      { index: 0, color: "#ffffff", text_color: "#000000", enabled: true, name: "Piada do saci", message: "{user} ganhou {prize}!" },
+      { index: 1, color: "#0172ac", text_color: "#000000", enabled: true, name: "Jogo Gratuito", message: "{user} ganhou {prize}!" },
+      { index: 2, color: "#ffffff", text_color: "#000000", enabled: true, name: "Ganso", message: "{user} ganhou {prize}!" },
+      { index: 3, color: "#f07e26", text_color: "#000000", enabled: true, name: "Jogar água na cabeça", message: "{user} ganhou {prize}!" },
+      { index: 4, color: "#ffffff", text_color: "#000000", enabled: true, name: "Adicionar emote da BTTV", message: "{user} ganhou {prize}!", command: "!bttv", delay: 1 },
+      { index: 5, color: "#fb426e", text_color: "#000000", enabled: true, name: "Anúncio de graça", message: "{user} ganhou {prize}!", command: "/commercial 60", delay: 15 },
+      { index: 6, color: "#ffffff", text_color: "#000000", enabled: true, name: "Roda 2x", message: "{user} ganhou {prize}!", command: "@2" },
+      { index: 7, color: "#f2d809", text_color: "#000000", enabled: true, name: "Lendária ou ban", message: "{user} ganhou {prize}!" },
+      { index: 8, color: "#ffffff", text_color: "#000000", enabled: true, name: "500 rosecoins", message: "{user} ganhou {prize}!", command: "!givepoints {user} 500", delay: 1 },
+      { index: 9, color: "#0172ac", text_color: "#000000", enabled: true, name: "BG temático", message: "{user} ganhou {prize}!" },
+      { index: 10, color: "#ffffff", text_color: "#000000", enabled: true, name: "Escolha 2 músicas", message: "{user} ganhou {prize}!" },
+      { index: 11, color: "#f07e26", text_color: "#000000", enabled: true, name: "De timeout em alguém", message: "{user} ganhou {prize}!" },
+      { index: 12, color: "#ffffff", text_color: "#000000", enabled: true, name: "10 minutos de timeout", message: "{user} ganhou {prize}!", command: "/timeout {user} 600", delay: 15 },
+      { index: 13, color: "#fb426e", text_color: "#000000", enabled: true, name: "Imagem para o cromakey", message: "{user} ganhou {prize}!" },
+      { index: 14, color: "#ffffff", text_color: "#000000", enabled: true, name: "Pergunte ao Tesdey", message: "{user} ganhou {prize}!" },
+      { index: 15, color: "#f2d809", text_color: "#000000", enabled: true, name: "Desenho na cara", message: "{user} ganhou {prize}!" },
+      { index: 16, color: "#ffffff", text_color: "#000000", enabled: true, name: "Frase de encerramento", message: "{user} ganhou {prize}!" },
+      { index: 17, color: "#0172ac", text_color: "#000000", enabled: true, name: "Duelo com Tesdey", message: "{user} ganhou {prize}!" },
     ],
     selectedItem: null,
     host: process.env.VUE_APP_SERVER_HOST,
@@ -609,6 +628,7 @@ export default {
           command: null,
           delay: null,
           color: null,
+          text_color: null,
           enabled: null
         };
 
@@ -707,6 +727,9 @@ export default {
           min-width: 70px;
         }
         td.color {
+          min-width: 70px;
+        }
+        td.text-color {
           min-width: 70px;
         }
         td.status {
