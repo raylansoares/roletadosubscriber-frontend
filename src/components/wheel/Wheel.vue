@@ -85,7 +85,11 @@ export default {
       const enabledItems = data.filter(item => item.enabled === true);
 
       return enabledItems.map(item => {
-        return { fillStyle: item.color, text: item.name };
+        return {
+          fillStyle: item.color,
+          text: item.name,
+          textFillStyle: item.text_color
+        };
       });
     },
 
