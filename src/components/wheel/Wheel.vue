@@ -99,6 +99,7 @@ export default {
           textFontSize: 19,
           numSegments: this.segments.length,
           segments: this.segments,
+          innerRadius: 30,
           animation: {
             type: "spinToStop",
             duration: 5,

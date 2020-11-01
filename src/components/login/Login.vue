@@ -164,18 +164,20 @@ export default {
 
   methods: {
     async makeAuth() {
-      const code = this.$route.query.code
-
-      if (!code) {
-        this.loading = false
-        return
-      }
-
-      const url = '/api/auth'
-
       try {
+        const token = this.$route.hash
+          .replace('#access_token=', '')
+          .split('&scope=')[0]
+
+        if (!token) {
+          this.loading = false
+          return
+        }
+
+        const url = '/api/auth'
+
         const authenticatedUser = await axios.post(url, {
-          code: code, redirect: authConfig.redirect_uri
+          token: token, redirect: authConfig.redirect_uri
         });
         
         this.$store.commit("SET_USER", authenticatedUser.data);
