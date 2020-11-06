@@ -1,5 +1,6 @@
 const state = {
-  user: null
+  user: null,
+  theme: 'light'
 };
 
 export default state;
