@@ -20,7 +20,7 @@
               </p>
             </div>
             <div id="buttons-container">
-              <button id="how-button" onclick="window.location.href='#how-container'">
+              <button id="how-button" @click="scrollMeTo('how-container')">
                 <i class="material-icons">info</i>
                 <span>Como Funciona?</span>
               </button>
@@ -35,7 +35,7 @@
           </div>
         </div>
       </div>
-      <div id="how-container" :class="theme">
+      <div id="how-container" ref="how-container" :class="theme">
         <div id="how-container-inner">
           <h2 class="title" :class="theme">Como Funciona?</h2>
 
@@ -221,6 +221,13 @@ export default {
 
     setTheme(theme) {
       this.$store.commit("SET_THEME", theme);
+    },
+
+    scrollMeTo(refName) {
+      const element = this.$refs[refName];
+      const top = element.offsetTop;
+
+      window.scrollTo(0, top);
     }
   }
 };
