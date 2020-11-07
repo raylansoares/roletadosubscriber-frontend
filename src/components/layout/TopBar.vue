@@ -16,7 +16,7 @@
         <i class="el-icon-s-tools"></i> Configurar Roleta
       </el-menu-item>
       <el-menu-item index="/dashboard">
-        <i class="el-icon-pie-chart"></i> Dashboard
+        <i class="el-icon-pie-chart"></i> Painel
       </el-menu-item>
       <el-menu-item class="menu-item-logo">
         <i class="el-icon-orange"></i> Roleta do Subscriber
@@ -46,7 +46,7 @@ export default {
   methods: {
     logout() {
       store.commit("SET_USER", null);
-      this.$router.push("/login");
+      this.$router.push("/");
     }
   }
 };

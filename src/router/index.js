@@ -1,5 +1,5 @@
 import DefaultContainer from "@/containers/DefaultContainer";
-import LoginView from "../views/Login.vue";
+import IndexView from "../views/Index.vue";
 import DashboardView from "../views/Dashboard";
 import WheelConfigView from "../views/WheelConfig";
 import WheelView from "../views/Wheel";
@@ -11,9 +11,9 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/login",
-    name: "Login",
-    component: LoginView,
+    path: "/",
+    name: "Index",
+    component: IndexView,
     beforeEnter: (to, from, next) => {
       if (isAuthenticated()) next("/dashboard");
       else next();
@@ -22,7 +22,7 @@ const routes = [
   {
     path: "/login/callback",
     name: "Callback",
-    component: LoginView,
+    component: IndexView,
     beforeEnter: (to, from, next) => {
       if (isAuthenticated()) next("/dashboard");
       else next();
@@ -66,13 +66,13 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
   if (
     isAuthenticated() ||
-    to.name === "Login" ||
+    to.name === "Index" ||
     to.name === "Callback" ||
     to.name === "Wheel"
   )
     next();
   else {
-    next("/login");
+    next("/");
   }
 });
 

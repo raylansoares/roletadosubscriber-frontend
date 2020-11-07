@@ -297,7 +297,7 @@ export default {
 
   .channel-points-desc p {
     font-size: 14px;
-    padding: 14px 0 5px 0;
+    padding: 0 0 5px 0;
     strong {
       display: block;
       font-size: 16px;
