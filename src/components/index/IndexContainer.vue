@@ -565,14 +565,7 @@ export default {
           grid-template-areas: "text image";
           #text-container {
             grid-area: text;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 20px;
             #title-container {
-              display: flex;
-              flex-direction: column;
               align-items: flex-start;
               text-align: left;
               h1 {
@@ -586,12 +579,8 @@ export default {
           }
           #image-container {
             grid-area: image;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             img {
-              width: 100%;
+              width: 90%;
               max-width: 525px;
             }
           }
