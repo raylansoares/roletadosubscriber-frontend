@@ -11,7 +11,10 @@
     <div id="content-container">
       <div id="start-container" :class="theme">
         <div id="start-container-inner">
-          <div id="left-container">
+          <div id="image-container">
+            <img src="../../assets/images/wheel.svg" alt="Roleta do Subscriber">
+          </div>
+          <div id="text-container">
             <div id="title-container">
               <h1 :class="theme">Roleta do Subscriber</h1>
               <p :class="theme">
@@ -29,9 +32,6 @@
                 <span>{{ loading ? "Entrando..." : "Entrar com Twitch" }}</span>
               </button>
             </div>
-          </div>
-          <div id="right-container">
-            <img src="../../assets/images/wheel.svg" alt="Roleta do Subscriber">
           </div>
         </div>
       </div>
@@ -234,7 +234,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  #index-container {
+#index-container {
     width: 100%;
     height: 100%;
     display: flex;
@@ -272,12 +272,13 @@ export default {
         }
         #start-container-inner {
           display: flex;
-          flex-direction: row;
+          flex-direction: column;
           width: 100%;
           height: 100vh;
           max-width: 1150px;
-          #left-container {
-            width: 50%;
+          justify-content: center;
+          #text-container {
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -285,10 +286,12 @@ export default {
             #title-container {
               display: flex;
               flex-direction: column;
+              align-items: center;
+              text-align: center;
               h1 {
                 font-weight: 700;
-                font-size: 8.5rem;
-                line-height: 8.5rem;
+                font-size: 6.0rem;
+                line-height: 6.0rem;
                 max-width: 440px;
                 margin-bottom: 20px;
                 &.light {
@@ -314,6 +317,7 @@ export default {
               display: flex;
               flex-direction: row;
               margin-top: 40px;
+              justify-content: center;
               #how-button {
                 width: 206px;
                 display: flex;
@@ -365,10 +369,15 @@ export default {
               }
             }
           }
-          #right-container {
-            width: 50%;
+          #image-container {
+            width: 100%;
             display: flex;
             justify-content: center;
+            align-items: center;
+            img {
+              width: 100%;
+              max-width: 325px;
+            }
           }
         }
       }
@@ -545,4 +554,50 @@ export default {
       }
     }
   }
+@media (min-width:960px) {
+  #index-container {
+    #content-container {
+      #start-container {
+        #start-container-inner {
+          display: grid;
+          grid-template-rows: 100% 1fr;
+          grid-template-columns: 2fr 2fr;
+          grid-template-areas: "text image";
+          #text-container {
+            grid-area: text;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+            #title-container {
+              display: flex;
+              flex-direction: column;
+              align-items: flex-start;
+              text-align: left;
+              h1 {
+                font-size: 8.5rem;
+                line-height: 8.5rem;
+              }
+            }
+            #buttons-container {
+              justify-content: left;
+            }
+          }
+          #image-container {
+            grid-area: image;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            img {
+              width: 100%;
+              max-width: 525px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 </style>
