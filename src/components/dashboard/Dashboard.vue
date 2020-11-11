@@ -1,122 +1,77 @@
 <template>
-  <div id="dashboard">
-    <el-row :gutter="20">
-      <el-col :span="8">
-        <el-card shadow="hover" class="top-card">
-          <el-form label-position="top" @submit.native.prevent="manualWheel">
-            <el-form-item label="Roletar Manualmente" class="big-label">
-              <el-input v-model="username" placeholder="Username"></el-input>
-            </el-form-item>
-
-            <el-form-item class="roll-button">
-              <el-button type="primary" plain @click="manualWheel">
-                Roletar
-              </el-button>
-            </el-form-item>
-          </el-form>
-        </el-card>
-      </el-col>
-
-      <el-col :span="8">
-        <el-badge value="Novo!" id="badge-hot" type="primary">
-          <el-card shadow="hover" class="top-card">
-            <div class="big-label">
-              <p>Channel Points</p>
-            </div>
-            <div class="channel-points-desc">
-              <p>
-                Para integrar a roleta com os pontos do canal basta adicionar
-                uma recompensa personalizada exatamente com o seguinte nome:
-                <strong>Ganhe uma roleta do subscriber</strong>
-                <small>Precisa estar logado aqui no painel para que funcione!</small>
-              </p>
-            </div>
-          </el-card>
-        </el-badge>
-      </el-col>
-
-      <el-col :span="8">
-        <el-card shadow="hover" class="top-card">
-          <div class="profile-card">
-            <el-avatar :size="80" :src="user.profile_image_url"></el-avatar>
-            <p>{{ user.display_name }}</p>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-
-    <el-row>
-      <el-col :span="24">
-        <el-card shadow="hover">
-          <div slot="header" class="clearfix">
-            <span class="card-title">Subscribers</span>
-
-            <div class="search-input">
-              <el-input
-                size="small"
-                v-model="search"
-                placeholder="Buscar subscriber"
-                @input="filterSubscribers"
-              />
-            </div>
-          </div>
-
-          <el-table
-            :data="filteredSubscribers"
-            style="width: 100%"
-            height="520"
-            header-cell-class-name="sub-table-header"
-          >
-            <el-table-column
-              label="Subscriber"
-              prop="username"
-              min-width="200px"
-            ></el-table-column>
-
-            <el-table-column label="Prêmio" min-width="400px">
-              <template slot-scope="scope">
-                <el-tag
-                  v-for="(prize, index) in scope.row.prizes"
-                  :key="index"
-                  class="prize-tag"
-                >
-                  {{ prize.name }}
-                </el-tag>
-              </template>
-            </el-table-column>
-
-            <el-table-column label="Data do Sub" min-width="200px">
-              <template slot-scope="scope">
-                {{ scope.row.created_at | formatDate }}
-              </template>
-            </el-table-column>
-
-            <el-table-column align="right" min-width="100px">
-              <template slot-scope="scope">
-                <el-button
-                  icon="el-icon-refresh"
-                  circle
-                  plain
-                  type="primary"
-                  @click="retryWheel(scope.row)"
-                  title="Roletar novamente"
-                >
-                </el-button>
-                <el-button
-                  icon="el-icon-delete"
-                  circle
-                  plain
-                  type="danger"
-                  title="Excluir"
-                  @click="deleteSubscriber(scope.row._id)"
-                >
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-card>
-      </el-col>
-    </el-row>
+  <div id="dashboard-container" :class="theme">
+    <div id="dashboard-container-inner">
+      <div id="blocks-container">
+        <div class="block center" :class="theme">
+          <img :src="user.profile_image_url" />
+          <h3>{{ user.display_name }}</h3>
+        </div>
+        <div class="block" :class="theme">
+          <h3>Roletar Manualmente</h3>
+          <input type="text" v-model="username" :class="theme">
+          <button @click="manualWheel()">Roletar</button>
+        </div>
+        <div class="block" :class="theme">
+          <h3>Pontos de Canal</h3>
+          <p>
+            Para integrar a roleta com os pontos do canal basta adicionar
+            uma recompensa personalizada exatamente com o seguinte nome:
+            <br /><strong>Ganhe uma roleta do subscriber</strong>
+          </p>
+        </div>
+      </div>
+      <div id="table-container" :class="theme">
+        <div id="table-header" :class="theme">
+          <h3>
+            Roletas Resgatadas <small>(Subscribers e Pontos de Canal)</small>
+          </h3>
+          <input v-model="search" :class="theme" @input="filterSubscribers()">
+        </div>
+        <div id="table-content">
+          <table border="0" cellspacing="0" cellpadding="0">
+            <thead>
+              <tr>
+                <th :class="theme" class="user">Usuário</th>
+                <th :class="theme" class="prize">Prêmio(s)</th>
+                <th :class="theme" class="data">Data/Hora</th>
+                <th :class="theme" class="actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(subscriber, key) of filteredSubscribers" :key="key" :class="theme">
+                <td :class="theme" class="user">{{ subscriber.username }}</td>
+                <td :class="theme" class="prize">
+                  <span
+                    v-for="(prize, index) in subscriber.prizes"
+                    :key="index"
+                    class="prize-tag"
+                  >
+                    {{ prize.name }}
+                  </span>
+                </td>
+                <td :class="theme" class="data">{{ subscriber.created_at | formatDate }}</td>
+                <td :class="theme" class="actions">
+                  <button
+                    class="btn-circle btn-roll"
+                    :class="theme"
+                    @click="retryWheel(subscriber)"
+                  >
+                    <i class="material-icons">cached</i>
+                  </button>
+                  <button
+                    class="btn-circle btn-delete"
+                    :class="theme"
+                    @click="deleteSubscriber(subscriber._id)"
+                  >
+                    <i class="material-icons">close</i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -132,7 +87,7 @@ export default {
   name: "Dashboard",
 
   computed: {
-    ...mapState(['user'])
+    ...mapState(['user', 'theme'])
   },
 
   data: () => ({
@@ -228,96 +183,300 @@ export default {
 </script>
 
 <style lang="scss">
-#dashboard {
-  .big-label label {
-    font-size: 20px;
+#dashboard-container {
+  width: 100%;
+  height: 100%;
+  max-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 70px;
+  flex: 1;
+  &.light {
+    background: var(--color-background-light);
   }
-
-  .roll-button, .open-raffle-button, .close-raffle-button {
-    margin-bottom: 0;
-    button {
-      width: 100%;
-    }
+  &.dark {
+    background: var(--color-background-dark);
   }
-
-  .el-form-item {
-    margin-bottom: 15px;
-  }
-
-  .el-row {
-    margin-bottom: 20px;
-  }
-
-  .prize-tag {
-    margin: 3px;
-  }
-
-  .search-input {
-    float: right;
-    width: 300px;
-  }
-
-  .card-title {
-    font-size: 18px;
-    font-weight: 500;
-    color: #e4e4e4;
-  }
-
-  .profile-card {
-    padding: 20px;
+  #dashboard-container-inner {
     display: flex;
     flex-direction: column;
     align-items: center;
-    p {
-      font-size: 22px;
-      color: #e4e4e4;
-      margin-top: 10px;
+    width: 100%;
+    max-width: 1280px;
+    height: 100%;
+    padding: 20px 10px;
+    flex: 1;
+    #blocks-container {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      align-items: center;
+      .block {
+        display: flex;
+        flex-direction: column;
+        margin: 10px 0;
+        width: 100%;
+        max-width: 600px;
+        min-height: 170px;
+        padding: 20px;
+        border-radius: 5px;
+        font-size: 0.90em;
+        &.light {
+          color: var(--color-text-base);
+          background-color: var(--color-box-light);
+          border: solid 1px var(--color-line-in-white);
+        }
+        &.dark {
+          color: var(--color-text-complement);
+          background-color: var(--color-box-dark);
+          border: solid 1px var(--color-background-darker);
+        }
+        &.center {
+          justify-content: center;
+          align-items: center;
+        }
+        h3 {
+          margin-bottom: 5px;
+          font-size: 1.5em;
+        }
+        strong {
+          font-size: 1.1em;
+        }
+        img {
+          width: 80px;
+          border-radius: 50%;
+        }
+        input {
+          margin: 5px 0 10px 0;
+          padding: 9px 10px;
+          border: 1px solid var(--color-line-in-white);
+          border-radius: 5px;
+          &:focus {
+            outline:0;
+          }
+          &.light {
+            color: var(--color-text-base);
+            background-color: var(--color-box-light);
+            border: solid 1px var(--color-line-in-white);
+          }
+          &.dark {
+            color: var(--color-text-complement);
+            background-color: var(--color-background-dark);
+            border: solid 1px var(--color-background-darker);
+          }
+        }
+        button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          color: var(--color-title-in-primary);
+          padding: 9px 5px;
+          border: none;
+          border-radius: 5px;
+          background-color: var(--color-primary);
+          font-size: 1.2em;
+          transition: background-color 0.2s;
+          cursor: pointer;
+          &:focus {
+            outline:0;
+          }
+          &:hover {
+            background-color: var(--color-primary-dark);
+          }
+        }
+      }
+    }
+    #table-container {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      max-width: 600px;
+      /* flex: 1; */
+      &.light {
+        color: var(--color-text-base);
+        background-color: var(--color-box-light);
+        border: solid 1px var(--color-line-in-white);
+      }
+      &.dark {
+        color: var(--color-text-complement);
+        background-color: var(--color-box-dark);
+        border: solid 1px var(--color-background-darker);
+      }
+      #table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        padding-bottom: 10px;
+        &.light {
+          border-bottom: solid 1px var(--color-line-in-white);
+        }
+        &.dark {
+          border-bottom: solid 1px var(--color-background-darker);
+        }
+        h3 {
+          font-size: 1.4em;
+          small {
+            font-size: 0.6em;
+            font-weight: normal;
+            opacity: 0.9;
+          }
+        }
+        input {
+          padding: 7px 10px;
+          width: 300px;
+          border: 1px solid var(--color-line-in-white);
+          border-radius: 5px;
+          &:focus {
+            outline:0;
+          }
+          &.light {
+            color: var(--color-text-base);
+            background-color: var(--color-box-light);
+            border: solid 1px var(--color-line-in-white);
+          }
+          &.dark {
+            color: var(--color-text-complement);
+            background-color: var(--color-background-dark);
+            border: solid 1px var(--color-background-darker);
+          }
+        }
+      }
+      #table-content {
+        height: 100%;
+        max-height: 570px;
+        overflow: auto;
+        table {
+          width: 100%;
+          text-align: left;
+          tr th {
+            &.light {
+              background-color: var(--color-line-in-white)
+            }
+            &.dark {
+              background-color: var(--color-background-darker)
+            }
+          }
+          tr th, tr td {
+            padding: 15px 10px;
+            &.user {
+              width: 25%;
+            }
+            &.prize {
+              width: 40%;
+            }
+            &.data {
+              width: 25%;
+              min-width: 220px;
+              display: none;
+            }
+            &.actions {
+              width: 10%;
+              min-width: 110px;
+            }
+          }
+          tr {
+            transition: background-color 0.2s;
+            td {
+              padding: 7px 10px;
+              .prize-tag {
+                padding: 0px 10px;
+                margin: 2px;
+                border-radius: 3px;
+                line-height: 2.0em;
+                font-size: 0.9em;
+                display: inline-block;
+                background-color: var(--color-primary-2);
+              }
+              .btn-circle {
+                border-radius: 50%;
+                width: 35px;
+                height: 35px;
+                padding: 5px;
+                margin: 2px 3px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+                &:focus {
+                  outline:0;
+                }
+                i {
+                  font-size: 1.4em;
+                }
+              }
+              .btn-roll {
+                color: var(--color-primary);
+                border: 2px solid var(--color-primary);
+                background-color: var(--color-primary-2);
+                &:hover {
+                  background-color: var(--color-primary-4);
+                }
+              }
+              .btn-delete {
+                color: var(--color-tertiary);
+                border: 2px solid var(--color-tertiary);
+                background-color: var(--color-tertiary-2);
+                &:hover {
+                  background-color: var(--color-tertiary-4);
+                }
+              }
+              &.light {
+                border-bottom: solid 1px var(--color-line-in-white);
+                .prize-tag {
+                  border: solid 1px var(--color-primary-lighter);
+                }
+              }
+              &.dark {
+                border-bottom: solid 1px var(--color-background-darker);
+                .prize-tag {
+                  border: solid 1px var(--color-primary-darker);
+                }
+              }
+            }
+          }
+          tr:hover {
+            &.light {
+              background-color: var(--color-background-light);
+            }
+            &.dark {
+              background-color: var(--color-background-dark);
+            }
+          }
+        }
+      }
     }
   }
-
-  .top-card {
-    min-height: 200px;
-  }
-
-  input:disabled{
-    background-color: #222933;
-    color: #121820;
-  }
-
-  .big-label {
-    color: #fff;
-    label {
-      font-size: 20px;
+}
+@media (min-width:960px) {
+  #dashboard-container {
+    #dashboard-container-inner {
+      align-items: initial;
+      #blocks-container {
+        justify-content: space-between;
+        flex-direction: row;
+        align-items: inherit;
+        .block {
+          margin: 0;
+          width: 32%;
+          max-width: 400px;
+        }
+      }
+      #table-container {
+        max-width: 100%;
+        height: 100%;
+        #table-content {
+          table {
+            tr th, tr td {
+              &.data {
+                display: table-cell;
+              }
+            }
+          }
+        }
+      }
     }
-    p {
-      font-size: 20px;
-      margin-top: 7px;
-    }
   }
-
-  .channel-points-desc p {
-    font-size: 14px;
-    padding: 0 0 5px 0;
-    strong {
-      display: block;
-      font-size: 16px;
-      margin: 5px 0;
-    }
-  }
-
-  #badge-hot sup {
-    right: 40px;
-    top: 2px;
-    line-height: 18px;
-    color: #14a2f4;
-    background-color: #1f3647;
-    border: solid 1px #145e85;
-    height: 22px;
-    min-width: 50px;
-  }
-
-  #badge-hot .top-card {
-    border: solid 1px #145e85;
-  } 
 }
 </style>

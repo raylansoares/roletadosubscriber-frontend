@@ -1,7 +1,5 @@
 <template>
-  <el-main>
-    <Dashboard />
-  </el-main>
+  <Dashboard />
 </template>
 
 <script>
@@ -15,5 +13,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss"></style>
