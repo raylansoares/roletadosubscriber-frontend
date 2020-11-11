@@ -1,15 +1,15 @@
 <template>
-  <Dashboard />
+  <DashboardContainer />
 </template>
 
 <script>
-import Dashboard from "@/components/dashboard/Dashboard";
+import DashboardContainer from "@/components/dashboard/DashboardContainer";
 
 export default {
-  name: "MainView",
+  name: "DashboardView",
 
   components: {
-    Dashboard
+    DashboardContainer
   }
 };
 </script>
