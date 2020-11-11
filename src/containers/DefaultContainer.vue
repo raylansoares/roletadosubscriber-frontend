@@ -1,30 +1,36 @@
 <template>
-  <div class="container">
-    <TopBar />
-    <el-container><router-view /></el-container>
+  <div id="container">
+    <TopBar @set-theme="setTheme($event)" />
+    <router-view />
   </div>
 </template>
 
 <script>
-import axios from '@/repositories/clients/axios'
 import TopBar from "@/components/layout/TopBar";
-import { mapState } from 'vuex'
-import { isAuthenticated } from "../utils/auth";
 
 export default {
   name: "DefaultContainer",
 
   components: {
     TopBar
+  },
+
+  methods: {
+    setTheme(theme) {
+      this.$store.commit("SET_THEME", theme);
+    }
   }
 };
 </script>
 
 <style lang="scss">
-.el-container {
-  justify-content: center;
-  main {
-    max-width: 1280px;
-  }
+#container {
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent !important;
 }
 </style>
