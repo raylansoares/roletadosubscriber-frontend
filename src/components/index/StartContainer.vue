@@ -63,7 +63,8 @@ export default {
   flex-direction: row;
   justify-content: center;
   width: 100%;
-  height: 100vh;
+  height: auto;
+  padding-top: 35px;
   &.light {
     background: var(--color-background-light);
   }
@@ -74,7 +75,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 100vh;
+    height: auto;
     max-width: 1150px;
     justify-content: center;
     #text-container {
@@ -119,6 +120,7 @@ export default {
         margin-top: 40px;
         justify-content: center;
         #how-button {
+          text-align: initial;
           width: 206px;
           display: flex;
           align-items: center;
@@ -141,6 +143,7 @@ export default {
           }
         }
         #login-button {
+          text-align: initial;
           width: 206px;
           display: flex;
           align-items: center;
@@ -176,14 +179,17 @@ export default {
       align-items: center;
       img {
         width: 100%;
-        max-width: 325px;
+        max-width: 280px;
       }
     }
   }
 }
 @media (min-width:960px) {
   #start-container {
+    height: 100vh;
+    padding-top: 0;
     #start-container-inner {
+      height: 100vh;
       display: grid;
       grid-template-rows: 100% 1fr;
       grid-template-columns: 2fr 2fr;

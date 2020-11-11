@@ -6,11 +6,15 @@
     --color-primary-lighter: #bba1ff;
     --color-primary-light: #a988ff;
     --color-primary: #8e4af8;
+    --color-primary-2: rgb(142 74 248 / 0.2);
+    --color-primary-4: rgb(142 74 248 / 0.4);
     --color-primary-dark: #7246c8;
     --color-primary-darker: #5b4292;
     --color-secundary: #04D361;
     --color-secundary-dark: #04BF58;
-    --color-tertiary: #e93838;
+    --color-tertiary: #e65151;
+    --color-tertiary-2: rgb(228 81 81 / 0.2);
+    --color-tertiary-4: rgb(228 81 81 / 0.4);
     --color-title-in-primary: #FFFFFF;
     --color-text-in-primary: #D4C2FF;
     --color-title-in-dark: #EBE3FF;
@@ -21,8 +25,8 @@
     --color-line-in-white: #E6E6F0;
     --color-input-background: #F8F8FC;
     --color-button-text: #FFFFFF;
-    --color-box-base: #FFFFFF;
-    --color-box-footer: #FAFAFC;
+    --color-box-light: #f7f7fd;
+    --color-box-dark: #141417;
 
     font-size: 60%;
 }
@@ -43,9 +47,12 @@
     margin: 0;
 }
   
-html, body, #app, .container {
-    height: 100vh;
+html, body, #app {
     background: transparent !important;
+}
+
+body {
+    height: 100%;
 }
 
 #app {
