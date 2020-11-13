@@ -7,7 +7,7 @@
     <div class="block" :class="theme">
       <h3>Roletar Manualmente</h3>
       <input type="text" v-model="username" :class="theme">
-      <button @click="manualWheel()">Roletar</button>
+      <button class="roll-btn" @click="manualWheel()">Roletar</button>
     </div>
     <div class="block" :class="theme">
       <h3>Pontos de Canal</h3>
@@ -107,7 +107,7 @@ export default {
         border: solid 1px var(--color-background-darker);
       }
     }
-    button {
+    button.roll-btn{
       display: flex;
       justify-content: center;
       align-items: center;
@@ -115,7 +115,7 @@ export default {
       padding: 9px 5px;
       border: none;
       border-radius: 5px;
-      background-color: var(--color-primary);
+      background-color: var(--color-primary-dark);
       font-size: 1.2em;
       transition: background-color 0.2s;
       cursor: pointer;
@@ -123,7 +123,7 @@ export default {
         outline:0;
       }
       &:hover {
-        background-color: var(--color-primary-dark);
+        background-color: var(--color-primary-darker);
       }
     }
   }
