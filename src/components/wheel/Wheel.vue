@@ -2,7 +2,7 @@
   <div id="wheel">
     <div class="wheel" v-show="wheelSpinning">
       <div class="pointer">
-        <i class="el-icon-caret-bottom"></i>
+        <i class="material-icons">navigation</i>
       </div>
 
       <div class="wheel-canvas">
@@ -16,7 +16,7 @@
 
     <div class="results">
       <div class="subscriber" v-if="wheelSpinning">
-        Roleta do {{ currentSubscriber.username }}
+        Roleta para: {{ currentSubscriber.username }}
       </div>
       <div class="prize" v-if="prize">Prêmio: {{ prize.name }}</div>
     </div>
@@ -177,59 +177,45 @@ export default {
 
 <style lang="scss">
 #wheel {
+  margin-top: 10px;
   .wheel {
     .pointer {
-      margin-top: -10px;
+      margin-top: 190px;
       width: 100%;
       text-align: center;
+      position: fixed;
       i {
-        color: #0172ac;
-        font-size: 48px;
+        color: var(--color-primary);
+        font-size: 76px;
+        opacity: 0.9;
       }
     }
     .wheel-canvas {
       text-align: center;
     }
     #canvas {
-      margin-top: -12px;
+      margin-top: 0;
     }
   }
   .results {
     font-size: 24px;
     margin-top: -2px;
     font-weight: 500;
-    .subscriber {
+    .subscriber, .prize {
       text-align: center;
-      color: #f2d809;
+      color: var(--color-title-in-dark);
       font-weight: 700;
       letter-spacing: 1px;
-      text-shadow: 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
-        0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
-        0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
-        0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
-        0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
-        0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
-        0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
-        0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
-        0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac, 0 0 3px #0172ac,
-        0 0 3px #0172ac, 0 0 3px #0172ac;
-      width: 100%;
-      padding-bottom: 1px;
-    }
-    .prize {
-      text-align: center;
-      color: #f2d809;
-      font-weight: 700;
-      text-shadow: 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
-        0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
-        0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
-        0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
-        0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
-        0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
-        0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
-        0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
-        0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e, 0 0 3px #fb426e,
-        0 0 3px #fb426e, 0 0 3px #fb426e;
+      text-shadow: 0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary),
+        0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary),
+        0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary),
+        0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary),
+        0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary),
+        0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary),
+        0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary),
+        0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary),
+        0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary), 0 0 3px var(--color-primary),
+        0 0 3px var(--color-primary), 0 0 3px var(--color-primary);
       width: 100%;
     }
   }
