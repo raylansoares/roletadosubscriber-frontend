@@ -208,6 +208,7 @@ export default {
     height: 100%;
     max-height: 570px;
     overflow: auto;
+    font-size: 0.9em;
     table {
       width: 100%;
       text-align: left;
@@ -252,8 +253,8 @@ export default {
           }
           .btn-circle {
             border-radius: 50%;
-            width: 35px;
-            height: 35px;
+            width: 33px;
+            height: 33px;
             padding: 5px;
             margin: 2px 3px;
             cursor: pointer;
@@ -267,7 +268,7 @@ export default {
           }
           .btn-roll {
             color: var(--color-primary);
-            border: 2px solid var(--color-primary);
+            border: 1px solid var(--color-primary);
             background-color: var(--color-primary-2);
             &:hover {
               background-color: var(--color-primary-4);
@@ -275,7 +276,7 @@ export default {
           }
           .btn-delete {
             color: var(--color-tertiary);
-            border: 2px solid var(--color-tertiary);
+            border: 1px solid var(--color-tertiary);
             background-color: var(--color-tertiary-2);
             &:hover {
               background-color: var(--color-tertiary-4);
