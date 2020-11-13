@@ -36,7 +36,10 @@
         </button>
       </div>
       <p>Reseta os prêmios para o padrão.</p>
-      <p>(O padrão atual é baseado no canal do Tesdey)</p>
+      <p>
+        (O padrão atual é baseado no canal do
+        <a href="https://www.twitch.tv/tesdey" target="_blank">Tesdey</a>)
+      </p>
     </div>
     <div class="block" :class="theme">
       <h3>Variáveis Disponíveis</h3>
@@ -180,6 +183,11 @@ export default {
       color: var(--color-text-complement);
       background-color: var(--color-box-dark);
       border: solid 1px var(--color-background-darker);
+    }
+    a, a:hover {
+      text-decoration: none;
+      font-weight: 700;
+      color: var(--color-primary);
     }
     h3 {
       margin-bottom: 5px;
