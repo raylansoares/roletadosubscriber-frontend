@@ -1,19 +1,16 @@
 <template>
-  <el-main>
-    <WheelConfig />
-  </el-main>
+  <WheelConfigContainer />
 </template>
 
 <script>
-import WheelConfig from "@/components/wheel/WheelConfig";
+import WheelConfigContainer from "@/components/wheel/WheelConfigContainer";
 
 export default {
-  name: "MainView",
+  name: "WheelConfigView",
 
   components: {
-    WheelConfig
+    WheelConfigContainer
   }
 };
 </script>
 
-<style lang="scss"></style>

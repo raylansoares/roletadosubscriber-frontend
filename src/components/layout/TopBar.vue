@@ -1,37 +1,42 @@
 <template>
-  <div>
-    <el-menu
-      :default-active="currentPage"
-      class="el-menu-demo"
-      mode="horizontal"
-      :router="true"
-      background-color="#2d3744"
-      text-color="#f9f9f9"
-      active-text-color="#f9f9f9"
-    >
-      <el-menu-item @click="logout()">
-        <i class="el-icon-switch-button"></i> Sair
-      </el-menu-item>
-      <el-menu-item index="/wheelConfig">
-        <i class="el-icon-s-tools"></i> Configurar Roleta
-      </el-menu-item>
-      <el-menu-item index="/dashboard">
-        <i class="el-icon-pie-chart"></i> Dashboard
-      </el-menu-item>
-      <el-menu-item class="menu-item-logo">
-        <i class="el-icon-orange"></i> Roleta do Subscriber
-      </el-menu-item>
-    </el-menu>
+  <div id="top-bar-container" :class="theme">
+    <div id="logo-container">
+      <img src="../../assets/images/logo.svg" alt="Roleta do Subscriber">
+    </div>
+    <div id="logo-container-small">
+      <img src="../../assets/images/logo_small.svg" alt="Roleta do Subscriber">
+    </div>
+    <div id="menu-container">
+      <router-link to="/dashboard" :class="theme">
+        <i class="material-icons">table_chart</i> Painel
+      </router-link>
+      <router-link to="/wheelConfig" :class="theme">
+        <i class="material-icons">settings</i> Configurar Roleta
+      </router-link>
+      <a @click="logout()" :class="theme">
+        <i class="material-icons">power_settings_new</i> Sair
+      </a>
+      <div id="theme-container">
+        <a @click="setTheme('light')" :class="theme === 'light' ? 'active' : ''">
+          <i class="material-icons">wb_sunny</i>
+        </a>
+        <a @click="setTheme('dark')" :class="theme === 'dark' ? 'active' : ''">
+          <i class="material-icons">brightness_3</i>
+        </a>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import store from "../../store";
-import { mapState } from "vuex";
+import store from '../../store';
+import { mapState } from 'vuex';
 
 export default {
+  name: "TopBarContainer",
+
   computed: {
-    ...mapState(["user"])
+    ...mapState(['user', 'theme'])
   },
 
   data: () => ({
@@ -46,28 +51,91 @@ export default {
   methods: {
     logout() {
       store.commit("SET_USER", null);
-      this.$router.push("/login");
+      this.$router.push("/");
+    },
+
+    setTheme(theme) {
+      this.$emit("set-theme", theme);
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.el-menu--horizontal > .el-menu-item {
-  float: right;
+#top-bar-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 20px;
+  text-align: right;
+  position: fixed;
+  &.light {
+    background: var(--color-background-light);
+    border-bottom: solid 1px var(--color-line-in-white);
+  }
+  &.dark {
+    background: var(--color-background-dark);
+    border-bottom: solid 1px var(--color-background-darker);
+  }
+  #logo-container {
+    height: 30px;
+    display: none;
+  }
+  #logo-container-small {
+    height: 30px;
+    display: block;
+  }
+  #menu-container {
+    display: flex;
+    min-width: 466px;
+    width: 100%;
+    justify-content: space-around;
+    a {
+      display: flex;
+      padding: 0 15px;
+      cursor: pointer;
+      text-decoration: none;
+      color: var(--color-text-base);
+      i {
+        margin-right: 5px;
+      }
+      &:active {
+        color: var(--color-text-base);
+      }
+      &.dark, &.dark &:active{
+        color: var(--color-text-complement);
+      }
+    }
+  }
+  #theme-container {
+    margin: 0 5px 0 25px;
+    a {
+      i {
+        margin: 0;
+      }
+      display: inline;
+      padding: 0;
+      cursor: pointer;
+      color: var(--color-text-complement);
+      &.active {
+        color: var(--color-primary);
+      }
+    }
+  }
 }
-
-.el-menu-item i {
-  color: #ffffff;
-}
-
-.menu-item-logo {
-  float: left !important;
-  font-size: 20px;
-  font-weight: 500;
-  cursor: default;
-  i {
-    font-size: 28px;
+@media (min-width:960px) {
+  #top-bar-container {
+    #menu-container {
+      min-width: none;
+      width: auto;
+      justify-content: flex-end;
+    }
+    #logo-container {
+      display: block;
+    }
+    #logo-container-small {
+      display: none;
+    }
   }
 }
 </style>

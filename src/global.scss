@@ -1,8 +1,39 @@
-html {
-    font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
-      'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    font-size: 16px;
-    word-spacing: 1px;
+:root {
+    --color-background-light: #F0F0F7;
+    --color-background-lighter: #FFFFFF;
+    --color-background-dark: #18181B;
+    --color-background-darker: #202024;
+    --color-primary-lighter: #bba1ff;
+    --color-primary-light: #a988ff;
+    --color-primary: #8e4af8;
+    --color-primary-2: rgb(142 74 248 / 0.2);
+    --color-primary-4: rgb(142 74 248 / 0.4);
+    --color-primary-dark: #7246c8;
+    --color-primary-darker: #5b4292;
+    --color-secundary: #04D361;
+    --color-secundary-dark: #04BF58;
+    --color-tertiary-lighter: #f8acac;
+    --color-tertiary: #e65151;
+    --color-tertiary-darker: #862b2b;
+    --color-tertiary-2: rgb(228 81 81 / 0.2);
+    --color-tertiary-4: rgb(228 81 81 / 0.4);
+    --color-title-in-primary: #FFFFFF;
+    --color-text-in-primary: #D4C2FF;
+    --color-title-in-dark: #EBE3FF;
+    --color-text-in-dark: #DBCDFF;
+    --color-text-title: #32264D;
+    --color-text-complement: #b6b4bb;
+    --color-text-base: #6A6180;
+    --color-line-in-white: #E6E6F0;
+    --color-input-background: #F8F8FC;
+    --color-button-text: #FFFFFF;
+    --color-box-light: #f7f7fd;
+    --color-box-dark: #141417;
+
+    font-size: 60%;
+}
+
+* {
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
     -moz-osx-font-smoothing: grayscale;
@@ -11,15 +42,6 @@ html {
     scroll-behavior: smooth;
 }
 
-.container {
-    background-color: #181c23;
-    background-image: url(./assets/images/dots.png);
-    background-size: contain;
-    color: #e4e4e4;
-    margin: 0 auto;
-    min-height: 100vh;
-  }
-  
 *,
 *:before,
 *:after {
@@ -27,6 +49,25 @@ html {
     margin: 0;
 }
   
+html, body, #app {
+    background: transparent !important;
+}
+
+body {
+    height: 100%;
+}
+
+#app {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body, input, button, textarea {
+    font: 500 1.6rem Poppins;
+    color: var(--color-text-base);
+}
+
 .page-enter-active, .page-leave-active {
     transition: opacity .2s;
 }
@@ -34,22 +75,50 @@ html {
     opacity: 0;
 }
 
+.tooltip {
+    position: relative;
+    display: inline-block;
+    height: 20px;
+}
+  
+.tooltip .tooltiptext {
+    visibility: hidden;
+    background-color: var(--color-primary-darker);
+    color: var(--color-title-in-primary);;
+    text-align: center;
+    padding: 3px 6px;
+    border-radius: 3px;
+    top: -2px;
+    left: 105%;
+    white-space: nowrap;
+    position: absolute;
+    z-index: 1;
+    font-size: 0.9em;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
 ::-webkit-scrollbar-track {
-    background-color: #181c23;
+    background-color: var(--color-text-complement);
   }
 
 ::-webkit-scrollbar {
     width: 5px;
-    background-color: #181c23;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #0c0f15;
+    background-color: var(--color-text-base);
 }
 
 ::-webkit-input-placeholder { /* Webkit */
     color: #364250!important;
-} 
+}
+
+.el-container {
+    background-color: #181c23;
+}
 
 .el-button.is-circle {
     padding: 8px;
