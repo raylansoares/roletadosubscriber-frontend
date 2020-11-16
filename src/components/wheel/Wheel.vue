@@ -2,7 +2,7 @@
   <div id="wheel">
     <div class="wheel" v-show="wheelSpinning">
       <div class="pointer">
-        <i class="material-icons">navigation</i>
+        <i class="material-icons">place</i>
       </div>
 
       <div class="wheel-canvas">
@@ -99,7 +99,7 @@ export default {
           textFontSize: 19,
           numSegments: this.segments.length,
           segments: this.segments,
-          innerRadius: 30,
+          innerRadius: 8,
           animation: {
             type: "spinToStop",
             duration: 5,
@@ -180,14 +180,16 @@ export default {
   margin-top: 10px;
   .wheel {
     .pointer {
-      margin-top: 190px;
+      margin-top: 210px;
       width: 100%;
       text-align: center;
       position: fixed;
       i {
         color: var(--color-primary);
-        font-size: 76px;
+        font-size: 64px;
         opacity: 0.9;
+        transform: rotate(180deg);
+        -webkit-text-stroke: 2px var(--color-primary-lighter);
       }
     }
     .wheel-canvas {
