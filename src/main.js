@@ -8,7 +8,6 @@ import locale from "element-ui/lib/locale/lang/en";
 import VueSocketIO from "vue-socket.io";
 
 import "element-ui/lib/theme-chalk/index.css";
-import 'element-theme-dark';
 import "./global.scss";
 
 Vue.use(ElementUI, { locale });

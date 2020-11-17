@@ -71,11 +71,11 @@
       <div class="form-field half color">
         <div class="color">
           <label>Cor</label>
-          <input type="color" class="color-input" v-model="prize.color">
+          <el-color-picker v-model="prize.color" class="colortest"></el-color-picker>
         </div>
         <div class="color">
           <label>Texto</label>
-          <input type="color" class="color-input" v-model="prize.text_color">
+          <el-color-picker v-model="prize.text_color"></el-color-picker>
         </div>
       </div>
       <div class="form-field button">
@@ -188,6 +188,13 @@ export default {
             display: flex;
             flex-direction: column;
             margin: 0 7px;
+            .el-color-picker {
+              margin-top: 5px;
+              .el-color-picker__trigger {
+                padding: 2px;
+                margin: 1px 0 -4px 0;
+              }
+            }
           }
         }
       }
@@ -217,14 +224,6 @@ export default {
         background-color: var(--color-background-dark);
         border: solid 1px var(--color-background-darker);
       }
-    }
-    .color-input {
-      margin: 5px 0 10px 0;
-      padding: 1px 2px;
-      border: 1px solid var(--color-line-in-white);
-      border-radius: 5px;
-      height: 43px;
-      width: 43px;
     }
     .default-btn {
       display: flex;

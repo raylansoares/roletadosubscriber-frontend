@@ -110,13 +110,8 @@
                       class="color-block"
                       :style="`background-color: ${prize.color}`"
                     ></span>
-                    <span v-else>
-                      <input
-                        type="color"
-                        class="color-input"
-                        v-model="prize.color"
-                      >
-                    </span>
+                    <el-color-picker v-else v-model="prize.color">
+                    </el-color-picker>
                   </td>
                   <td :class="theme" class="text-color">
                     <span
@@ -124,13 +119,8 @@
                       class="color-block"
                       :style="`background-color: ${prize.text_color}`"
                     ></span>
-                    <span v-else>
-                      <input
-                        type="color"
-                        class="color-input"
-                        v-model="prize.text_color"
-                      >
-                    </span>
+                    <el-color-picker v-else v-model="prize.text_color">
+                    </el-color-picker>
                   </td>
                   <td :class="theme" class="status">
                     <span
@@ -506,13 +496,14 @@ export default {
           height: 30px;
           border: 1px solid var(--color-text-base);
         }
-        .color-input {
-          margin: 0;
-          padding: 1px 2px;
-          border: 1px solid var(--color-line-in-white);
-          border-radius: 5px;
-          height: 37px;
-          width: 37px;
+        .el-color-picker {
+          margin: 2px 0 -2px 0px;
+          .el-color-picker__trigger {
+            height: 35px;
+            width: 35px;
+            padding: 2px;
+            margin: 1px 0 -4px 0;
+          }
         }
         input.edit-prize-input {
           padding: 6px 10px;
