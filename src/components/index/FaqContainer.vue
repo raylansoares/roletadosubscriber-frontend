@@ -30,6 +30,42 @@
           </p>
         </li>
 
+        <li class="question">
+          <span class="question-content" :class="theme">
+            Por que a roleta não aparece depois que eu coloco no OBS?
+          </span>
+          <p class="question-answer">
+            Quando colocar a URL da roleta no OBS ela não vai aparecer mesmo,
+            está certo. Isso acontece porque a roleta fica "invisível" enquanto
+            não está girando. Assim que seu canal receber um subscriber ela vai
+            aparecer automaticamente. Você também pode testar roletando
+            manualmente aqui pelo nosso painel.
+          </p>
+        </li>
+
+        <li class="question">
+          <span class="question-content" :class="theme">
+            Por que os testes de subscriber que faço pelo OBS não ativam a roleta?
+          </span>
+          <p class="question-answer">
+            A roleta não aparece em testes de sub do OBS, nem do Streamelements
+            nem do Streamlabs, isso acontece porque a roleta pega os eventos de
+            subscriber direto da Twitch, e não desses serviços externos. Você
+            pode testar roletando manualmente aqui pelo nosso painel.
+          </p>
+        </li>
+
+        <li class="question">
+          <span class="question-content" :class="theme">
+            Pra que serve a opção Ativo/Inativo dos prêmios cadastrados?
+          </span>
+          <p class="question-answer">
+            Apenas os prêmios ativos vão aparecer na roleta quando seu
+            canal receber um subscriber, então você pode usar esse recurso caso
+            queira desativar temporariamente um prêmio sem precisar excluir ele.
+          </p>
+        </li>
+
       </ul>
     </div>
   </div>
