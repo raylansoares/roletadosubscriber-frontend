@@ -4,7 +4,12 @@
       <h3>
         Roletas Resgatadas <small>(Subscribers e Pontos de Canal)</small>
       </h3>
-      <input v-model="search" :class="theme" @input="filterSubscribers()">
+      <input
+        v-model="search"
+        :class="theme"
+        @input="filterSubscribers()"
+        placeholder="Buscar por nome de usuário"
+      >
     </div>
     <div id="table-content">
       <table border="0" cellspacing="0" cellpadding="0">
