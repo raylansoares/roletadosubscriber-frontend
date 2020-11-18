@@ -6,7 +6,12 @@
     </div>
     <div class="block" :class="theme">
       <h3>Roletar Manualmente</h3>
-      <input type="text" v-model="username" :class="theme">
+      <input
+        type="text"
+        v-model="username"
+        :class="theme"
+        placeholder="Nome do usuário na Twitch"
+      >
       <button class="roll-btn" @click="manualWheel()">Roletar</button>
     </div>
     <div class="block" :class="theme">

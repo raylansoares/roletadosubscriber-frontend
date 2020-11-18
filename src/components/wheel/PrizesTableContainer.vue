@@ -20,6 +20,7 @@
           :class="theme"
           :disabled="sort || !!selectedItem"
           @input="filterPrizes()"
+          placeholder="Buscar por nome do prêmio"
         >
       </div>
     </div>

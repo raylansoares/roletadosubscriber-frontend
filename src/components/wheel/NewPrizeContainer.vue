@@ -14,6 +14,7 @@
           class="text-input"
           :class="theme"
           v-model="prize.name"
+          placeholder="Nome do prêmio"
         >
       </div>
       <div class="form-field">
@@ -31,6 +32,7 @@
           class="text-input"
           :class="theme"
           v-model="prize.message"
+          placeholder="Mensagem"
         >
       </div>
       <div class="form-field">
@@ -48,6 +50,7 @@
           class="text-input"
           :class="theme"
           v-model="prize.command"
+          placeholder="Comando"
         >
       </div>
       <div class="form-field half">
@@ -66,6 +69,7 @@
           class="text-input"
           :class="theme"
           v-model="prize.delay"
+          placeholder="Delay"
         >
       </div>
       <div class="form-field half color">

@@ -115,3 +115,11 @@ body, input, button, textarea {
 ::-webkit-input-placeholder { /* Webkit */
     color: #364250!important;
 }
+
+.light {
+    ::placeholder {
+        color: var(--color-text-complement) !important;
+        opacity: 1 !important;
+        font-size: 0.9em;
+    }
+}
