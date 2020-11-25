@@ -21,7 +21,7 @@ const authConfig = {
   authUrl: "https://id.twitch.tv/oauth2/authorize",
   client_id: process.env.VUE_APP_CLIENT_ID,
   redirect_uri: `${process.env.VUE_APP_URL}/login/callback`,
-  response_type: "token",
+  response_type: "code",
   scopes: "user:read:email channel:read:redemptions bits:read"
 };
 
