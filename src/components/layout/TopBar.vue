@@ -46,11 +46,6 @@ export default {
 
   mounted () {
     this.currentPage = this.$route.path
-
-    // Temporary force logout to get new token
-    if ('min_bits_to_wheel' in this.user === false) {
-      this.logout()
-    }
   },
 
   methods: {
