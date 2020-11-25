@@ -253,7 +253,7 @@ export default {
         this.filterPrizes();
         if (!response.data.length) await this.resetPrizes()
       } catch (e) {
-        this.$message.error('Ops, não foi possível carregar a lista de prêmios');
+        this.$message.error('Algo deu errado, clique em sair e entre novamente');
       }
     },
 

@@ -45,7 +45,7 @@ export default {
           this.$store.commit("SET_USER", null);
           this.$router.push({ name: "Login" });
           this.$message({
-            message: 'Ops, sua sessão expirou. Faça login novamente para continuar.',
+            message: 'Sua sessão expirou, faça login novamente para continuar.',
             type: 'error',
             duration: 0,
             showClose: true
