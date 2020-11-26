@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
 import TopBar from "@/components/layout/TopBar";
 
