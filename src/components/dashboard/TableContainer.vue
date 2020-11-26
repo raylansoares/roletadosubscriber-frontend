@@ -101,7 +101,7 @@ export default {
         this.subscribers = response.data;
         this.filterSubscribers();
       } catch (e) {
-        this.$message.error('Ops, não foi possível carregar a lista de subs');
+        this.$message.error('Algo deu errado, clique em sair e entre novamente');
       }
     },
 

@@ -69,6 +69,7 @@ export default {
   padding: 20px;
   text-align: right;
   position: fixed;
+  z-index: 9;
   &.light {
     background: var(--color-background-light);
     border-bottom: solid 1px var(--color-line-in-white);
