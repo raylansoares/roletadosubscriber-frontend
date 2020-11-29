@@ -209,11 +209,12 @@ export default {
         });
 
         this.configuration = response.data
-      } catch (e) {}
+      } catch (e) {
         this.$message.error({
           message: 'Ocorreu um erro ao salvar a configuração',
           showClose: true
         });
+      }
     }
   }
 };
