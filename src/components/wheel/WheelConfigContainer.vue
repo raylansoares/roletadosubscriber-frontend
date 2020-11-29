@@ -7,6 +7,8 @@
       <NewPrizeContainer
         @get-prizes="getPrizes()"
       />
+      <VariablesContainer
+      />
       <PrizesTableContainer
       />
     </div>
@@ -19,6 +21,7 @@ import { mapState } from 'vuex'
 import BlocksContainer from '@/components/wheel/BlocksContainer'
 import NewPrizeContainer from '@/components/wheel/NewPrizeContainer'
 import PrizesTableContainer from '@/components/wheel/PrizesTableContainer'
+import VariablesContainer from '@/components/wheel/VariablesContainer'
 
 export default {
   name: "WheelConfigContainer",
@@ -26,7 +29,8 @@ export default {
   components: {
     BlocksContainer,
     NewPrizeContainer,
-    PrizesTableContainer
+    PrizesTableContainer,
+    VariablesContainer
   },
 
   computed: {

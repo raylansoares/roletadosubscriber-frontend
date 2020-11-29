@@ -42,22 +42,15 @@
       </p>
     </div>
     <div class="block" :class="theme">
-      <h3>Variáveis Disponíveis</h3>
-      <p>
-        Utilize na mensagem ou comando do pêmio:
-      </p>
-      <p>
-        <strong>{user}</strong>
-        - Exibe o nome do subscriber
-      </p>
-      <p>
-        <strong>{prize}</strong>
-        - Exibe o nome do prêmio
-      </p>
-      <p>
-        <strong>@2</strong>
-        - Comando para roletar mais 2x
-      </p>
+      <h3>Roletar por Bits</h3>
+      <input
+        type="number"
+        min="0"
+        v-model="configuration.min_bits_to_wheel"
+        :class="theme"
+        placeholder="Quantidade mínima de bits"
+      >
+      <button class="roll-btn" @click="updateOrCreateConfiguration()">Salvar</button>
     </div>
   </div>
 </template>
@@ -97,11 +90,15 @@ export default {
       { index: 15, color: "#f2d809", text_color: "#000000", enabled: true, name: "Desenho na cara", message: "{user} ganhou {prize}!" },
       { index: 16, color: "#ffffff", text_color: "#000000", enabled: true, name: "Frase de encerramento", message: "{user} ganhou {prize}!" },
       { index: 17, color: "#0172ac", text_color: "#000000", enabled: true, name: "Duelo com Tesdey", message: "{user} ganhou {prize}!" },
-    ]
+    ],
+    configuration: {
+      min_bits_to_wheel: null
+    }
   }),
 
   mounted() {
     this.setWheelUrl();
+    this.getConfiguration();
   },
 
   methods: {
@@ -153,6 +150,70 @@ export default {
 
     setWheelUrl() {
       this.wheelUrl = `${process.env.VUE_APP_URL}/wheel?code=${this.user.code}`;
+    },
+
+    async getConfiguration() {
+      const url = '/api/configurations';
+
+      const response = await axios.get(url, { headers: { 
+        'x-auth-token': this.user.access_token,
+        'x-code': this.user.code
+      } });
+
+      if (!response.data[0]) return
+
+      this.configuration = response.data[0]
+    },
+
+    async updateOrCreateConfiguration() {
+      this.configuration._id
+        ? await this.updateConfiguration()
+        : await this.createConfiguration()
+    },
+
+    async updateConfiguration() {
+      const url = `/api/configurations/${this.configuration._id}`;
+
+      try {
+        const response = await axios.patch(url, this.configuration, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+
+        this.$message.success({
+          message: 'Configuração salva com sucesso!',
+          showClose: true
+        });
+
+        this.configuration = response.data
+      } catch (e) {
+        this.$message.error({
+          message: 'Ocorreu um erro ao salvar a configuração',
+          showClose: true
+        });
+      }
+    },
+
+    async createConfiguration() {
+      const url = '/api/configurations';
+
+      try {
+        const response = await axios.post(url, this.configuration, { headers: { 
+          'x-auth-token': this.user.access_token,
+          'x-code': this.user.code
+        } });
+
+        this.$message.success({
+          message: 'Configuração salva com sucesso!',
+          showClose: true
+        });
+
+        this.configuration = response.data
+      } catch (e) {}
+        this.$message.error({
+          message: 'Ocorreu um erro ao salvar a configuração',
+          showClose: true
+        });
     }
   }
 };
