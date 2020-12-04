@@ -320,20 +320,7 @@ export default {
       font-size: 0.8em;
       border-radius: 5px;
       padding: 0 4px;
-
-      /* border: 1px solid var(--color-primary); */
       background-color: var(--color-primary-2);
-
-      /* &.light {
-        color: var(--color-primary);
-        border: 1px solid var(--color-primary);
-        background-color: var(--color-primary-2);
-      }
-      &.dark {
-        color: var(--color-text-complement);
-        background-color: var(--color-background-dark);
-        border: solid 1px var(--color-background-darker);
-      } */
     }
   }
 }
