@@ -44,7 +44,11 @@ export default {
     manualWheel() {
       if (!this.username) return;
       this.$socket.emit("requestPrize", { 
-        username: this.username, code: this.user.code 
+        username: this.username,
+        code: this.user.code,
+        origin: 'Manual',
+        quantity: null,
+        message: null
       });
       this.username = null;
     }

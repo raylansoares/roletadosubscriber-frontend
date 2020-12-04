@@ -23,7 +23,13 @@
         </thead>
         <tbody>
           <tr v-for="(subscriber, key) of filteredSubscribers" :key="key" :class="theme">
-            <td :class="theme" class="user">{{ subscriber.username }}</td>
+            <td :class="theme" class="user">
+              {{ subscriber.username }}
+              <span class="origin" :class="theme" v-if="subscriber.origin">
+                {{ subscriber.origin }}
+                {{ subscriber.quantity ? ` x${subscriber.quantity}` : '' }}
+              </span>
+            </td>
             <td :class="theme" class="prize">
               <span
                 v-for="(prize, index) in subscriber.prizes"
@@ -309,6 +315,25 @@ export default {
           background-color: var(--color-background-dark);
         }
       }
+    }
+    .origin {
+      font-size: 0.8em;
+      border-radius: 5px;
+      padding: 0 4px;
+
+      /* border: 1px solid var(--color-primary); */
+      background-color: var(--color-primary-2);
+
+      /* &.light {
+        color: var(--color-primary);
+        border: 1px solid var(--color-primary);
+        background-color: var(--color-primary-2);
+      }
+      &.dark {
+        color: var(--color-text-complement);
+        background-color: var(--color-background-dark);
+        border: solid 1px var(--color-background-darker);
+      } */
     }
   }
 }
