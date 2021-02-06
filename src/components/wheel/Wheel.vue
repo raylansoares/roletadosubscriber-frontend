@@ -88,9 +88,21 @@ export default {
         return {
           fillStyle: item.color,
           text: item.name,
-          textFillStyle: item.text_color
+          textFillStyle: item.text_color,
+          size: item.size ? this.winwheelPercentToDegrees(item.size) : null
         };
       });
+    },
+
+    winwheelPercentToDegrees(percentValue) {
+      let degrees = 0;
+
+      if ((percentValue > 0) && (percentValue <= 100)) {
+          const divider = (percentValue / 100);
+          degrees = (360 * divider);
+      }
+
+      return degrees;
     },
 
     startSpin() {
