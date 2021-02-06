@@ -12,7 +12,7 @@
           :disabled="!!selectedItem || sorting"
         >
           <i class="material-icons" v-if="sort">check</i>
-          <i class="material-icons" v-else>unfold_more</i>
+          <i class="material-icons" v-else>reorder</i>
           {{ sort ? 'Salvar Ordernção' : 'Alterar Ordernção' }}
         </button>
         <input
@@ -35,6 +35,9 @@
             <th :class="theme" class="color">Cor</th>
             <th :class="theme" class="text-color">Texto</th>
             <th :class="theme" class="status">Status</th>
+            <th :class="theme" class="size">
+              <el-badge value="novo" class="item">Porcentagem</el-badge>
+            </th>
             <th :class="theme" class="actions">Ações</th>
           </tr>
         </thead>
@@ -148,6 +151,19 @@
                       </i>
                     </span> 
                   </td>
+                  <td :class="theme" class="size">
+                    <span v-if="selectedItem !== prize._id">
+                      {{ prize.size ? prize.size + '%' : 'Automático' }}
+                    </span>
+                    <span v-else>
+                      <el-slider
+                        v-model="prize.size"
+                        :step="5"
+                        show-stops
+                      >
+                      </el-slider>
+                    </span>
+                  </td>
                   <td :class="theme" class="actions">
                     <button
                       class="btn-circle btn-sort handle"
@@ -155,7 +171,7 @@
                       v-if="sort"
                       :disabled="sorting"
                     >
-                      <i class="material-icons">unfold_more</i>
+                      <i class="material-icons">reorder</i>
                     </button>
                     <button
                       class="btn-circle btn-edit"
@@ -318,6 +334,15 @@ export default {
         return;
       }
 
+      const totalPercentages = this.prizes.reduce(
+        (total, prize) => total + (prize.size ? prize.size : 0), 0
+      );
+
+      if (totalPercentages > 100) {
+        this.$message.error(`Ops, a porcentagem total não pode ultrapassar 100%. Total atual: ${totalPercentages}%`);
+        return
+      }
+
       await this.updatePrize(item)
 
       this.selectedItem = null;
@@ -471,10 +496,10 @@ export default {
           width: 20%;
         }
         &.message {
-          width: 23%;
+          width: 16%;
         }
         &.command {
-          width: 20%;
+          width: 16%;
         }
         &.delay {
           width: 7%;
@@ -486,7 +511,10 @@ export default {
           width: 5%;
         }
         &.status {
-          width: 10%;
+          width: 6%;
+        }
+        &.size {
+          width: 15%;
         }
         &.actions {
           width: 10%;

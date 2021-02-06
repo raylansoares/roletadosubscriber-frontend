@@ -123,3 +123,25 @@ body, input, button, textarea {
         font-size: 0.9em;
     }
 }
+
+.el-slider__bar {
+    background-color: #8e4af8;
+}
+
+.el-slider__button {
+    border: 2px solid #8e4af8;
+}
+
+.dark {
+    .el-slider__runway {
+        background-color: #46464a;
+    }
+    .el-slider__stop {
+        background-color: #b6b4bb;
+    }
+}
+
+.el-badge__content {
+    background-color: #8e4ff8;
+    line-height: 15px;
+}

@@ -1,6 +1,14 @@
 <template>
   <div id="dashboard-container" :class="theme">
     <div id="dashboard-container-inner">
+      <el-alert
+        title="Novidade!"
+        type="info"
+        description="Agora você pode configurar a porcentagem dos prêmios da roleta. Clique no menu 'Configurar Roleta' para visualizar a nova funcionalidade!"
+        :closable="false"
+        show-icon
+        class="info-box"
+      ></el-alert>
       <BlocksContainer />
       <TableContainer />
     </div>
@@ -52,6 +60,15 @@ export default {
     height: 100%;
     padding: 20px 10px;
     flex: 1;
+  }
+  .info-box {
+    margin-bottom: 15px;
+    color: var(--color-primary-dark);
+    background-color: var(--color-primary-2);
+    border: solid 1px var(--color-primary-4);
+    p {
+      color: var(--color-primary-darker);
+    }
   }
 }
 @media (min-width:960px) {
