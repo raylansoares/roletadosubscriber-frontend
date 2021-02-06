@@ -125,11 +125,11 @@ body, input, button, textarea {
 }
 
 .el-slider__bar {
-    background-color: #8e4af8;
+    background-color: var(--color-primary);
 }
 
 .el-slider__button {
-    border: 2px solid #8e4af8;
+    border: 2px solid var(--color-primary);
 }
 
 .dark {
@@ -142,6 +142,11 @@ body, input, button, textarea {
 }
 
 .el-badge__content {
-    background-color: #8e4ff8;
+    background-color: var(--color-primary);
     line-height: 15px;
+}
+
+.el-message.is-closable .el-message__content {
+    padding-right: 25px;
+    line-height: 20px;
 }
