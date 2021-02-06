@@ -213,8 +213,6 @@ import EventBus from '@/utils/event-bus'
 import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
 import draggable from 'vuedraggable'
-import BlocksContainer from '@/components/wheel/BlocksContainer'
-import NewPrizeContainer from '@/components/wheel/NewPrizeContainer'
 
 export default {
   name: "PrizesTableContainer",

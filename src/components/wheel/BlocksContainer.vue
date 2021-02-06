@@ -35,11 +35,7 @@
           Confirmar
         </button>
       </div>
-      <p>Reseta os prêmios para o padrão.</p>
-      <p>
-        (O padrão atual é baseado no canal do
-        <a href="https://www.twitch.tv/tesdey" target="_blank">Tesdey</a>)
-      </p>
+      <p>Remove todos os prêmios e recadastra os prêmios padrão da roleta.</p>
     </div>
     <div class="block" :class="theme">
       <h3>Roletar por Bits</h3>
@@ -72,24 +68,21 @@ export default {
     checkReset: false,
     reseting: false,
     defaultPrizes: [
-      { index: 0, color: "#ffffff", text_color: "#000000", enabled: true, name: "Piada do saci", message: "{user} ganhou {prize}!" },
-      { index: 1, color: "#0172ac", text_color: "#000000", enabled: true, name: "Jogo Gratuito", message: "{user} ganhou {prize}!" },
-      { index: 2, color: "#ffffff", text_color: "#000000", enabled: true, name: "Ganso", message: "{user} ganhou {prize}!" },
-      { index: 3, color: "#f07e26", text_color: "#000000", enabled: true, name: "Jogar água na cabeça", message: "{user} ganhou {prize}!" },
-      { index: 4, color: "#ffffff", text_color: "#000000", enabled: true, name: "Adicionar emote da BTTV", message: "{user} ganhou {prize}!", command: "!bttv", delay: 1 },
-      { index: 5, color: "#fb426e", text_color: "#000000", enabled: true, name: "Anúncio de graça", message: "{user} ganhou {prize}!", command: "/commercial 60", delay: 15 },
-      { index: 6, color: "#ffffff", text_color: "#000000", enabled: true, name: "Roda 2x", message: "{user} ganhou {prize}!", command: "@2" },
-      { index: 7, color: "#f2d809", text_color: "#000000", enabled: true, name: "Lendária ou ban", message: "{user} ganhou {prize}!" },
-      { index: 8, color: "#ffffff", text_color: "#000000", enabled: true, name: "500 rosecoins", message: "{user} ganhou {prize}!", command: "!addpoints {user} 500", delay: 1 },
-      { index: 9, color: "#0172ac", text_color: "#000000", enabled: true, name: "BG temático", message: "{user} ganhou {prize}!" },
-      { index: 10, color: "#ffffff", text_color: "#000000", enabled: true, name: "Escolha 2 músicas", message: "{user} ganhou {prize}!" },
-      { index: 11, color: "#f07e26", text_color: "#000000", enabled: true, name: "De timeout em alguém", message: "{user} ganhou {prize}!" },
-      { index: 12, color: "#ffffff", text_color: "#000000", enabled: true, name: "10 minutos de timeout", message: "{user} ganhou {prize}!", command: "/timeout {user} 600", delay: 15 },
-      { index: 13, color: "#fb426e", text_color: "#000000", enabled: true, name: "Imagem para o cromakey", message: "{user} ganhou {prize}!" },
-      { index: 14, color: "#ffffff", text_color: "#000000", enabled: true, name: "Pergunte ao Tesdey", message: "{user} ganhou {prize}!" },
-      { index: 15, color: "#f2d809", text_color: "#000000", enabled: true, name: "Desenho na cara", message: "{user} ganhou {prize}!" },
-      { index: 16, color: "#ffffff", text_color: "#000000", enabled: true, name: "Frase de encerramento", message: "{user} ganhou {prize}!" },
-      { index: 17, color: "#0172ac", text_color: "#000000", enabled: true, name: "Duelo com Tesdey", message: "{user} ganhou {prize}!" },
+      { index: 0, color: "#bba1ff", text_color: "#000000", enabled: true, size: 5, name: "Contar uma Piada", message: "{user} ganhou {prize}!" },
+      { index: 1, color: "#ffeb3b", text_color: "#000000", enabled: true, size: 5, name: "Jogo Gratuito", message: "{user} ganhou {prize}!" },
+      { index: 2, color: "#5b4292", text_color: "#ffffff", enabled: true, size: 5, name: "Jogar água na cabeça", message: "{user} ganhou {prize}!" },
+      { index: 3, color: "#bba1ff", text_color: "#000000", enabled: true, size: 5, name: "Adicionar emote da BTTV", message: "{user} ganhou {prize}!", command: "!bttv", delay: 1 },
+      { index: 4, color: "#8e4af8", text_color: "#ffffff", enabled: true, size: 10, name: "Anúncio de graça", message: "{user} ganhou {prize}!", command: "/commercial 60", delay: 15 },
+      { index: 5, color: "#4caf50", text_color: "#ffffff", enabled: true, size: 5, name: "Roda 2x", message: "{user} ganhou {prize}!", command: "@2" },
+      { index: 6, color: "#bba1ff", text_color: "#000000", enabled: true, size: 5, name: "Jogatina personalizada", message: "{user} ganhou {prize}!" },
+      { index: 7, color: "#8e4af8", text_color: "#ffffff", enabled: true, size: 10, name: "Escolha 2 músicas", message: "{user} ganhou {prize}!" },
+      { index: 8, color: "#5b4292", text_color: "#ffffff", enabled: true, size: 5, name: "De timeout em alguém", message: "{user} ganhou {prize}!" },
+      { index: 9, color: "#e65151", text_color: "#ffffff", enabled: true, size: 10, name: "10 minutos de timeout", message: "{user} ganhou {prize}!", command: "/timeout {user} 600", delay: 15 },
+      { index: 10, color: "#8e4af8", text_color: "#ffffff", enabled: true, size: 5, name: "Imagem para o cromakey", message: "{user} ganhou {prize}!" },
+      { index: 11, color: "#5b4292", text_color: "#ffffff", enabled: true, size: 5, name: "Desenho na cara", message: "{user} ganhou {prize}!" },
+      { index: 12, color: "#bba1ff", text_color: "#000000", enabled: true, size: 10, name: "Frase de encerramento", message: "{user} ganhou {prize}!" },
+      { index: 13, color: "#8e4af8", text_color: "#ffffff", enabled: true, size: 5, name: "Hora do Duelo", message: "{user} ganhou {prize}!" },
+      { index: 14, color: "#03a9f4", text_color: "#ffffff", enabled: true, size: 10, name: "Seguir no Twitter", message: "{user} ganhou {prize}!" },
     ],
     configuration: {
       min_bits_to_wheel: null
