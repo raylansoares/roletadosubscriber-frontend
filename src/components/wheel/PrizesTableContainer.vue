@@ -338,8 +338,26 @@ export default {
         (total, prize) => total + (prize.size ? prize.size : 0), 0
       );
 
+      const hasAutoSize = this.prizes.filter(prize => prize.size === 0)
+
       if (totalPercentages > 100) {
-        this.$message.error(`Ops, a porcentagem total não pode ultrapassar 100%. Total atual: ${totalPercentages}%`);
+        this.$message.error({
+          message: `A porcentagem total dos prêmios não pode ultrapassar 100%.
+            Total atual: ${totalPercentages}%`,
+          duration: 5000,
+          showClose: true
+        });
+        return
+      }
+
+      if (totalPercentages < 100 && !hasAutoSize.length) {
+        this.$message.error({
+          message: `A porcentagem total dos prêmios não pode ser menor que 100%.
+            Deixe em "0" caso queira definir como porcentagem automática.
+            Total atual: ${totalPercentages}%`,
+          duration: 10000,
+          showClose: true
+        });
         return
       }
 
