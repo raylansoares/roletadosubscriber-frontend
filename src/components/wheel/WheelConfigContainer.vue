@@ -83,7 +83,7 @@ export default {
     background-color: var(--color-primary-2);
     border: solid 1px var(--color-primary-4);
     p {
-      color: var(--color-primary-darker);
+      color: var(--color-primary-dark);
     }
   }
   .contact {
