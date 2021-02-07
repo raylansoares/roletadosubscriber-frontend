@@ -266,7 +266,8 @@ export default {
         this.filterPrizes();
         if (!response.data.length) await this.resetPrizes()
       } catch (e) {
-        this.$message.error('Algo deu errado, clique em sair e entre novamente');
+        this.$message.error(`Algo deu errado! Se o erro persistir, clique
+          em sair e faça login novamente`);
       }
     },
 
@@ -313,6 +314,27 @@ export default {
     async deletePrize(id) {
       const url = `/api/prizes/${id}`;
 
+      const filteredPrizes = this.prizes.filter(prize => {
+        return prize._id !== id && prize.enabled
+      })
+
+      const filteredTotalPercentages = filteredPrizes.reduce(
+        (total, prize) => total + (prize.size ? prize.size : 0), 0
+      );
+
+      const filteredHasAutoSize = filteredPrizes.filter(prize => !prize.size)
+
+      if (filteredTotalPercentages < 100 && !filteredHasAutoSize.length) {
+        this.$message.error({
+          message: `A porcentagem total dos prêmios ativos não pode ser menor que
+            100%. Ajuste a porcentagem dos outros prêmios antes de excluir este.
+            Total sem este prêmio: ${filteredTotalPercentages}%`,
+          duration: 10000,
+          showClose: true
+        });
+        return
+      }
+
       try {
         await axios.delete(url, { headers: { 
           'x-auth-token': this.user.access_token,
@@ -331,31 +353,56 @@ export default {
         return;
       }
 
-      const totalPercentages = this.prizes.reduce(
-        (total, prize) => total + (prize.size ? prize.size : 0), 0
-      );
+      if (item.enabled) {
+        const enabledPrizes = this.prizes.filter(prize => prize.enabled)
 
-      const hasAutoSize = this.prizes.filter(prize => prize.size === 0)
+        const totalPercentages = enabledPrizes.reduce(
+          (total, prize) => total + (prize.size ? prize.size : 0), 0
+        );
 
-      if (totalPercentages > 100) {
-        this.$message.error({
-          message: `A porcentagem total dos prêmios não pode ultrapassar 100%.
-            Total atual: ${totalPercentages}%`,
-          duration: 5000,
-          showClose: true
-        });
-        return
-      }
+        const hasAutoSize = enabledPrizes.filter(prize => !prize.size)
 
-      if (totalPercentages < 100 && !hasAutoSize.length) {
-        this.$message.error({
-          message: `A porcentagem total dos prêmios não pode ser menor que 100%.
-            Deixe em "0" caso queira definir a porcentagem desse prêmio como 
-            automática. Total atual: ${totalPercentages}%`,
-          duration: 10000,
-          showClose: true
-        });
-        return
+        if (totalPercentages > 100) {
+          this.$message.error({
+            message: `A porcentagem total dos prêmios ativos não pode
+              ultrapassar 100%. Total atual: ${totalPercentages}%`,
+            duration: 5000,
+            showClose: true
+          });
+          return
+        }
+
+        if (totalPercentages < 100 && !hasAutoSize.length) {
+          this.$message.error({
+            message: `A porcentagem total dos prêmios ativos não pode ser menor
+              que 100%. Deixe em "0" caso queira definir a porcentagem desse
+              prêmio como automática. Total atual: ${totalPercentages}%`,
+            duration: 10000,
+            showClose: true
+          });
+          return
+        }
+      } else {
+        const filteredPrizes = this.prizes.filter(prize => {
+          return prize._id !== item._id && prize.enabled
+        })
+
+        const filteredTotalPercentages = filteredPrizes.reduce(
+          (total, prize) => total + (prize.size ? prize.size : 0), 0
+        );
+
+        const filteredHasAutoSize = filteredPrizes.filter(prize => !prize.size)
+
+        if (filteredTotalPercentages < 100 && !filteredHasAutoSize.length) {
+          this.$message.error({
+            message: `A porcentagem total dos prêmios ativos não pode ser menor
+              que 100%. Ajuste a porcentagem dos outros prêmios antes de
+              desativar este. Total sem este prêmio: ${filteredTotalPercentages}%`,
+            duration: 10000,
+            showClose: true
+          });
+          return
+        }
       }
 
       await this.updatePrize(item)

@@ -107,7 +107,8 @@ export default {
         this.subscribers = response.data;
         this.filterSubscribers();
       } catch (e) {
-        this.$message.error('Algo deu errado, clique em sair e entre novamente');
+        this.$message.error(`Algo deu errado! Se o erro persistir, clique
+          em sair e faça login novamente`);
       }
     },
 

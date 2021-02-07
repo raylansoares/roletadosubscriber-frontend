@@ -9,14 +9,26 @@
       />
       <VariablesContainer
       />
+      <el-alert
+        type="info"
+        description="Se o total das porcentagens definidas para os prêmios for igual a 100%, os prêmios com porcentagem automática não serão exibidos corretamente. Defina uma porcentagem para todos os prêmios ou deixe uma porcentagem sobrando para que essa sobra seja utilizada nos prêmios com porcentagem automática."
+        :closable="false"
+        show-icon
+        class="info-box"
+      ></el-alert>
       <PrizesTableContainer
       />
+      <div class="contact" :class="theme">
+        <p>
+          Tem alguma dúvida ou sugestão? Me adicione no Discord:
+          <strong>RaylanPrime#3896</strong>
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
 import BlocksContainer from '@/components/wheel/BlocksContainer'
 import NewPrizeContainer from '@/components/wheel/NewPrizeContainer'
@@ -64,6 +76,20 @@ export default {
     height: 100%;
     padding: 20px 10px;
     flex: 1;
+  }
+  .info-box {
+    margin-top: 15px;
+    color: var(--color-primary-dark);
+    background-color: var(--color-primary-2);
+    border: solid 1px var(--color-primary-4);
+    p {
+      color: var(--color-primary-darker);
+    }
+  }
+  .contact {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 20px;
   }
 }
 @media (min-width:960px) {

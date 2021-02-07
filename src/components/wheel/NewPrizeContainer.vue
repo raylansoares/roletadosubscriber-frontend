@@ -115,7 +115,8 @@ export default {
       delay: null,
       color: '#ffffff',
       text_color: '#000000',
-      enabled: true
+      enabled: true,
+      size: 0
     }
   }),
 

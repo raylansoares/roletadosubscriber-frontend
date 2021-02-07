@@ -11,12 +11,17 @@
       ></el-alert>
       <BlocksContainer />
       <TableContainer />
+      <div class="contact" :class="theme">
+        <p>
+          Tem alguma dúvida ou sugestão? Me adicione no Discord:
+          <strong>RaylanPrime#3896</strong>
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from '@/repositories/clients/axios'
 import BlocksContainer from '@/components/dashboard/BlocksContainer'
 import TableContainer from '@/components/dashboard/TableContainer'
 import { mapState } from 'vuex'
@@ -69,6 +74,11 @@ export default {
     p {
       color: var(--color-primary-darker);
     }
+  }
+  .contact {
+    text-align: center;
+    font-size: 12px;
+    margin-top: 20px;
   }
 }
 @media (min-width:960px) {
