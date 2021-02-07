@@ -153,13 +153,12 @@
                   </td>
                   <td :class="theme" class="size">
                     <span v-if="selectedItem !== prize._id">
-                      {{ prize.size ? prize.size + '%' : 'Automático' }}
+                      {{ prize.size ? prize.size + '%' : 'Automática' }}
                     </span>
                     <span v-else>
                       <el-slider
                         v-model="prize.size"
-                        :step="5"
-                        show-stops
+                        :step="1"
                       >
                       </el-slider>
                     </span>
@@ -351,8 +350,8 @@ export default {
       if (totalPercentages < 100 && !hasAutoSize.length) {
         this.$message.error({
           message: `A porcentagem total dos prêmios não pode ser menor que 100%.
-            Deixe em "0" caso queira definir como porcentagem automática.
-            Total atual: ${totalPercentages}%`,
+            Deixe em "0" caso queira definir a porcentagem desse prêmio como 
+            automática. Total atual: ${totalPercentages}%`,
           duration: 10000,
           showClose: true
         });
