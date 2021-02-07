@@ -15,6 +15,7 @@
         :closable="false"
         show-icon
         class="info-box"
+        :class="theme"
       ></el-alert>
       <PrizesTableContainer
       />
@@ -82,8 +83,15 @@ export default {
     color: var(--color-primary-dark);
     background-color: var(--color-primary-2);
     border: solid 1px var(--color-primary-4);
-    p {
-      color: var(--color-primary-dark);
+    &.dark {
+      p {
+        color: var(--color-primary-light);
+      }
+    }
+    &.light {
+      p {
+        color: var(--color-primary-dark);
+      }
     }
   }
   .contact {
