@@ -14,8 +14,8 @@
       <TableContainer />
       <div class="contact" :class="theme">
         <p>
-          Tem alguma dúvida ou sugestão? Me adicione no Discord:
-          <strong>RaylanPrime#3896</strong>
+          Tem alguma dúvida ou sugestão? Entre em contato pelo E-mail:
+          <strong>contato@roletadosubscriber.com.br</strong>
         </p>
       </div>
     </div>

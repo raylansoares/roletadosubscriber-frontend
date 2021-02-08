@@ -3,8 +3,8 @@
     <div id="contact-container-inner">
       <h2 class="title" :class="theme">Contato</h2>
       <div class="description" :class="theme">
-        <p>Tem alguma dúvida ou sugestão? Me adicione no Discord:</p>
-        <strong>RaylanPrime#3896</strong>
+        <p>Tem alguma dúvida ou sugestão? Entre em contato pelo E-mail:</p>
+        <strong>contato@roletadosubscriber.com.br</strong>
       </div>
     </div>
   </div>
