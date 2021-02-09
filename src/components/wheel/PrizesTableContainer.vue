@@ -4,7 +4,14 @@
       <h3>
         Prêmios da Roleta
       </h3>
-      <div class="search-and-sort">
+      <div class="search-sort-preview">
+         <button
+          class="default-btn preview-btn"
+          @click="showPreview()"
+          :disabled="selectedItem || sort"
+        >
+          <i class="material-icons">visibility</i> Visualizar Roleta
+        </button>
         <button
           class="default-btn"
           :class="sort ? `sorting-btn ${theme}` : theme"
@@ -204,6 +211,22 @@
         </transition-group>
       </draggable>
     </div>
+    <el-dialog :visible.sync="preview" center custom-class="wheel-modal" :show-close="false">
+      <div class="pointer">
+        <i class="material-icons">place</i>
+      </div>
+      <canvas id="canvas" width="500" height="500">
+        <p style="color: white" align="center">
+          Sorry, your browser doesn't support canvas. Please try another.
+        </p>
+      </canvas>
+      <span slot="footer" class="dialog-footer">
+        <button
+          class="default-btn close-modal-btn preview-btn"
+          @click="preview = false"
+        >Fechar</button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -212,6 +235,7 @@ import EventBus from '@/utils/event-bus'
 import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
 import draggable from 'vuedraggable'
+import * as Winwheel from "../../assets/scripts/Winwheel";
 
 export default {
   name: "PrizesTableContainer",
@@ -239,7 +263,10 @@ export default {
     selectedItem: null,
     drag: false,
     sort: false,
-    sorting: false
+    sorting: false,
+    preview: false,
+    segments: [],
+    theWheel: null
   }),
 
   mounted() {
@@ -421,7 +448,53 @@ export default {
       } catch (e) {
         this.$message.error('Ops, não foi possível editar este item');
       }
-    }
+    },
+
+    initWheel () {
+      this.theWheel = new Winwheel.Winwheel({});
+      this.theWheel.rotationAngle = 0;
+      this.theWheel.draw(); 
+
+      this.segments = this.formatSegments(this.prizes);
+
+      this.theWheel = new Winwheel.Winwheel({
+        textFontSize: 19,
+        numSegments: this.segments.length,
+        segments: this.segments,
+        innerRadius: 8
+      });
+    },
+
+    showPreview () {
+      this.preview = true
+      setTimeout(() => {
+        this.initWheel();
+      }, 500);
+    },
+
+    formatSegments(data) {
+      const enabledItems = data.filter(item => item.enabled === true);
+
+      return enabledItems.map(item => {
+        return {
+          fillStyle: item.color,
+          text: item.name,
+          textFillStyle: item.text_color,
+          size: item.size ? this.winwheelPercentToDegrees(item.size) : null
+        };
+      });
+    },
+
+    winwheelPercentToDegrees(percentValue) {
+      let degrees = 0;
+
+      if ((percentValue > 0) && (percentValue <= 100)) {
+          const divider = (percentValue / 100);
+          degrees = (360 * divider);
+      }
+
+      return degrees;
+    },
   }
 };
 </script>
@@ -445,10 +518,97 @@ export default {
     background-color: var(--color-box-dark);
     border: solid 1px var(--color-background-darker);
   }
+  .default-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.8em;
+    transition: background-color 0.2s;
+    margin: 5px 10px;
+    color: var(--color-title-in-primary);
+    i {
+      padding-right: 10px;
+    }
+    &.light {
+      background-color: var(--color-text-base);
+    }
+    &.dark {
+        background-color: var(--color-text-title);
+    }
+    cursor: pointer;
+    &:focus {
+      outline:0;
+    }
+    &:hover {
+      &.light {
+        background-color: var(--color-text-title);
+      }
+      &.dark {
+        background-color: var(--color-text-base);
+      }
+    }
+    &:disabled {
+      background-color: var(--color-text-complement);
+      cursor: default;
+      &.light {
+        background-color: var(--color-text-complement);
+      }
+      &.dark {
+        background-color: var(--color-text-base);
+      }
+    }
+  }
+  .preview-btn {
+    color: var(--color-title-in-primary);
+    background-color: var(--color-primary-dark);
+    &:hover {
+      background-color: var(--color-primary-darker);
+    }
+  }
+  .wheel-modal {
+    background-color: transparent;
+    box-shadow: none;
+    .el-dialog__body {
+      text-align: center;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+    .el-dialog__footer {
+      display: flex;
+      justify-content: center;
+    }
+    .pointer {
+      margin-top: 210px;
+      width: 100%;
+      text-align: center;
+      position: fixed;
+      i {
+        color: var(--color-primary);
+        font-size: 64px;
+        opacity: 0.9;
+        transform: rotate(180deg);
+        -webkit-text-stroke: 2px var(--color-primary-lighter);
+      }
+    }
+    .wheel-canvas {
+      text-align: center;
+    }
+    #canvas {
+      margin-top: 0;
+    }
+  }
+  .close-modal-btn {
+    padding: 10px 15px;
+    font-size: 1em;
+  }
   #table-header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: flex-start;
     padding-bottom: 10px;
     &.light {
       border-bottom: solid 1px var(--color-line-in-white);
@@ -459,7 +619,7 @@ export default {
     h3 {
       font-size: 1.4em;
     }
-    .search-and-sort {
+    .search-sort-preview {
       display: flex;
       justify-content: center;
       input {
@@ -479,46 +639,6 @@ export default {
           color: var(--color-text-complement);
           background-color: var(--color-background-dark);
           border: solid 1px var(--color-background-darker);
-        }
-      }
-      .default-btn {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 4px 10px;
-        border: none;
-        border-radius: 5px;
-        font-size: 0.8em;
-        transition: background-color 0.2s;
-        margin: 5px 10px;
-        color: var(--color-title-in-primary);
-        &.light {
-          background-color: var(--color-text-base);
-        }
-        &.dark {
-           background-color: var(--color-text-title);
-        }
-        cursor: pointer;
-        &:focus {
-          outline:0;
-        }
-        &:hover {
-          &.light {
-            background-color: var(--color-text-title);
-          }
-          &.dark {
-            background-color: var(--color-text-base);
-          }
-        }
-        &:disabled {
-          background-color: var(--color-text-complement);
-          cursor: default;
-          &.light {
-            background-color: var(--color-text-base);
-          }
-          &.dark {
-            background-color: var(--color-text-title);
-          }
         }
       }
       .sorting-btn {

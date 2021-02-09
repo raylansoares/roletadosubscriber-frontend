@@ -87,6 +87,7 @@
           @click="createPrize()"
           :disabled="!prize.name || !prize.message"
           class="default-btn create-btn"
+          :class="theme"
         >
         Cadastrar
       </button>
@@ -254,6 +255,12 @@ export default {
       &:disabled {
         background-color: var(--color-text-complement);
         cursor: default;
+        &.light {
+          background-color: var(--color-text-complement);
+        }
+        &.dark {
+          background-color: var(--color-text-base);
+        }
       }
     }
   }
