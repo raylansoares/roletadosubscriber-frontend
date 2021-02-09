@@ -4,7 +4,7 @@
       <el-alert
         title="Novidade!"
         type="info"
-        description="Agora você pode configurar a porcentagem dos prêmios da roleta. Clique no menu 'Configurar Roleta' para visualizar a nova funcionalidade!"
+        description="Agora você pode configurar a porcentagem dos prêmios e pré-visualizar a roleta. Clique no menu 'Configurar Roleta' para visualizar as novas funcionalidades!"
         :closable="false"
         show-icon
         class="info-box"
