@@ -94,6 +94,12 @@ export default {
     this.getConfiguration();
   },
 
+  created () {
+    EventBus.$on('reset-prizes', () => {
+      this.resetPrizes();
+    })
+  },
+
   methods: {
     async resetPrizes() {
       this.reseting = true;

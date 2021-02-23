@@ -291,7 +291,7 @@ export default {
 
         this.prizes = response.data;
         this.filterPrizes();
-        if (!response.data.length) await this.resetPrizes()
+        if (!response.data.length) EventBus.$emit('reset-prizes')
       } catch (e) {
         this.$message.error(`Algo deu errado! Se o erro persistir, clique
           em sair e faça login novamente`);
