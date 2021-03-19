@@ -42,9 +42,7 @@
             <th :class="theme" class="color">Cor</th>
             <th :class="theme" class="text-color">Texto</th>
             <th :class="theme" class="status">Status</th>
-            <th :class="theme" class="size">
-              <el-badge value="novo" class="item">Porcentagem</el-badge>
-            </th>
+            <th :class="theme" class="size">Porcentagem</th>
             <th :class="theme" class="actions">Ações</th>
           </tr>
         </thead>
