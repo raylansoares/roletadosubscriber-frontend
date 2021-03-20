@@ -63,7 +63,7 @@ body {
     justify-content: center;
 }
 
-body, input, button, textarea {
+body, input, button, textarea, select {
     font: 500 1.6rem Poppins;
     color: var(--color-text-base);
 }
@@ -149,4 +149,13 @@ body, input, button, textarea {
 .el-message.is-closable .el-message__content {
     padding-right: 25px;
     line-height: 20px;
+}
+
+.el-alert__content p.el-alert__description {
+    font-size: 14px;
+    margin: 0;
+}
+
+.el-badge__content {
+    border: none;
 }
