@@ -38,12 +38,21 @@
                 {{ reward.name }}
               </span>
               <span v-else>
-                <input
-                  type="text"
-                  v-model="reward.name"
-                  class="edit-reward-input"
+                <select
+                  class="edit-reward-select"
                   :class="theme"
+                  v-model="reward.name"
+                  placeholder="Recompensa"
+                  @change="reward.type = null, reward.action = null, reward.time = null"
                 >
+                  <option value=""></option>
+                  <option
+                    v-for="item in channelRewards"
+                    :key="item.id"
+                    :label="item.title"
+                    :value="item.title">
+                  </option>
+                </select>
               </span>
             </td>
             <td :class="theme" class="type">
@@ -57,6 +66,7 @@
                   v-model="reward.type"
                   placeholder="Tipo"
                   @change="reward.action = null, reward.time = null"
+                  :disabled="!reward.name"
                 >
                   <option value=""></option>
                   <option
@@ -156,6 +166,10 @@ export default {
 
   computed: {
     ...mapState(['user', 'theme'])
+  },
+
+  props: {
+    channelRewards: Array
   },
 
   data: () => ({

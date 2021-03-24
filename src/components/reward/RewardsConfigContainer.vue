@@ -2,16 +2,18 @@
   <div id="reward-config-container" :class="theme">
     <div id="reward-config-container-inner">
       <el-alert type="info" :closable="false" show-icon class="info-box" :class="theme">
-        Primeiro <a :href='`https://dashboard.twitch.tv/u/${this.user.login}/viewer-rewards/channel-points/rewards`' target='_blank'>Clique Aqui</a>
-        para cadastrar uma recompensa na Twitch, em seguida cadastre ela aqui no painel com o mesmo nome.
-        Quando alguém resgatar a recompensa na Twitch, a ação cadastrada aqui será executada automaticamente.
+        <strong>Como funciona?</strong> Selecione uma recompensa e adicione um comando a ela, quando alguém resgatar a recompensa na Twitch, a ação cadastrada aqui será executada automaticamente.
         Para as ações de dar e remover timeout, quem resgatar a recompensa precisa digitar o nome do alvo no início da mensagem.
-        O Bot <strong>RoletaDoSubscriber</strong> precisa ser <strong>Mod</strong> do seu canal para que as ações de dar e remover timeout funcionem.
+      </el-alert>
+      <el-alert type="info" :closable="false" show-icon class="info-box" :class="theme">
+        O Bot <strong>RoletaDoSubscriber</strong> precisa ser <strong>Mod</strong> do seu canal para que as ações de dar e remover timeout funcionem corretamente.
       </el-alert>
       <NewRewardContainer
         @get-rewards="getRewards()"
+        :channel-rewards="channelRewards"
       />
       <RewardsTableContainer
+        :channel-rewards="channelRewards"
       />
       <div class="contact" :class="theme">
         <p>
@@ -25,6 +27,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import axios from '@/repositories/clients/axios'
 import NewRewardContainer from '@/components/reward/NewRewardContainer'
 import RewardsTableContainer from '@/components/reward/RewardsTableContainer'
 
@@ -38,6 +41,38 @@ export default {
 
   computed: {
     ...mapState(['user', 'theme'])
+  },
+
+  data: () => ({
+    channelRewards: []
+  }),
+
+  mounted() {
+    this.getChannelRewards()
+  },
+
+  methods: {
+    async getChannelRewards () {
+      try {
+        const baseUrl = 'https://api.twitch.tv/helix/channel_points/custom_rewards'
+        const url = `${baseUrl}?broadcaster_id=${this.user.broadcaster_id}`
+
+        const response = await axios.get(url, {
+          headers: { 
+            'Client-Id': process.env.VUE_APP_CLIENT_ID,
+            'Authorization': `Bearer ${this.user.access_token}`
+          }
+        });
+        
+        this.channelRewards = response.data.data
+      } catch (e) {
+        if (e.response && e.response.status && e.response.status === 403) {
+          this.$message.error('Ops, seu canal não possui esse recurso');
+          return
+        }
+        this.$message.error('Ops, não foi possível cadastrar este item');
+      }
+    }
   }
 };
 </script>

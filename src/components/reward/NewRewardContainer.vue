@@ -9,13 +9,22 @@
             <span class="tooltiptext">Nome da recompensa.</span>
           </div>
         </label>
-        <input
-          type="text"
-          class="text-input"
+        <select
+          class="select-input"
           :class="theme"
           v-model="reward.name"
-          placeholder="Nome da recompensa"
+          placeholder="Recompensa"
+          @change="reward.type = null, reward.action = null, reward.time = null"
         >
+          <option value=""></option>
+          <option
+            v-for="item in channelRewards"
+            :key="item.id"
+            :label="item.title"
+            :value="item.title"
+          >
+          </option>
+        </select>
       </div>
       <div class="form-field">
         <label>
@@ -33,13 +42,15 @@
           v-model="reward.type"
           placeholder="Tipo"
           @change="reward.action = null, reward.time = null"
+          :disabled="!reward.name"
         >
           <option value=""></option>
           <option
             v-for="item in rewardTypes"
             :key="item.value"
             :label="item.label"
-            :value="item.value">
+            :value="item.value"
+          >
           </option>
         </select>
       </div>
@@ -114,6 +125,10 @@ export default {
 
   computed: {
     ...mapState(['theme', 'user'])
+  },
+
+  props: {
+    channelRewards: Array
   },
 
   data: () => ({
