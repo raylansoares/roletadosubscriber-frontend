@@ -3,6 +3,7 @@ import IndexView from "../views/Index.vue";
 import DashboardView from "../views/Dashboard";
 import WheelConfigView from "../views/WheelConfig";
 import WheelView from "../views/Wheel";
+import RewardsConfigView from "../views/RewardsConfig";
 import Vue from "vue";
 import VueRouter from "vue-router";
 import { isAuthenticated } from "../utils/auth";
@@ -48,6 +49,11 @@ const routes = [
         path: "/wheelConfig",
         name: "WheelConfig",
         component: WheelConfigView
+      },
+      {
+        path: "/rewardsConfig",
+        name: "RewardsConfig",
+        component: RewardsConfigView
       },
       {
         path: "*",

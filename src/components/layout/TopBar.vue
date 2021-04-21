@@ -8,13 +8,20 @@
     </div>
     <div id="menu-container">
       <router-link to="/dashboard" :class="theme">
-        <i class="material-icons">table_chart</i> Painel
+        <i class="material-icons">table_chart</i>
+        <span class="menu-text">Painel</span>
       </router-link>
       <router-link to="/wheelConfig" :class="theme">
-        <i class="material-icons">settings</i> Configurar Roleta
+        <i class="material-icons">settings</i>
+        <span class="menu-text">Configurar Roleta</span>
+      </router-link>
+      <router-link to="/rewardsConfig" :class="theme">
+        <i class="material-icons">motion_photos_on</i>
+        <span class="menu-text">Pontos de Canal</span>
       </router-link>
       <a @click="logout()" :class="theme">
-        <i class="material-icons">power_settings_new</i> Sair
+        <i class="material-icons">power_settings_new</i>
+        <span class="menu-text">Sair</span>
       </a>
       <div id="theme-container">
         <a @click="setTheme('light')" :class="theme === 'light' ? 'active' : ''">
@@ -91,6 +98,9 @@ export default {
     min-width: 466px;
     width: 100%;
     justify-content: space-around;
+    .menu-text {
+      display: none;
+    }
     a {
       display: flex;
       padding: 0 15px;
@@ -130,6 +140,9 @@ export default {
       min-width: none;
       width: auto;
       justify-content: flex-end;
+      .menu-text {
+        display: initial;
+      }
     }
     #logo-container {
       display: block;

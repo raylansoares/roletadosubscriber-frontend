@@ -15,11 +15,17 @@
       <button class="roll-btn" @click="manualWheel()">Roletar</button>
     </div>
     <div class="block" :class="theme">
-      <h3>Pontos de Canal</h3>
+      <el-badge value="novo" class="item" :class="theme">
+        <h3>Pontos de Canal </h3>
+      </el-badge>
       <p>
-        Para integrar a roleta com os pontos do canal basta adicionar
-        uma recompensa personalizada exatamente com o seguinte nome:
-        <br /><strong>Ganhe uma roleta do subscriber</strong>
+        Agora você pode integrar os pontos de canal da Twitch com a
+        Roleta do Subscriber! Além da roleta, você também pode configurar
+        comandos de dar e remover timeout.
+        <router-link to="/rewardsConfig" :class="theme">
+           Clique aqui
+        </router-link>
+        para mais detalhes.
       </p>
     </div>
   </div>

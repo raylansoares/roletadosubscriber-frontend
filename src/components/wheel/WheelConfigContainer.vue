@@ -72,8 +72,8 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    max-width: 1280px;
+    width: 100%;    
+    max-width: 600px;
     height: 100%;
     padding: 20px 10px;
     flex: 1;
@@ -103,6 +103,7 @@ export default {
 @media (min-width:960px) {
   #wheel-config-container {
     #wheel-config-container-inner {
+      max-width: 1280px;
       align-items: initial;
     }
   }
