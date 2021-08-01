@@ -753,12 +753,14 @@ export default {
         td {
           padding: 7px 10px;
           .status-tag {
-            padding: 0px 10px;
+            padding: 0px 5px;
             margin: 2px;
             border-radius: 3px;
             line-height: 2.0em;
             font-size: 0.9em;
             display: inline-block;
+            min-width: 55px;
+            text-align: center;
             &.enabled {
               background-color: var(--color-primary-2);
             }

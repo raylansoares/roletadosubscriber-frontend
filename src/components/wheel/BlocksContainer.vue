@@ -9,7 +9,7 @@
         (não deixe aberto no navegador).
       </p>
     </div>
-    <div class="block" :class="theme">
+    <!-- <div class="block" :class="theme">
       <h3>Resetar Prêmios</h3>
       <button
         v-if="!checkReset"
@@ -36,6 +36,25 @@
         </button>
       </div>
       <p>Remove todos os prêmios e recadastra os prêmios padrão da roleta.</p>
+    </div> -->
+    <div class="block" :class="theme">
+      <h3>Roletar por Sub</h3>
+      <p>Deixe marcado abaixo quais os tipos de sub que podem ativar a roleta.</p>
+      <div class="sub-types">
+        <el-checkbox-group
+          v-model="configuration.active_sub_plans"
+          @change="updateOrCreateConfiguration()"
+          fill="#7246c8"
+        >
+          <el-checkbox-button
+            v-for="plan in plans"
+            :label="plan.cod"
+            :key="plan.cod"
+          >
+            {{ plan.label }}
+          </el-checkbox-button>
+        </el-checkbox-group>
+      </div>
     </div>
     <div class="block" :class="theme">
       <h3>Roletar por Bits</h3>
@@ -85,8 +104,15 @@ export default {
       { index: 14, color: "#03a9f4", text_color: "#ffffff", enabled: true, size: 10, name: "Seguir no Twitter", message: "{user} ganhou {prize}!" },
     ],
     configuration: {
-      min_bits_to_wheel: null
-    }
+      min_bits_to_wheel: null,
+      active_sub_plans: []
+    },
+    plans: [
+      { cod: 'Prime', label: 'Prime' },
+      { cod: '1000', label: 'Tier 1' },
+      { cod: '2000', label: 'Tier 2' },
+      { cod: '3000', label: 'Tier 3' }
+    ]
   }),
 
   mounted() {
@@ -235,6 +261,23 @@ export default {
     padding: 20px;
     border-radius: 5px;
     font-size: 0.90em;
+    .sub-types {
+      margin-top: 10px;
+      text-align: center;
+      .sub-type {
+        display: block;
+        .status-on, .status-off {
+          font-size: 4em;
+          cursor: pointer;
+        }
+        .status-on {
+          color: var(--color-primary);
+        }
+        .status-off {
+          color: var(--color-tertiary);
+        }
+      }
+    }
     &.light {
       color: var(--color-text-base);
       background-color: var(--color-box-light);
