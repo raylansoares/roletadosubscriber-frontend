@@ -53,7 +53,8 @@ export default {
         code: this.user.code,
         origin: 'Manual',
         quantity: null,
-        message: null
+        message: null,
+        plan: null
       });
       this.username = null;
     }
