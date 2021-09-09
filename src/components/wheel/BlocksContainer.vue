@@ -9,34 +9,6 @@
         (não deixe aberto no navegador).
       </p>
     </div>
-    <!-- <div class="block" :class="theme">
-      <h3>Resetar Prêmios</h3>
-      <button
-        v-if="!checkReset"
-        @click="checkReset = true"
-        :disabled="reseting"
-        class="default-btn reset-btn"
-      >
-        {{ reseting ? "Resetando..." : "Resetar" }}
-      </button>
-      <div class="check-reset" v-if="checkReset">
-        <button
-          @click="checkReset = false"
-          :disabled="reseting"
-          class="default-btn cancel-reset-btn"
-        >
-          Cancelar
-        </button>
-        <button
-          @click="resetPrizes()"
-          :disabled="reseting"
-          class="default-btn confirm-reset-btn"
-        >
-          Confirmar
-        </button>
-      </div>
-      <p>Remove todos os prêmios e recadastra os prêmios padrão da roleta.</p>
-    </div> -->
     <div class="block" :class="theme">
       <h3>Roletar por Sub</h3>
       <p>Deixe marcado abaixo quais os tipos de sub que podem ativar a roleta.</p>
@@ -84,8 +56,6 @@ export default {
 
   data: () => ({
     wheelUrl: null,
-    checkReset: false,
-    reseting: false,
     defaultPrizes: [
       { index: 0, color: "#bba1ff", text_color: "#000000", enabled: true, size: 5, name: "Contar uma Piada", message: "{user} ganhou {prize}!" },
       { index: 1, color: "#ffeb3b", text_color: "#000000", enabled: true, size: 5, name: "Jogo Gratuito", message: "{user} ganhou {prize}!" },
@@ -120,48 +90,7 @@ export default {
     this.getConfiguration();
   },
 
-  created () {
-    EventBus.$on('reset-prizes', () => {
-      this.resetPrizes();
-    })
-  },
-
   methods: {
-    async resetPrizes() {
-      this.reseting = true;
-
-      try {
-        const allPrizes = await this.getPrizes();
-
-        await Promise.all(
-          allPrizes.map(async prize => {
-            const url = `/api/prizes/${prize._id}`;
-
-            await axios.delete(url, { headers: { 
-              'x-auth-token': this.user.access_token,
-              'x-code': this.user.code
-            } });
-          })
-        );
-
-        const url = '/api/prizes';
-
-        for (let prize of this.defaultPrizes) {
-          await axios.post(url, prize, { headers: { 
-            'x-auth-token': this.user.access_token,
-            'x-code': this.user.code
-          } });
-        }
-      } catch (e) {
-        this.$message.error('Ops, não foi possível resetar seus prêmios');
-      }
-
-      EventBus.$emit('get-prizes')
-
-      this.checkReset = false
-      this.reseting = false;
-    },
-
     async getPrizes() {
       const url = '/api/prizes';
 
@@ -337,38 +266,6 @@ export default {
         outline:0;
       }
     }
-    .reset-btn {
-      color: var(--color-title-in-primary);
-      background-color: var(--color-primary-dark);
-      &:hover {
-        background-color: var(--color-primary-darker);
-      }
-      &:disabled {
-        background-color: var(--color-text-complement);
-        cursor: default;
-      }
-    }
-    .check-reset {
-      display: flex;
-      justify-content: space-between;
-      flex-direction: column;
-      .cancel-reset-btn {
-        width: 100%;
-        color: var(--color-title-in-primary);
-        background-color: var(--color-text-base);
-        &:hover {
-          background-color: var(--color-text-title);
-        }
-      }
-      .confirm-reset-btn {
-        width: 100%;
-        color: var(--color-title-in-primary);
-        background-color: var(--color-primary-dark);
-        &:hover {
-          background-color: var(--color-primary-darker);
-        }
-      }
-    }
   }
 }
 @media (min-width:960px) {
@@ -380,16 +277,6 @@ export default {
       margin: 0;
       width: 32%;
       max-width: 400px;
-      .check-reset {
-        display: flex;
-        flex-direction: row;
-        .cancel-reset-btn {
-          width: 49%;
-        }
-        .confirm-reset-btn {
-          width: 49%;
-        }
-      }
     }
   }
 }
