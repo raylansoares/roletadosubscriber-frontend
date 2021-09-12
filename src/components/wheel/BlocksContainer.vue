@@ -11,22 +11,8 @@
     </div>
     <div class="block" :class="theme">
       <h3>Roletar por Sub</h3>
-      <p>Deixe marcado abaixo quais os tipos de sub que podem ativar a roleta.</p>
-      <div class="sub-types">
-        <el-checkbox-group
-          v-model="configuration.active_sub_plans"
-          @change="updateOrCreateConfiguration()"
-          fill="#7246c8"
-        >
-          <el-checkbox-button
-            v-for="plan in plans"
-            :label="plan.cod"
-            :key="plan.cod"
-          >
-            {{ plan.label }}
-          </el-checkbox-button>
-        </el-checkbox-group>
-      </div>
+      <p>Clique no botão abaixo para configurar mais detalhes da roleta por sub.</p>
+      <button class="default-btn subs-btn"  @click="showConfig = true">Abrir Configurações</button>
     </div>
     <div class="block" :class="theme">
       <h3>Roletar por Bits</h3>
@@ -37,15 +23,57 @@
         :class="theme"
         placeholder="Quantidade mínima de bits"
       >
-      <button class="roll-btn" @click="updateOrCreateConfiguration()">Salvar</button>
+      <button class="default-btn bits-btn" @click="updateOrCreateConfiguration()">Salvar</button>
     </div>
+    <el-dialog :visible.sync="showConfig" center :custom-class="theme + ' subs-modal'" :show-close="false" :close-on-click-modal="false" :close-on-press-escape="false">
+      <div class="config-tier" :class="theme">
+        <p>Deixe marcado abaixo quais os tipos de sub que podem ativar a roleta:</p>
+        <div class="sub-types">
+          <el-checkbox-group
+            v-model="configuration.active_sub_plans"
+            fill="#7246c8"
+          >
+            <el-checkbox-button
+              v-for="plan in plans"
+              :label="plan.cod"
+              :key="plan.cod"
+            >
+              {{ plan.label }}
+            </el-checkbox-button>
+          </el-checkbox-group>
+        </div>
+      </div>
+      <div class="config-interval" :class="theme">
+        <p>Selecione abaixo o intervalo de meses de subs em que a roleta deve aparecer:</p>
+        <div class="sub-interval">
+          <el-radio-group
+            v-model="configuration.subs_interval"
+            fill="#7246c8"
+          >
+            <el-radio-button
+              v-for="interval in intervals"
+              :label="interval.cod"
+              :key="interval.cod"
+            >
+              {{ interval.label }}
+            </el-radio-button>
+          </el-radio-group>
+        </div>
+        <small>Este recusro está em fase de testes, portanto pode apresentar alguma instabilidate.</small>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <button
+          class="default-btn close-modal-btn"
+          @click="updateOrCreateConfiguration(), showConfig = false"
+        >Salvar</button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
-import EventBus from '@/utils/event-bus'
 
 export default {
   name: "BlocksContainer",
@@ -75,14 +103,21 @@ export default {
     ],
     configuration: {
       min_bits_to_wheel: null,
-      active_sub_plans: []
+      active_sub_plans: [],
+      subs_interval: null
     },
     plans: [
       { cod: 'Prime', label: 'Prime' },
       { cod: '1000', label: 'Tier 1' },
       { cod: '2000', label: 'Tier 2' },
       { cod: '3000', label: 'Tier 3' }
-    ]
+    ],
+    intervals: [
+      { cod: 1, label: 'Todo mês' },
+      { cod: 2, label: 'A cada 2 meses de sub' },
+      { cod: 3, label: 'A cada 3 meses de sub' }
+    ],
+    showConfig: false
   }),
 
   mounted() {
@@ -190,23 +225,6 @@ export default {
     padding: 20px;
     border-radius: 5px;
     font-size: 0.90em;
-    .sub-types {
-      margin-top: 10px;
-      text-align: center;
-      .sub-type {
-        display: block;
-        .status-on, .status-off {
-          font-size: 4em;
-          cursor: pointer;
-        }
-        .status-on {
-          color: var(--color-primary);
-        }
-        .status-off {
-          color: var(--color-tertiary);
-        }
-      }
-    }
     &.light {
       color: var(--color-text-base);
       background-color: var(--color-box-light);
@@ -251,20 +269,96 @@ export default {
         border: solid 1px var(--color-background-darker);
       }
     }
-    .default-btn {
+    .bits-btn{
+      color: var(--color-title-in-primary);
+      padding: 9px 5px;
+      background-color: var(--color-primary-dark);
+      &:hover {
+        background-color: var(--color-primary-darker);
+      }
+    }
+    .subs-btn{
+      color: var(--color-title-in-primary);
+      padding: 9px 5px;
+      margin-top: 17px;
+      background-color: var(--color-primary-dark);
+      &:hover {
+        background-color: var(--color-primary-darker);
+      }
+    }
+  }
+  .subs-modal {
+    box-shadow: none;
+    .el-dialog__header {
+      display: none;
+    }
+    .el-dialog__body {
+      text-align: center;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .el-dialog__footer {
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 9px 5px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.2em;
-      transition: background-color 0.2s;
-      margin: 7px 0;
-      cursor: pointer;
-      &:focus {
-        outline:0;
+    }
+    &.dark {
+      background-color: var(--color-background-dark)
+    }
+  }
+  .sub-types, .sub-interval {
+    margin-top: 10px;
+    text-align: center;
+    .sub-type {
+      display: block;
+      .status-on, .status-off {
+        font-size: 4em;
+        cursor: pointer;
       }
+      .status-on {
+        color: var(--color-primary);
+      }
+      .status-off {
+        color: var(--color-tertiary);
+      }
+    }
+  }
+  .config-tier, .config-interval {
+    padding: 20px 10px;
+    p {
+      padding-top: 5px;
+    }
+    border-bottom: 1px solid var(--color-background-light);
+    small {
+      color: var(--color-primary);
+    }
+    &.dark {
+      border-bottom: 1px solid var(--color-background-darker);
+    }
+  }
+  .default-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 9px 5px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    transition: background-color 0.2s;
+    margin: 7px 0;
+    cursor: pointer;
+    &:focus {
+      outline:0;
+    }
+  }
+  .close-modal-btn {
+    padding: 10px 15px;
+    font-size: 1em;
+    color: var(--color-title-in-primary);
+    background-color: var(--color-primary-dark);
+    &:hover {
+      background-color: var(--color-primary-darker);
     }
   }
 }
