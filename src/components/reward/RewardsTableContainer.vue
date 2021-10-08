@@ -222,7 +222,6 @@ export default {
 
         this.rewards = response.data;
         this.filterRewards();
-        if (!response.data.length) EventBus.$emit('reset-rewards')
       } catch (e) {
         this.$message.error(`Algo deu errado! Se o erro persistir, clique
           em sair e faça login novamente`);
