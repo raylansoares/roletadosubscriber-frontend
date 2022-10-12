@@ -59,7 +59,6 @@
             </el-radio-button>
           </el-radio-group>
         </div>
-        <small>Este recusro está em fase de testes, portanto pode apresentar alguma instabilidate.</small>
       </div>
       <span slot="footer" class="dialog-footer">
         <button

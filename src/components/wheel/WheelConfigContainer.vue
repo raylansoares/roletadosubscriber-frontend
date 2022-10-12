@@ -1,14 +1,7 @@
 <template>
   <div id="wheel-config-container" :class="theme">
     <div id="wheel-config-container-inner">
-      <BlocksContainer
-        @get-prizes="getPrizes()"
-      />
-      <NewPrizeContainer
-        @get-prizes="getPrizes()"
-      />
-      <VariablesContainer
-      />
+      <BlocksContainer />
       <el-alert
         type="info"
         description="Se o total das porcentagens definidas para os prêmios for igual a 100%, os prêmios com porcentagem automática não serão exibidos corretamente. Defina uma porcentagem para todos os prêmios ou deixe uma porcentagem sobrando para que essa sobra seja utilizada nos prêmios com porcentagem automática."
@@ -17,8 +10,7 @@
         class="info-box"
         :class="theme"
       ></el-alert>
-      <PrizesTableContainer
-      />
+      <PrizesTableContainer />
       <div class="contact" :class="theme">
         <p>
           Tem alguma dúvida ou sugestão? Entre em contato pelo E-mail:
@@ -32,7 +24,6 @@
 <script>
 import { mapState } from 'vuex'
 import BlocksContainer from '@/components/wheel/BlocksContainer'
-import NewPrizeContainer from '@/components/wheel/NewPrizeContainer'
 import PrizesTableContainer from '@/components/wheel/PrizesTableContainer'
 import VariablesContainer from '@/components/wheel/VariablesContainer'
 
@@ -41,7 +32,6 @@ export default {
 
   components: {
     BlocksContainer,
-    NewPrizeContainer,
     PrizesTableContainer,
     VariablesContainer
   },

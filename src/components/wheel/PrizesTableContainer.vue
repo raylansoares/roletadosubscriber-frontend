@@ -5,6 +5,13 @@
         Prêmios da Roleta
       </h3>
       <div class="search-sort-preview">
+        <button
+          class="default-btn preview-btn"
+          @click="newPrize = true"
+          :disabled="selectedItem || sort"
+        >
+          <i class="material-icons">add</i> Adicionar prêmio
+        </button>
          <button
           class="default-btn preview-btn"
           @click="showPreview()"
@@ -20,7 +27,7 @@
         >
           <i class="material-icons" v-if="sort">check</i>
           <i class="material-icons" v-else>reorder</i>
-          {{ sort ? 'Salvar Ordernção' : 'Alterar Ordernção' }}
+          {{ sort ? 'Salvar Ordenação' : 'Alterar Ordenação' }}
         </button>
         <input
           v-model="search"
@@ -225,6 +232,10 @@
         >Fechar</button>
       </span>
     </el-dialog>
+
+    <el-dialog :visible.sync="newPrize" center custom-class="new-prize-modal" :show-close="false">
+      <NewPrizeContainer />
+    </el-dialog>
   </div>
 </template>
 
@@ -234,12 +245,14 @@ import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
 import draggable from 'vuedraggable'
 import * as Winwheel from "../../assets/scripts/Winwheel";
+import NewPrizeContainer from '@/components/wheel/NewPrizeContainer'
 
 export default {
   name: "PrizesTableContainer",
 
   components: {
-    draggable
+    draggable,
+    NewPrizeContainer
   },
 
   computed: {
@@ -263,6 +276,7 @@ export default {
     sort: false,
     sorting: false,
     preview: false,
+    newPrize: false,
     segments: [],
     theWheel: null
   }),
@@ -274,6 +288,9 @@ export default {
   created () {
     EventBus.$on('get-prizes', () => {
       this.getPrizes();
+    })
+    EventBus.$on('close-new-prize', () => {
+      this.newPrize = false;
     })
   },
 
@@ -647,6 +664,17 @@ export default {
       }
     }
   }
+  .new-prize-modal {
+    background-color: transparent;
+    box-shadow: none;
+    width: 90%;
+    .el-dialog__body {
+      text-align: center;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+  }
   #table-content {
     height: 100%;
     max-height: 570px;
@@ -858,6 +886,9 @@ export default {
           }
         }
       }
+    }
+    .new-prize-modal {
+      width: 600px;
     }
   }
 }

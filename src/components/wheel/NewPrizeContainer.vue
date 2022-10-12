@@ -3,65 +3,43 @@
     <div class="block" :class="theme">
       <div class="form-field">
         <label>
-          Nome
-          <div class="tooltip">
-            <i class="material-icons">help_outline</i>
-            <span class="tooltiptext">Nome do prêmio na roleta.</span>
-          </div>
+          Nome do prêmio na roleta
         </label>
         <input
           type="text"
           class="text-input"
           :class="theme"
           v-model="prize.name"
-          placeholder="Nome do prêmio"
+          placeholder="10 min de timeout"
         >
       </div>
       <div class="form-field">
         <label>
-          Mensagem
-          <div class="tooltip">
-            <i class="material-icons">help_outline</i>
-            <span class="tooltiptext">
-              Mensagem exibida no chat quando alguém ganhar este prêmio.
-            </span>
-          </div>
+          Mensagem exibida no chat quando alguém ganhar este prêmio
         </label>
         <input
           type="text"
           class="text-input"
           :class="theme"
           v-model="prize.message"
-          placeholder="Mensagem"
+          placeholder="{user} ganhou {prize}!"
         >
       </div>
       <div class="form-field">
         <label>
-          Comando
-          <div class="tooltip">
-            <i class="material-icons">help_outline</i>
-            <span class="tooltiptext">
-              Comando executado quando alguém ganhar este prêmio.
-            </span>
-          </div>
+          Comando executado quando alguém ganhar este prêmio
         </label>
         <input
           type="text"
           class="text-input"
           :class="theme"
           v-model="prize.command"
-          placeholder="Comando"
+          placeholder="/timeout {user} 600"
         >
       </div>
       <div class="form-field half">
         <label>
-          Delay
-          <div class="tooltip">
-            <i class="material-icons">help_outline</i>
-            <span class="tooltiptext">
-              O comando será executado depois do delay (segundos).
-            </span>
-          </div>
+          Tempo de espera até o comando ser executado (em segundos)
         </label>
         <input
           type="number"
@@ -69,7 +47,7 @@
           class="text-input"
           :class="theme"
           v-model="prize.delay"
-          placeholder="Delay"
+          placeholder="10"
         >
       </div>
       <div class="form-field half color">
@@ -92,6 +70,7 @@
         Cadastrar
       </button>
       </div>
+      <VariablesContainer />
     </div>
   </div>
 </template>
@@ -100,9 +79,14 @@
 import axios from '@/repositories/clients/axios'
 import { mapState } from 'vuex'
 import EventBus from '@/utils/event-bus'
+import VariablesContainer from '@/components/wheel/VariablesContainer'
 
 export default {
   name: "NewPrizeContainer",
+
+  components: {
+    VariablesContainer
+  },
 
   computed: {
     ...mapState(['theme', 'user'])
@@ -147,6 +131,7 @@ export default {
       }
  
       EventBus.$emit('get-prizes')
+      EventBus.$emit('close-new-prize')
     }
   }
 };
@@ -205,6 +190,7 @@ export default {
         }
       }
       label {
+        font-size: 14px;
         display: flex;
         i {
           margin-left: 3px;
@@ -247,6 +233,7 @@ export default {
       }
     }
     .create-btn {
+      margin-top: 20px;
       color: var(--color-title-in-primary);
       background-color: var(--color-primary);
       &:hover {
@@ -260,36 +247,6 @@ export default {
         }
         &.dark {
           background-color: var(--color-text-base);
-        }
-      }
-    }
-  }
-}
-@media (min-width:960px) {
-  #new-prize-container {
-    margin-top: 20px;
-    .block {
-      margin: 0;
-      max-width: none;
-      flex-direction: row;
-      justify-content: space-between;
-      .form-field {
-        width: 20%;
-        &.half {
-          width: 10%;
-          min-width: 125px;
-          &.color {
-            display: flex;
-            flex-direction: row;
-            .color {
-              display: flex;
-              flex-direction: column;
-              margin: 0 7px;
-            }
-          }
-        }
-        &.button {
-          padding-top: 19px;
         }
       }
     }
