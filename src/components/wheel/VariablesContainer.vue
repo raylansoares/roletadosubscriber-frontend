@@ -2,21 +2,15 @@
   <div id="variables-container">
     <div class="block" :class="theme">
       <p class="title">
-        <strong>Variáveis disponíveis:</strong>
-        <span class="tooltip">
-          <i class="material-icons">help_outline</i>
-          <span class="tooltiptext">
-            Utilize as variáveis na mensagem ou no comando dos prêmios.
-          </span>
-        </span>
+        <strong>Variáveis disponíveis para utilizar na mensagem ou comando:</strong>
       </p>
       <p>
         <strong>{user}</strong>
-        - Exibe o nome do subscriber
+        - Exibe o nome do usuário que ganhou a roleta
       </p>
       <p>
         <strong>{prize}</strong>
-        - Exibe o nome do prêmio
+        - Exibe o nome do prêmio que o usuário ganhou
       </p>
       <p>
         <strong>@2</strong>
@@ -42,16 +36,16 @@ export default {
 #variables-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  margin-top: 0;
-  width: 100%;
+  align-items: left;
+  margin: 0 8px;
+  width: auto;
   .block {
     display: flex;
     flex-direction: column;
     margin: 10px 0;
     width: 100%;
     max-width: 600px;
-    padding: 20px;
+    padding: 10px;
     border-radius: 5px;
     font-size: 0.90em;
     justify-content: space-between;
@@ -70,8 +64,11 @@ export default {
       font-size: 1.5em;
     }
     p {
+      text-align: left;
       padding: 3px 0;
+      font-size: 12px;
       &.title {
+        padding: 0 0 6px 0;
         display: flex;
         .tooltip i {
           cursor: default;
@@ -80,17 +77,6 @@ export default {
     }
     strong {
       font-size: 1.1em;
-    }
-  }
-}
-@media (min-width:960px) {
-  #variables-container {
-    margin-top: 20px;
-    .block {
-      margin: 0;
-      max-width: none;
-      flex-direction: row;
-      justify-content: space-between;
     }
   }
 }
